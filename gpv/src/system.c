@@ -24,6 +24,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gtk/gtkstatusbar.h>
+#ifdef USE_GTKPLOT
 #include <gtkextra/gtkplot.h>
 #include <gtkextra/gtkplot3d.h>
 #include <gtkextra/gtkplotdata.h>
@@ -31,6 +32,7 @@
 #include <gtkextra/gtkplotcsurface.h>
 #include <gtkextra/gtkplotcanvas.h>
 #include <gtkextra/gtkplotps.h>
+#endif
 
 #include "system_data.h"
 #include "callbacks.h"

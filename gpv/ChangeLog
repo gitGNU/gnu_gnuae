@@ -1,6 +1,11 @@
 2005-02-21  Rob Savoye  <rob@bertha.welcomehome.org>
 
 	* src/Makefile.am: Remove macros from SUBDIRS.
+	* macros/libguppi.m4, gtkextra.m4: Remove macros because they're
+	been added to aclocal finally.
+	* all Makefile.in files regenerated with 1.9.2.
+	* configure, gpv/configure: Regenerated with aclocal 1.9.2 and
+	autoconf 2.59 (for Fedora Core 3).
 
 2004-09-29  Rob Savoye  <rob@direwolf.welcomehome.org>
 

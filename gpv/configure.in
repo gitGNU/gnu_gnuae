@@ -5,7 +5,7 @@ AM_INIT_AUTOMAKE(gpv, 0.3)
 AM_CONFIG_HEADER(config.h)
 
 dnl Pick up the Gnome macros.
-AM_ACLOCAL_INCLUDE(macros)
+dnl AM_ACLOCAL_INCLUDE(macros)
 
 GNOME_INIT
 AC_ISC_POSIX
@@ -46,7 +46,6 @@ fi
 AC_OUTPUT([
 Makefile
 src/Makefile
-macros/Makefile
 doc/Makefile
 doc/C/Makefile
 ])

@@ -1179,3 +1179,19 @@ gboolean
 on_load_watts_spin_changed             (GtkWidget       *widget,
                                         GdkEventButton  *event,
                                         gpointer         user_data);
+
+void
+on_nec_ok_released                     (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_nec_cancel_released                 (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_wiring_ok_released                  (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_wiring_cancel_released              (GtkButton       *button,
+                                        gpointer         user_data);

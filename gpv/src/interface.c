@@ -2725,6 +2725,8 @@ create_neccalc (void)
   GtkWidget *label205;
   GtkWidget *nec_check;
   GtkWidget *label30;
+  GtkWidget *nec_ok;
+  GtkWidget *nec_cancel;
   GtkWidget *nec_statusbar;
 
   neccalc = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -3141,6 +3143,24 @@ create_neccalc (void)
   gtk_widget_set_uposition (label30, 144, 16);
   gtk_widget_set_usize (label30, 80, 16);
 
+  nec_ok = gnome_stock_button (GNOME_STOCK_BUTTON_OK);
+  gtk_widget_ref (nec_ok);
+  gtk_object_set_data_full (GTK_OBJECT (neccalc), "nec_ok", nec_ok,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (nec_ok);
+  gtk_fixed_put (GTK_FIXED (fnec_fixed), nec_ok, 16, 384);
+  gtk_widget_set_uposition (nec_ok, 16, 384);
+  gtk_widget_set_usize (nec_ok, 56, 24);
+
+  nec_cancel = gnome_stock_button (GNOME_STOCK_BUTTON_CANCEL);
+  gtk_widget_ref (nec_cancel);
+  gtk_object_set_data_full (GTK_OBJECT (neccalc), "nec_cancel", nec_cancel,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (nec_cancel);
+  gtk_fixed_put (GTK_FIXED (fnec_fixed), nec_cancel, 248, 384);
+  gtk_widget_set_uposition (nec_cancel, 248, 384);
+  gtk_widget_set_usize (nec_cancel, 72, 24);
+
   nec_statusbar = gtk_statusbar_new ();
   gtk_widget_ref (nec_statusbar);
   gtk_object_set_data_full (GTK_OBJECT (neccalc), "nec_statusbar", nec_statusbar,
@@ -3213,6 +3233,12 @@ create_neccalc (void)
                       NULL);
   gtk_signal_connect (GTK_OBJECT (nec_check), "toggled",
                       GTK_SIGNAL_FUNC (on_nec_check_toggled),
+                      NULL);
+  gtk_signal_connect (GTK_OBJECT (nec_ok), "released",
+                      GTK_SIGNAL_FUNC (on_nec_ok_released),
+                      NULL);
+  gtk_signal_connect (GTK_OBJECT (nec_cancel), "released",
+                      GTK_SIGNAL_FUNC (on_nec_cancel_released),
                       NULL);
 
   return neccalc;
@@ -5042,6 +5068,8 @@ create_WiringWIndow (void)
   GtkWidget *label148;
   GtkWidget *label147;
   GtkWidget *label151;
+  GtkWidget *wiring_ok;
+  GtkWidget *wiring_cancel;
   GtkTooltips *tooltips;
 
   tooltips = gtk_tooltips_new ();
@@ -5402,6 +5430,24 @@ create_WiringWIndow (void)
   gtk_widget_set_uposition (label151, 8, 192);
   gtk_widget_set_usize (label151, 120, 16);
 
+  wiring_ok = gnome_stock_button (GNOME_STOCK_BUTTON_OK);
+  gtk_widget_ref (wiring_ok);
+  gtk_object_set_data_full (GTK_OBJECT (WiringWIndow), "wiring_ok", wiring_ok,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (wiring_ok);
+  gtk_fixed_put (GTK_FIXED (fixed9), wiring_ok, 16, 336);
+  gtk_widget_set_uposition (wiring_ok, 16, 336);
+  gtk_widget_set_usize (wiring_ok, 54, 22);
+
+  wiring_cancel = gnome_stock_button (GNOME_STOCK_BUTTON_CANCEL);
+  gtk_widget_ref (wiring_cancel);
+  gtk_object_set_data_full (GTK_OBJECT (WiringWIndow), "wiring_cancel", wiring_cancel,
+                            (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (wiring_cancel);
+  gtk_fixed_put (GTK_FIXED (fixed9), wiring_cancel, 408, 336);
+  gtk_widget_set_uposition (wiring_cancel, 408, 336);
+  gtk_widget_set_usize (wiring_cancel, 72, 22);
+
   gtk_signal_connect (GTK_OBJECT (fixed9), "map",
                       GTK_SIGNAL_FUNC (on_Wiring_map),
                       NULL);
@@ -5482,6 +5528,12 @@ create_WiringWIndow (void)
                       NULL);
   gtk_signal_connect (GTK_OBJECT (wiring_entry9), "changed",
                       GTK_SIGNAL_FUNC (on_wiring_entry9_changed),
+                      NULL);
+  gtk_signal_connect (GTK_OBJECT (wiring_ok), "released",
+                      GTK_SIGNAL_FUNC (on_wiring_ok_released),
+                      NULL);
+  gtk_signal_connect (GTK_OBJECT (wiring_cancel), "released",
+                      GTK_SIGNAL_FUNC (on_wiring_cancel_released),
                       NULL);
 
   gtk_object_set_data (GTK_OBJECT (WiringWIndow), "tooltips", tooltips);

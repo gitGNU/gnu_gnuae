@@ -32,19 +32,23 @@ NECLIB = -L../../src -lgnuaec -lstdc++ $(LIBLTDL) "-dlopen" self
 if GTKPLOT
 	PLOT = gtkplot.c # guppi.c
 	GTKPLOT_LIBS = $(GTK_EXTRA_LIBS)
+else
+	PLOT = 
+	GTKPLOT_LIBS = 
 endif
 
 gpv_SOURCES = \
-	main.c \
+	$(PLOT)	main.c \
 	support.c support.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
-	system.c $(PLOT)
+	system.c
 
 gpv_LDADD = $(GNOME_LIBDIR) \
 	$(GNOMEUI_LIBS) \
 	$(LIBGUPPI_LIBS) \
-	$(NECLIB)
+	$(NECLIB) \
+	$(GTK_EXTRA_LIBS)
 
 gpv_DEPENDENCIES = $(LIBLTDL) ../../src/libgnuaec.la
 

@@ -57,7 +57,7 @@ main (int argc, char *argv[])
 
   gnome_init ("gpv", VERSION, argc, argv);
 
-  //  pvnames = read_module_data_csv("/home/rob/projects/gnu/gnuae/data/Modules.csv");
+  // pvnames = read_module_data_csv("/home/rob/projects/gnu/gnuae/data/Modules.csv");
   pvnames = read_module_data_csv("");
   // Sort the names. As there are multiple entries for each module,
   // depending on the size of the array, or the year of the tests, we

@@ -3017,6 +3017,9 @@ on_Wiring_map                          (GtkWidget       *widget,
   set_wiresize_items (widget, "wiring_combo8");
   set_wiresize_items (widget, "wiring_combo9");
 
+  /* Turn on debugging messages for the NEC calculations */
+  nec_toggle_debug(TRUE);
+  
   /* Module to Module  */
   spinb = GTK_SPIN_BUTTON(lookup_widget(widget, "wiring_spin1"));
   gtk_spin_button_set_value(spinb, wiredata.pv2pv.distance);
@@ -3119,6 +3122,9 @@ on_Wiring_map                          (GtkWidget       *widget,
     sprintf(buf, "%s", awg2str(wiredata.ground.awg));
   gtk_entry_set_text(GTK_ENTRY(entry), buf);
 #endif
+  /* Turn off debugging messages for the NEC calculations */
+  nec_toggle_debug(FALSE);  
+
 }
 
 void
@@ -4785,7 +4791,7 @@ on_wiring_entry2_changed               (GtkEditable     *editable,
   //  nec_toggle_debug(FALSE);
 
   if (awg  > calcawg) {
-    Popup_Warning("Voltage Drop is too high!!!!!\n");
+    //    Popup_Warning("Voltage Drop is too high!!!!!\n");
   }
 }
 
@@ -5281,3 +5287,35 @@ on_load_group_entry_changed            (GtkEditable     *editable,
   }
   
 }
+
+void
+on_nec_ok_released                     (GtkButton       *button,
+                                        gpointer         user_data)
+{
+  gtk_widget_hide(NECWin);
+}
+
+
+void
+on_nec_cancel_released                 (GtkButton       *button,
+                                        gpointer         user_data)
+{
+  gtk_widget_hide(NECWin);
+}
+
+
+void
+on_wiring_ok_released                  (GtkButton       *button,
+                                        gpointer         user_data)
+{
+  gtk_widget_hide(WiringWindow);
+}
+
+
+void
+on_wiring_cancel_released              (GtkButton       *button,
+                                        gpointer         user_data)
+{
+  gtk_widget_hide(WiringWindow);
+}
+

@@ -55,6 +55,19 @@ dnl GAE_AC_PATH_ABELMON
 
 dnl AC_CHECK_LIB(abel, main)
 
+dnl AC_ARG_ENABLE(gtkplot, [  --enable-gtkplot          Enable support for debug tracing],
+dnl [case "${enableval}" in
+dnl   yes) gtkplot=yes ;;
+dnl   no)  gtkplot=no ;;
+dnl   *)   AC_MSG_ERROR([bad value ${enableval} for enable-gtkplot option]) ;;
+dnl esac])
+
+dnl AM_CONDITIONAL(GTKPLOT, test x$gtkplot = xyes)
+dnl if test x$gtkplot = xyes; then
+dnl   AC_DEFINE(USE_GTKPLOT)
+dnl   AM_PATH_GTK_EXTRA  
+dnl fi
+
 dnl AC_ARG_ENABLE(trace, [  --enable-trace          Enable support for debug tracing],
 dnl [case "${enableval}" in
 dnl   yes) trace=yes ;;

@@ -1,0 +1,39 @@
+"name","description","type","group","voltage","wattage","amperage""hours","minutes","days","quantity","active"
+"12' Refridgerator","SunFrost 12'","DC","HOUSEHOLD",24,696,29,0,1,0.25,1,0
+"133Mhz Pentium","133 Mgz Pentium I PC","AC","DIGITAL",120,53,0,0,1,0.25,1,0
+"16' Refridgerator","SunFrost 16'","DC","HOUSEHOLD",24,696,0,0,1,0.25,1,0
+"18" LCD Monitor","HP 1820 LCD Monitor","AC","DIGITAL",120,30,0,0,1,0.25,1,0
+"19' Refridgerator","SunFrost 19'","DC","HOUSEHOLD",24,696,29,12,1,7,1,1
+"21" CRT","Panisonic S21 CRT","AC","DIGITAL",120,103,0.858333,0,1,0.25,1,0
+"AC Lights","Compact Flourescent Light Bulb","AC","HOUSEHOLD",120,18,0.15,2,1,7,2,1
+"Alarm Clock","Clock/Radio","AC","HOUSEHOLD",120,1,0,0,1,0.25,1,0
+"Blender","Blender","AC","HOUSEHOLD",120,531,0,0,1,0.25,1,0
+"CD Player","Harmon Kardon CD Player","AC","HOUSEHOLD",120,18,0.15,1,1,3.5,1,1
+"Clothes Washer","","AC","HOUSEHOLD",120,18,0,0,1,0.25,1,0
+"Coffee Grinder","Coffe Grinder","AC","KITCHEN",120,93,0,0,1,0.25,1,0
+"Cordless Charger","Dewalt 18V Battery Charger","AC","TOOLS",120,70,0,0,1,0.25,1,0
+"DC Lights","Compact Flourescent Light Bulb","DC","HOUSEHOLD",24,15,0.625,3,1,7,3,1
+"Dish Washer","Apartment Sized Dish Washer","AC","KITCHEN",120,687,5.725,1,1,4,1,1
+"Docking Station","Gateway Docking Station","AC","DIGITAL",120,34,0,0,1,0.25,1,0
+"ETA Pump","Dankoff ETA Deep Well Pump","DC","HOUSEHOLD",24,192,0,0,1,0.25,1,0
+"Gateway Laptop","gateway Solo 5150 Laptop","AC","DIGITAL",120,20,0,0,1,0.25,1,0
+"Glue Gun","Glue Gun","AC","TOOLS",120,5,0,0,1,0.25,1,0
+"Laptop","HP Omnibook6100 Laptop","AC","DIGITAL",120,24,0,0,1,0.25,1,0
+"Laser Printer","HP LaserJet 5MP","AC","DIGITAL",120,200,1.66667,1,1,5,1,1
+"Maxon Charger","Charger for Maxon 201+3","AC","DIGITAL",120,1,0,0,1,0.25,1,0
+"Nokia Charger","Nokia 5660 Cell Phone Charger","AC","DIGITAL",120,3,0,0,1,0.25,1,0
+"PC Speakers","Yamaha Speakers","AC","DIGITAL",120,4,0,0,1,0.25,1,0
+"Pressure Booster","Flowlight Pressure Booster","DC","HOUSEHOLD",24,180,0,0,1,0.25,1,0
+"SQ Flex Pump","Grundfos SQ Flex Deep Well Pump","DC","HOUSEHOLD",24,192,8,2,30,0.5,1,1
+"Sewing Machine","Singer Sewing Machine","AC","TOOLS",120,51,0,0,1,0.25,1,0
+"Stereo","Stereo/Amp","AC","HOUSEHOLD",120,18,0.15,6,1,7,1,1
+"TV","","AC","HOUSEHOLD",120,18,0,0,1,0.25,1,0
+"Tape Deck","Harmon Kardon Tape Deck","AC","HOUSEHOLD",120,18,0.15,1,1,3.5,1,1
+"Terminal Server","Livingston Port Master","AC","DIGITAL",120,20,0,0,1,0.25,1,0
+"Toaster Oven","Toaster Oven","AC","HOUSEHOLD",120,240,0,0,1,0.25,1,0
+"US Robotics Modem","56K US Robotics Modem","AC","DIGITAL",120,4,0,0,1,0.25,1,0
+"VCR","","AC","HOUSEHOLD",120,18,0,0,1,0.25,1,0
+"Vacumn","Old Hoover Upright Vacumn","AC","HOUSEHOLD",120,800,6.66667,0,20,1,1,1
+"Wireless Phone","Telemobile PTEL Wireless Phone","DC","HOUSEHOLD",12,3,0,0,1,0.25,1,0
+"Yaesu Charger","Charger for Yaesu FT51","AC","DIGITAL",120,1,0,0,1,0.25,1,0
+"Zycel Modem","Zycel 1496+ Modem","AC","DIGITAL",120,6,0,0,1,0.25,1,0

@@ -1,20 +1,21 @@
-%define version 0.3.0
+%define version 0.3
+%define release 0
 
 Summary:   GNU Alternate Energy Design System
 Name:      gnuae
 Version:   %{version}
-Release:   3
+Release:   %{release}
 Copyright: GPL
 Group:     Applications/System          
-BuildRoot: /usr/src/redhat/BUILD/gnuae/gnuae-%{version}
-Source: ftp://ftp.gnu.org/gnu/gnuae/snapshots/gnuae-%{version}.tar.gz
+BuildRoot: /usr/src/redhat/BUILD/gnuae/gnuae-%{version}.%{release}
+Source: ftp://ftp.gnu.org/gnu/gnuae/snapshots/gnuae-%{version}.%{release}.tar.gz
 Provides:  gnuae
 
 %description
 GnuAE is a program for designing power systems for off grid houses.
 
 %prep
-%setup -q -n gnuae-%{version} 
+%setup -q -n gnuae-%{version}.%{release}
 
 %build
 ./configure --disable-shared
@@ -29,9 +30,9 @@ mkdir -p $RPM_BUILD_ROOT/usr/share/pixmaps
 mkdir -p $RPM_BUILD_ROOT/usr/share/gnome/help/gnuae/C/images
 mkdir -p $RPM_BUILD_ROOT/usr/share/gnome/help/gnuae/C/stylesheet
 mkdir -p $RPM_BUILD_ROOT/usr/share/omf/gpv/
-mkdir -p $RPM_BUILD_ROOT/usr/doc/gnuae-%{version}
+mkdir -p $RPM_BUILD_ROOT/usr/doc/gnuae-%{version}.%{release}
 make prefix=$RPM_BUILD_ROOT/usr install
-make prefix=$RPM_BUILD_ROOT/usr install-html
+#make prefix=$RPM_BUILD_ROOT/usr install-html
                                                                                  
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -107,6 +108,74 @@ rm -rf $RPM_BUILD_ROOT
 "/./usr/share/omf/gpv/gnuae.omf"
 "/./usr/share/pixmaps/gpv/main.png"
 "/./usr/share/pixmaps/gpv/sslogo.jpg"
+# If we don't add the scrollkeeper files, rpmbuild refuses to complete.
+"/./usr/var/scrollkeeper/C/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/C/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/am/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/am/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/az/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/az/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/be/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/be/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/ca/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/ca/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/cs/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/cs/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/da/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/da/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/de/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/de/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/el/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/el/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/es/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/es/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/fr/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/fr/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/hu/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/hu/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/it/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/it/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/ja/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/ja/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/kn/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/kn/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/ko/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/ko/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/nl/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/nl/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/no/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/no/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/pl/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/pl/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/pt_BR/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/pt_BR/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/ro/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/ro/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/ru/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/ru/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/scrollkeeper_docs"
+"/./usr/var/scrollkeeper/sk/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/sk/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/sl/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/sl/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/sr/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/sr/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/sr@Latn/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/sr@Latn/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/sv/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/sv/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/tr/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/tr/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/uk/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/uk/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/vi/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/vi/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/zh_CN/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/zh_CN/scrollkeeper_extended_cl.xml"
+"/./usr/var/scrollkeeper/zh_TW/scrollkeeper_cl.xml"
+"/./usr/var/scrollkeeper/zh_TW/scrollkeeper_extended_cl.xml"
+ 
+
 
 %doc COPYING NEWS README AUTHORS INSTALL ChangeLog
                                                                                  

@@ -48,8 +48,8 @@ rpm: tarball rpmspec
 
 # Build a Debian GNU/Linux package
 deb: tarball
-	rm -rf gnuae-${FULLVERSION}
-	tar zxfz ../gnuae-${FULLVERSION}.tar.gz
+#	rm -rf gnuae-${FULLVERSION}
+#	tar zxfz ../gnuae-${FULLVERSION}.tar.gz
 	cp -fr $(srcdir)/debian gnuae-${FULLVERSION}/
 	(cd gnuae-${FULLVERSION}; dpkg-buildpackage -d)
 

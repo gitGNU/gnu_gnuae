@@ -5,6 +5,7 @@
 <!ENTITY appversion "0.3">
 <!ENTITY manrevision "0.3">
 <!ENTITY date "Sept 2004">
+<!ENTITY sponsor "Seneca Software &amp; Solar, Inc.">
 <!ENTITY app "<application>GnuAE</application>">
 <!ENTITY appname "GnuAE">
 <!ENTITY version "0.3">

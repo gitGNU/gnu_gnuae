@@ -1,21 +1,7 @@
 #! /usr/bin/make -f
 #
-# Copyright 1994, 1995 by Ian Jackson.
-# I hereby give you perpetual unlimited permission to copy,
-# modify and relicense this file, provided that you do not remove
-# my name from the file itself.  (I assert my moral right of
-# paternity under the Copyright, Designs and Patents Act 1988.)
-# This file may have to be extensively modified
-# Copyright 1996 by Kevin Dalley.
+#
 
-# To make the binary distribution package, the ``Debianized'' source package
-# and the context diff to the original package, type `./debian.rules dist'.
-# Make sure that `debian.rules' is executable before the final distribution
-# is made.
-#
-# Invoke each target with `./debian.rules <target>'.  All targets should be
-# invoked with the package root as the current directory.
-#
 # The `binary' target must be run as root, as it needs to install files with
 # specific ownerships.
 
@@ -51,14 +37,14 @@ binary-indep:	checkroot build
 	cd $(package); $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	  LDFLAGS="$(LDFLAGS)" \
 	  prefix=`pwd`/debian/tmp/usr install
-	cd $(package); $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" \
-	  LDFLAGS="$(LDFLAGS)" \
-	  pkgdatadir=debian/tmp/usr/doc/$(package) install-doc
+#	cd $(package); $(MAKE) CC="$(CC)" CFLAGS="$(CFLAGS)" \
+#	  LDFLAGS="$(LDFLAGS)" \
+#	  pkgdatadir=debian/tmp/usr/doc/$(package) install-html
 #	gzip -9v debian/tmp/usr/info/*
 #	gzip -9v debian/tmp/usr/man/man1/*
-	install -d debian/tmp/usr/doc/$(package)/html/stylesheet-images
+#	install -d debian/tmp/usr/doc/$(package)/html/stylesheet-images
 #	install -m 0644 gpv/doc/overview.rtf debian/tmp/usr/doc/$(package)
-	gzip -9v debian/tmp/usr/doc/$(package)/changelog.Debian
+#	gzip -9v debian/tmp/usr/doc/$(package)/changelog
 	install -m 0644 ChangeLog debian/tmp/usr/doc/$(package)
 	gzip -9v debian/tmp/usr/doc/$(package)/ChangeLog
 	ln -s ChangeLog.gz debian/tmp/usr/doc/$(package)/changelog.gz
@@ -72,6 +58,7 @@ binary-indep:	checkroot build
 	dpkg --build debian/tmp ..
 
 binary-arch:
+	install -d debian/tmp debian/tmp/DEBIAN
 
 # Below here is fairly generic really
 
@@ -85,3 +72,4 @@ checkroot:
 	test root = "`whoami`"
 
 .PHONY: binary binary-arch binary-indep clean checkroot
+

@@ -7,6 +7,7 @@
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gtk/gtkstatusbar.h>
+#ifdef USE_GTKPLOT
 #include <gtkextra/gtkplot.h>
 #include <gtkextra/gtkplot3d.h>
 #include <gtkextra/gtkplotdata.h>
@@ -14,6 +15,8 @@
 #include <gtkextra/gtkplotcsurface.h>
 #include <gtkextra/gtkplotcanvas.h>
 #include <gtkextra/gtkplotps.h>
+#endif
+#include <libgnome/libgnome.h>
 
 #include "callbacks.h"
 #include "interface.h"
@@ -4943,14 +4946,14 @@ on_help_button_clicked (GtkWidget *widget, gpointer user_data)
 {
   GError *error = NULL;
   
-  gnome_help_display ("tracegui", "intro", &error);
+  gnome_help_display ("gnuae", "intro", &error);
   if (error) {
     GtkWidget *dialog;
     
     dialog = gtk_message_dialog_new (GTK_WINDOW (toplevel), GTK_DIALOG_MODAL,
                                      GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
                                      _("Could not display help for "
-                                       "TraceGUI.\n"
+                                       "GnuAE.\n"
                                        "%s"),
                                      error->message);
     
@@ -4974,11 +4977,11 @@ on_help                                (GtkMenuItem     *menuitem,
   helpfile = gnome_help_file_find_file("gnuae",
                                        "gnuae.html");
   
-  g_print("Helpfile path is %s\n", helpfile);
-  
   if (helpfile != NULL) {
     gchar* url;
     
+    g_print("Helpfile path is %s\n", helpfile);
+  
     url = g_strconcat("file:/usr/share/gnome/help/gnuae", helpfile, NULL);
     
     g_print(url);
@@ -4988,7 +4991,7 @@ on_help                                (GtkMenuItem     *menuitem,
     g_free(url);
     g_free(helpfile);
   } else {
-    gnome_error_dialog(_("Couldn't find the GNUae manual!"));
+    /*    gnome_error_dialog(_("Couldn't find the GNUae manual!")); */
 
     gnome_help_goto(NULL, "file:/usr/local/share/gnome/help/gnuae/C/html/index.html");
     

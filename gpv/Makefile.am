@@ -20,6 +20,9 @@ install-data-local:
 html: force
 	@cd doc/C ; make html
 
+install-html: force
+	@cd doc/C ; make install-html
+
 dist-hook:
 	if test -d pixmaps; then \
 	  mkdir $(distdir)/pixmaps; \

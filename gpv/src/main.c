@@ -20,8 +20,6 @@
 #include "Chargers.h"
 #include "Centers.h"
 
-#include "log.h"
-
 GtkWidget *MainWindow;
 GList *Modules = NULL;
 

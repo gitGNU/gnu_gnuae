@@ -1,5 +1,8 @@
 2004-09-18  Rob Savoye  <rob@direwolf.welcomehome.org>
 
+	* Makefile.am (install-html): Add target to all makefiles so it'll
+	work recursively. This properly installs the generated html files
+	so the old Gnome 1.x help system will work.
 	* configure.in: Don't use /* */ with AH_TEMPLATE.
 	* Add template to keep autoheader happy.
 

@@ -8,9 +8,9 @@ include $(top_srcdir)/doc/xmldocs.make
 dist-hook: app-dist-hook
 gnuae_helpdir = $(datadir)/gnome/help/$(docname)/C
 
-gnuae_help_DATA =    \
-        topic.dat       \
-	gnuae.xml 
+gnuae_help_DATA = \
+        topic.dat \
+	gnuae.xml
 
 html: force
 	mkdir -p html/stylesheet html/images
@@ -19,6 +19,14 @@ html: force
 	xsltproc -v -o html/ $(srcdir)/stylesheets/general-customization.xsl $(srcdir)/gnuae.xml
 	cp $(srcdir)/images/*.png html/images
 	cp $(srcdir)/images/gnome-logo-icon.png html/stylesheet
+
+install-html:
+	$(mkinstalldirs) $(gnuae_helpdir)/html/images
+	$(mkinstalldirs) $(gnuae_helpdir)/html/stylesheet
+	$(INSTALL_DATA) html/stylesheet/*.png $(gnuae_helpdir)/html/stylesheet
+	$(INSTALL_DATA) html/images/*.png $(gnuae_helpdir)/html/images
+	$(INSTALL_DATA) html/*.html $(gnuae_helpdir)/html
+	$(INSTALL_DATA) html/index.html html/gnuae.html
 
 # install GNOME help files, which are basically the html output
 install-ghelp:

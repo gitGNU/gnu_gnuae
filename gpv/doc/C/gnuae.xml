@@ -1,0 +1,1460 @@
+<?xml version="1.0"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY legal SYSTEM "legal.xml">
+<!ENTITY appversion "0.3">
+<!ENTITY manrevision "0.3">
+<!ENTITY date "Sept 2004">
+<!ENTITY app "<application>GnuAE</application>">
+<!ENTITY appname "GnuAE">
+<!ENTITY version "0.3">
+]
+>
+
+<!-- =============Document Header ============================= -->
+<article id="index" lang="en">
+  <!-- please do not change the id; for translations, change lang to -->
+  <!-- appropriate code -->
+  <articleinfo>
+    <title>
+    &app; Manual V&manrevision;</title>
+    <copyright>
+      <year>2004</year>
+      <holder>Rob Savoye</holder>
+    </copyright>
+    <!-- translators: uncomment this:
+	 
+	 <copyright>
+	 <year>2004</year>
+	 <holder>ME-THE-TRANSLATOR (Latin translation)</holder>
+	 </copyright>
+	 
+    -->
+    <!-- An address can be added to the publisher information.  If a role is 
+	 not specified, the publisher/author is the same for all versions of the 
+	 document.  -->
+    <publisher> 
+      <publishername> Seneca Software &amp; Solar, Inc.</publishername> 
+    </publisher> 
+    
+    &legal;
+    <!-- This file  contains link to license for the documentation (GNU FDL), and 
+	 other legal stuff such as "NO WARRANTY" statement. Please do not change 
+	 any of this. -->
+    
+    <authorgroup> 
+      <author> 
+	<firstname>Rob</firstname> 
+	<surname>Savoye</surname> 
+	<affiliation> 
+	  <address> <email>rob@senecass.com</email> </address> 
+	</affiliation> 
+      </author> 
+      <!-- This is appropriate place for other contributors: translators,
+	   maintainers,  etc. Commented out by default.
+	   <othercredit role="translator">
+	   <firstname>Latin</firstname> 
+	   <surname>Translator 1</surname> 
+	   <affiliation> 
+	   <orgname>Latin Translation Team</orgname> 
+	   <address> <email>translator@gnome.org</email> </address> 
+	   </affiliation>
+	   <contrib>Latin translation</contrib>
+	   </othercredit>
+      -->
+    </authorgroup>
+    
+    <revhistory>
+      <revision> 
+	<revnumber>&appname; Manual V&manrevision;</revnumber> 
+	<date>&date;</date> 
+	<revdescription> 
+	  <para role="author">Rob Savoye
+	  <email>rob@senecass.com</email>
+	  </para>
+	  <para role="publisher"> Seneca Software &amp; Solar, Inc.</para>
+	</revdescription> 
+      </revision> 
+    </revhistory> 
+    
+    <releaseinfo>This manual describes version &appversion; of &appname;.
+    </releaseinfo>
+  </articleinfo>
+
+  <indexterm zone="index"> 
+    <primary>GNUae</primary> 
+  </indexterm>
+
+  <!-- ============= Document Body ============================= -->
+
+  <!-- ============= Introduction ============================== -->
+  <sect1 id="intro">
+    <title>Introduction</title>
+    
+    <para>
+      This is a program that helps one design an NEC compliant
+      photovoltaic and wind energy system.
+    </para>
+    
+    <mediaobject>
+      <imageobject>
+	<imagedata fileref="images/domespread.png" format="png"/>
+      </imageobject>
+      <caption>
+	<ulink type="http" url="http://www.senecass.com/rob/domes">My
+	domestead</ulink> in the mountains of Colorado south of
+	Rocky Mountain National Park.
+      </caption>
+    </mediaobject>
+    
+    <sect2 id="betterintro">
+      <title>What is &appname; ?</title>
+      
+      <para>
+	&appname; is a GNOME/GTK compliant GUI for designing
+	photovoltaic and wind powered houses with compliance to the
+	National Electrical Code. This is important, because you'll
+	need to met the code for everything if you get permits, and if
+	you decide you aren't getting permits, or don't need one, then
+	you still don't want to burn your house down because the
+	ampacity was all wrong, or the voltage drop is so huge, you
+	barely get any power from your array. Paying attention to the
+	NEC code, if if you don't plan to follow it 100% is
+	important.
+      </para>
+      
+      <para>
+	From personal experience, you want to wire to code. Although
+	welding cable makes perfectly fine replacement for the big
+	gauge wire the NEC specifies, the same calculations apply. My
+	own experience was with my fixer upper geodesic domes. Then
+	non-NEC compliant wiring led to the inverter blowing out a
+	short time after I bought the house due to poor electrical
+	isolation. (the generator shorted out, and took the inverter
+	with it) Then we had no AC power till I replaced the
+	inverter...(and then later redesigned and rebuilt everything)
+      </para>
+      
+      <para>
+	&appname; is designed to make it much easier to wire for NEC code
+	compliance without studying all 800 some pages of the NEC
+	specification. Even for an electrician, the interdependencies
+	between calculations is daunting. While DC wiring is much
+	simpler than AC wiring, most household systems are both.
+      </para>
+      
+      <para>
+	&appname; currently only runs on Linux, although some attention
+	has been paid to eventual ports to MacOSX and M$ WinDoze. This
+	is the initial beta release, so your mileage may vary... I'm
+	sorry I'm not a GUI programmer, I'm more of a system
+	hacker. Please contribute to the development of this project
+	by helping track down bugs, or add features. 
+      </para>
+      
+      <para>
+	I hope the information contained in this document, along with
+	&appname; helps you go off grid, or improve your off-grid life.
+      </para>
+      
+    </sect2>
+    
+  </sect1>
+
+  <!-- ============= Introduction ============================== -->
+  <sect1 id="why">
+    <title>Why Use Alternate Energy ?</title>
+    
+    <para>
+      Why should a sane person consider building an off-grid or
+      grid-intertie power system ? There are several reasons. To be
+      honest, there is no good financial reason to go off grid if you
+      have grid power available. In this case grid-intertie makes the
+      most sense. But the cost of an alternate energy system, roughly
+      $15,000 to $75, takes a long time to pay off compared to grid
+      power. The cost of running traditional power lines to property
+      can often exceed $50,000 for a short distance.
+    </para>
+
+    <para>
+      For some of us, we go off grid because there is no grid where we
+      want to live. So going off grid is not a financial decision at
+      all, it's a lifestyle one. If you want to live in any area far
+      from everything else with any convieniences of modern life (like
+      light bulbs or a stereo), you need a way to produce your own
+      power. There is something really fun about having power, when a
+      blizzard has crippled the entire area, and the power is out
+      everywhere else for days. (which happens alot in this part of
+      Colorado)
+    </para>
+
+    <para>
+      For those with grid power available, an alternate energy system
+      can make your bills go down, which is good in states where power
+      is more expensive, like California. I know more than a few
+      people than have brought their power bills down to zero, and
+      some have made the meter spin backwards. The initial cost may be
+      high. but with any tax breaks (like in California), the total
+      cost is reasonable.
+    </para>
+
+    <para>
+      There is also the environmental cost of traditional power
+      sources. Nuclear, burning coal or natural gas, or hydro. Other
+      than hydro, which does have an impact on the fish in the rivers,
+      the other source require environmentally unsound practices. So
+      going off grid or grid-interties reduces by that by one little
+      household's worth of power the damage needed to have produced
+      that power by traditional means. Some people build photovoltaic
+      power systems and feed power into the grid gurilla style, just
+      to help reduce our dependance on coal or natural gas or nuclear
+      power.
+    </para>
+
+    <para>
+      I also think that it's important for our own personal freedoms
+      to break our dependency on the energy monoply. We all benefit
+      from being able to make our own choices.
+    </para>
+
+  </sect1>
+
+  <!-- ============= The Basics ============================== -->
+  <sect1 id="basics">
+    <title>The Basics of an Alternate Energy System</title>
+    
+    <para>
+      All purely off grid systems have one thing in common,
+      batteries. Batteries is where you have the power to use
+      electrical devices at night, or after prolonged periods of bad
+      weather. Some systems, like water pumping and in some cases
+      refridgeration, can run PV Direct, where the panels directly
+      power the device without batteries. This doesn't work for
+      sources that aer used at night.
+    </para>
+
+    <sect2 id="sources">
+      <title>Power Sources</title>
+      
+      <para>
+	Currently, there are four main sources for power available to
+	the average person. These are hydro, wind, sun,
+	generator. Fuel cells are still unattainable to the average
+	person in any size big enough to replace a generator.
+      </para>
+
+      <sect3 id="hydro">
+	<title>Hydro</title>
+
+	<para>
+	  Hydro requires a water source with enough drop or enough flow
+	  to turn the blades of a generator. A small flow can work with
+	  enough drop. I've seen water runs of over a mile sometimes to
+	  get enough drop to produce electricity. In our area there are
+	  no large enough sources of water. Our Wetlands doesn't have
+	  much flow except for a few weeks in the spring, and the bigger
+	  creeks, which are too far away to use anyway, freeze pretty
+	  solid for over 6 months a year. But if you have it, hydro is
+	  the best source for electricity in large volumnes. The
+	  downside is if the water goes down. I was visiting at the
+	  Breitenbush community last year, and they run multiple
+	  houses off of a centralized power system. Because of a
+	  drought in Oregon, they didn't have enough electricity, and
+	  were running as diesal backup generator 24/7 to keep up.
+	</para>
+
+      </sect3>
+
+      <sect3 id="solar">
+	<title>Solar</title>
+
+	<para>
+	  Sun is a good source of power depending on where you live. To
+	  be practical, you need at least 3 hours of clear sun a day on
+	  average per week. You can mix sun with other sources for a
+	  balanced power system. The advantages to sun power are low
+	  maintainance. Once installed, there is nothing to do for about
+	  25 years. No moving parts, and other than the glass, nothing
+	  to break. And if breaking the glass is a worry, you can buy
+	  unbreakable panels. To support photovoltaic panels you'll need
+	  some roof space, or you'll need to mount a pole. Pole mounted
+	  photovoltaic arrays for any reasonably sized house over 20
+	  feet tall aren't practical, but are possible. On average for a
+	  roof mounted installation, think something like 20 x 20 feet
+	  square. And it has to be south facing, with the possibility of
+	  mounting panels at rougly 40-60 degress.
+	</para>
+
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/panels.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+      </sect3>
+      
+      <sect3 id="wind">
+	<title>Wind</title>
+
+	<para>
+	  Wind is another source that depends on location. Some areas
+	  get constant, or at the best frequent winds. Other areas, like
+	  where I live, the long cloudy and stormy periods are usually
+	  really windy. So when we're not getting any juice from the
+	  photovoltaic panels, the wind kicks in to cover the loss. Wind
+	  requires a tower, which can be a pole or a triangular
+	  tower. On average, getting 20 feet or more above the tree tops
+	  is a good thing. Near the tops of the trees there is more
+	  turbulance, which wind generators don't like. One downside
+	  with wind is unlike photovoltaics, you just can't turn it off
+	  if your batteries are fully charged (like a windy and sunny
+	  day). So you need a diversion load to reroute the electricity
+	  from the wind generator to something like a water or space
+	  heator.
+	</para>
+
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/tower.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+	
+      </sect3>
+
+      <sect3 id="generators">
+	<title>Generators</title>
+	
+	<para>
+	  I hate generators. They burn fuel, so they force me into being
+	  a consumer for the energy monopoly. They also break, and are
+	  noisy and smelly. Long term power production by using
+	  generators is expensive, and probably only worth it for small
+	  villages that need huge amounts of power. A town near me,
+	  Nederland, has recently installed a large 50 Mega Watt wood
+	  burning generator, which burns the slash generated from forest
+	  fire mitigation projects in the National Forests near
+	  here. That was a good idea. But a generator can also be
+	  backup power to charge batteries after a long cloudy strech
+	  of weather, or used to run occasional heavy loads like we do
+	  to pump water from the well into the cistern once a month or
+	  so.
+	</para>
+	<para>
+	  A fuel cell is a generator, because it consumes fuel. Many
+	  people incorrectly consider a fuel cell a battery. Fuel
+	  cells do not store electricity, they make it. Some day a
+	  cheap fuel cell that runs the entire house on an inexpensive
+	  renewable fuel (hydrogen takes too much power to produce)
+	  will be built. Until then, fuel cells are just too expensive
+	  to compete with wind and solar.
+	</para>
+      </sect3>
+
+    </sect2>
+
+    <sect2 id="generation">
+      <title>Power Generation</title>
+
+      <sect3 id="inverters">
+	<title>Inverters</title>
+	
+	<para>
+	  Inverters convert DC as stored in your battery bank into AC,
+	  so you can run your computer, stereo, or other AC
+	  device. Although inverters aren't 100% efficient, they are
+	  efficient enough that some people just run only AC devices
+	  like my houses.
+	</para>
+	<para>
+	  There are two kinds of inverters, modified sine wave, or
+	  true sine-wave. All of the cheap 300 watts inverters you see
+	  for cars at truck stops are modified sine wave. A modified
+	  sine wave is a squared off and digitally sampled version of
+	  a sine wave. A true sine wave is identical to AC power. Some
+	  devices don't like the modified sine wave (like stereos or
+	  computers), so a true sine wave inverter is recommended.
+	</para>
+      </sect3>
+      
+      <sect3 id="dc">
+	<title>DC Only</title>
+
+	<para>
+	  Even if you have an inverter, it makes sense to use as many DC
+	  devices, rather than their AC equivalants for the higher
+	  efficiency. Most modern inverters have an idle mode, and an
+	  active on mode. On my Trace 4024, this is 16 watts. DC lights
+	  work just fine, but unless you have an AC lightbulb
+	  that pulls more than 16 watts (many compact flourescents are
+	  small than this), the lights will blink. Washers, and other
+	  devices that drop below 16 watts occaionally will find them
+	  selves with no power at all. One solution is to turn on a
+	  light while the washer is running, but you get the idea. DC
+	  devices are more efficient and less hassle. Especially if
+	  your inverter ever blows out, like happened to me, having
+	  most everything DC can be very useful.
+	</para>
+	<para>
+	  I have neighbors whose off-grid houses are purely DC. These
+	  are tyically do it yourself types, and their cabins are
+	  wired like a car, car batteries, using dome lights, car
+	  stereos, etc... The main advantage of these systems is very
+	  low cost, and maintainability. I even know of a few folks
+	  that have no power generation capability at all, they just
+	  charge spare batteries in their vehicles when they make
+	  supply runs to the nearest town.
+	</para>
+      </sect3>
+      
+    </sect2>
+
+    <sect2 id="storage">
+      <title>Power Storage</title>
+
+      <sect3 id="batteries">
+	<title>Batteries</title>
+
+	<para>
+	  Batteries are a critical part for any off-grid power
+	  system. Car batteries just don't cut it... they're designed
+	  for an entirely different purpose. If you need to go cheap,
+	  golf cart or deep cycle marine batteries will work.
+	</para>
+
+	<para>
+	  The long-time standard for many off-grid houses for a long
+	  time were Trojan L16s. These are about 350AH, and have a
+	  lifespan of about 6-8 years. When I bought my domes, they
+	  had been running on a set of 12 L16s for about 7 years.
+	</para>
+
+	<para>
+	  When it came time to replace them, I decided to go with more
+	  long lasting batteries so I wouldn't have to do this again
+	  in 7-8 years. I went with Surette (Rolls) Batteries this
+	  time, even though the ones I bought were 325lbs monsters.
+
+	  <mediaobject>
+	    <imageobject>
+	      <imagedata fileref="images/rewire04.png" format="png"/>
+	    </imageobject>
+	    <caption>
+	      <para>My friend Greg helps unload batteries in the snow.</para>
+	    </caption>
+	  </mediaobject>
+	</para>
+
+      </sect3>
+      
+      <sect3 id="pvdirect">
+	<title>PV Direct</title>
+
+	<para>
+	  Some of the biggest loads in a house can also be run PV
+	  direct. This is commonly used to pump water into a cistern
+	  for a few hours a day. The advantages of running a water
+	  pump directly off the photovoltaics panels is the pump can
+	  be powered when it is too far from the battery bank. There
+	  are also refridgerators and freezers that can run PV
+	  direct.
+	</para>
+
+      </sect3>
+
+      <sect3 id="intertie">
+	<title>Grid Intertie</title>
+
+	<para>
+	  With a grid intertie system one commonly has no
+	  batteries. All produced power flows back into the grid, and
+	  you also pay for the difference every month between your power
+	  consumption and your power production.
+	</para>
+
+	<para>
+	  It is also possible to build a grid-intertie system with
+	  batteries for a backup. The only problem with this approach
+	  is that very few inverters are UAL certified to be hooked to
+	  the grid, as well as to work with a bank of batteries.
+	</para>
+
+      </sect3>
+
+    </sect2>
+
+  </sect1>
+
+  <!-- ============= GNUae Application Windows =============== -->
+  <sect1 id="window">
+    <title>The Windows</title>
+
+    <sect2 id="mainwindow">
+      <title>Main Window</title>
+
+      <para>
+	The Main window is used to give you an overview of the
+	basic power system, namely how many batteries and photovoltaic
+	panels are needed. You can also select a few other components
+	like inverters and charge contollers to get a rough idea of
+	the total system cost. All the values for the quantity of
+	photovoltaic panels, batteries, etc... are calculated based on
+	the system loads.
+      </para>
+
+      <screenshot>
+	<screeninfo>Main GNUae Window</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/MainWindow.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>This is the main window for GnuAE.</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+
+      <para>
+	The only value that get adjusted in this window are the top 4
+	rows. The <emphasis>System Nominal Voltage</emphasis> is the
+	voltage of the system (the battery bank). This is usually 12 or 24 volts. The
+	<emphasis>PV array voltage</emphasis> is the total voltage of
+	all the panels wired together. 13, 24, or 48 volts is common,
+	with 48 volts for longer runs of wire. <emphasis>Hours of Sun
+	per Day</emphasis> is how much sun the array will get
+	<emphasis>in the winter</emphasis>. 5 hours is common in much of
+	the US. A future feature for &appname; will be adding the
+	weatheer charts for the last 30 years. <emphasis>DPV Module is
+	of course, which PV module you prefer.</emphasis>
+      </para>
+
+      <para>
+	<emphasis>The Reserve Time</emphasis> is how many days of no
+	sun do you want to have power at your normal level of activity
+	? Around here we get these 4-5 day long overcast storms, but
+	get by on 3 days reserve because we just conserve power during
+	those times. (less loads of laundry) The <emphasis>Usable
+	Capacity</emphasis> is how low do you plan to deplete your
+	batteries ? 50% is a healthy number, 60% is common.
+      </para>
+
+      <para>
+	The <emphasis>Temperature </emphasis> is also important. One thing
+	that spawned the creation of &appname; was the lack of
+	temperature compensation in any of the existing software
+	tools. When you live in a cold weather climate, this becomes
+	very important as batteries below 41F start to loose alot of
+	their efficiency. What this means to you is you have less
+	power during cold weather than in warm weather. Around here,
+	where my power shed (which is now heated) would get to -35F,
+	and especially with my ancient L16s, there was just barely
+	enough power to do anything but run light bulbs. Warm weather
+	has the same effect.
+      </para>
+
+      <para>
+	You can also select other system components from the
+	menus. The pricing is based on an average price from several
+	suppliers circa March 2004. You may find the cost varies from
+	this amount, but you get the idea...
+      </para>
+
+    </sect2> 
+
+    <sect2 id="wiringwindow">
+      <title>Wiring Sizes Window</title>
+
+      <para>
+	This window details the wiring needed for any alternate
+	energy system. This later becomes part of the generated parts
+	list. In this caes, all ampacity, overcurrent, and all other
+	NEC calculations are done. Any fuzzy issues are resolved
+	towards the extra safe side.
+      </para>
+      <screenshot>
+	<screeninfo>Wiring Window</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/wiring.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>This window displays the sizes of the wires needed.</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+
+      <para>
+	The sizes of your wires is critical to the safety of any power
+	system. The current carrying capacity of the wires during
+	temperature extremes is very important. Wires run in a conduit
+	or other enclosed space get warm, and as the temperature
+	rises, the efficiency of the wires goes down, as well as the
+	maximum current carrying capacity.
+      </para>
+
+      <para>
+	Especially with low-power DC systems (12 or 24 VDC), voltage
+	loss is also important, and this limits the length of
+	wires. All the calculations take into account the possible
+	temperatures, as well as current carrying capacity. All the
+	data for this is specified in the NEC Code, but spread out over
+	a couple of different tables.
+      </para>
+
+
+    </sect2> 
+
+    <sect2 id="loadwindow">
+      <title>Loads Window</title>
+
+      <para>
+	Here is where you choose loads, and how much you use
+	them. This is an important part of sizing a systems, as your
+	idea of the loads is used for all other calculations. 
+      </para>
+
+      <screenshot>
+	<screeninfo>Edit Load Window</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/edit-load.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>This window is for adjusting the system loads.</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+
+      <para>
+	This is where all the values for how much power you will be
+	using get entered. All of the power consumption is from my own
+	tests with a power meter. Additional database entries will
+	always be appreciated.
+      </para>
+
+      <para>
+	The important data is the amount of time the device will be
+	used. Calculations are based on full weeks, since many devices
+	aren't used every day. The <emphasis>Watts used per day
+	</emphasis> is how much the device will use for the amount of
+	time specified. You can also enter in the data, but by
+	toggling the <emphasis>Active </emphasis> button, you can turn
+	off whether this device is used for calculations or not. This
+	is so you can experiment with different configurations.
+      </para>
+
+      <para>
+	The description isn't used for anything but additional
+	information. To add a new load, click the <emphasis>New Load
+	</emphasis> button, and then enter the data.
+      </para>
+
+
+    </sect2> 
+
+    <sect2 id="necwindow">
+      <title>NEC Calculator</title>
+
+      <para>
+	The NEC calculator is used to evaluate Voltage Drop
+	issues, which are very important in low power DC systems. You
+	can also specify the number of condctors.
+      </para>
+
+      <screenshot>
+	<screeninfo>NEC Calculator</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/nec-calc.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>The NEC Calculator</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+
+    </sect2> 
+
+    <sect2 id="chargerwindow">
+      <title>Charger browser</title>
+
+      <para>This window lets you browse the database of charge
+      controllers. The various features for the controllers is
+      displayed, along with the electrical characteristics.
+      </para>
+
+      <screenshot>
+	<screeninfo>Colored Rectangles</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/controllers-browser.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>This window displays information on Charge Controllers</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+
+    </sect2> 
+
+    <sect2 id="rpvwindow">
+      <title>Photovoltaic Browser</title>
+
+      <para>
+	This window displays all the data on photovoltaic panels in
+	the database. All the <emphasis>Calculated Values </emphasis>
+	currently come from the Sandia National Labs database from
+	their testbed, and monitored installations. The original
+	motivation for &appname; was to bring these database of real
+	performance data back to life. Future releases of &appname;
+	will be able to calculate the values from anyone's sensors,
+	and add to the database, which does not have any newer
+	panels. The data values are used by the main window for
+	calculating how many panels are needed.
+      </para>
+
+      <screenshot>
+	<screeninfo>Photovoltaic Browser</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/pvbrowser.png" format="png"/>
+	  </imageobject>
+	  <textobject>
+	    <phrase>Photovoltaic Browser</phrase> 
+	  </textobject>
+	  <caption>
+	    <para>This window display information on PV Panels</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+
+    </sect2> 
+
+    <sect2 id="activewindow">
+      <title>Display Active</title>
+
+      <para>
+	This window displays the list of active devices, and their
+	power consumption. This is so you can view your current
+	profile.
+      </para>
+
+      <screenshot>
+	<screeninfo>Photovoltaic Browser</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/display-active.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>This window displays information on the active loads</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+
+    </sect2> 
+
+    <sect2 id="invertwindow">
+      <title>Inverter Browser</title>
+
+      <para>
+	This window displays the database of inverters, and their
+	basic features.
+      </para>
+
+      <screenshot>
+	<screeninfo>Inverter Browser</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/inverter-browser.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>This window displays information on inverters</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+    </sect2> 
+
+    <sect2 id="batterywindow">
+      <title>Battery Browser</title>
+
+      <para>
+	This window display the database of batteries, and their
+	electrical characteristics.
+      </para>
+
+      <screenshot>
+	<screeninfo>Battery Browser</screeninfo>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/battery-browser.png" format="png"/>
+	  </imageobject>
+	  <caption>
+	    <para>This window displays information on batteries</para>
+	  </caption>
+	</mediaobject>
+      </screenshot> 
+    </sect2> 
+
+  </sect1>
+
+  <!-- ============= Installation Notes ============================== -->
+  <sect1 id="notes"> 
+    <title>General Notes on Installing</title>
+
+    <sect2 id="wiringnotes">
+      <title>Wiring Notes</title>
+
+      <para>
+	For wiring photovoltaic panels together, you have a few
+	options. The usual NEC compliant way is is to use liquid tight
+	conduit and connectors, and run regular wire of the proper
+	gauge. You can also use wire rather USE-2/RHW-2, which is
+	rated for wet conditions and sunlight. This comes in single
+	strands, and runs roughly $0.25/ft. You can also use Tray
+	Cable, which commonly has multiple conductors in a
+	bundle. This may be more convienient than having lots of
+	single wires. These wires need moisture tight connectors. The
+	2 conductor Tray Cable needs oval connectors, and the 3
+	conductor Tray Cable is round. Because this cable is commonly
+	used for AV wiring, it and the round connectors are the
+	easiest to find. The 1/2 connectors fit the junction boxes on
+	the photovoltaic panel's knockouts.
+      </para>
+
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="images/abel-drilling.png" format="png"/>
+	</imageobject>
+      </mediaobject>
+
+      <para>
+	Long wire runs between the photovoltaic array and the charge
+	controller can be a problem. Voltage drop shouldn't be
+	above 3%, and when you are using an MMPT charge controller,
+	1.9% is recommended. Long runs of 12VDC are pretty much
+	impossible. 24VDC is doable depending on the length, but 48 is
+	the most likely. You can get charge controllers like RV
+	Products of Outback's MX60 that will handle up to a 60VDC
+	source. But big fat wires are difficult to run, especially in
+	conduit. In these cases you can run parallel wires, as long as
+	they are the same gauge and length.
+      </para>
+
+
+    </sect2> 
+
+    <sect2 id="toolsnotes">
+      <title>Tool Notes</title>
+
+      <para>
+	Me personally, I'm tottally in love with cordless
+	tools. Especially when you're working on the roof with ropes
+	everywhere, it's nice to not have to screw around with an
+	extension cord. My 18V tools have pretty good battery
+	life. With two spare batteries I can get through most any day
+	of projects. And they have a 12VDC charger, which is nice.
+      </para>
+
+      <para>
+	I've found the clamp style multimeters have problems in my
+	power shed, because they seem to be over sensitive to being
+	near the large battery bank. So a regular, and cheaper
+	multimeter works just fine. Make sure to get one that does
+	DC Amps if possible.
+      </para>
+
+      <para>
+	I have a power meter, there are several different ones
+	available on the market. I use it to test devices before
+	buying, as well as testing existing things I can't do
+	without. While a power meter is most useful when planning a
+	system for sizing purposes, it is also useful for evaluating
+	what to buy when looking at AC appliances, like vacumns.
+      </para>
+
+    </sect2> 
+
+  </sect1>
+
+  <sect1 id="howit"> 
+    <title>How It All goes Together</title>
+
+    <sect2 id="howpanels">
+      <title>The Panels</title>
+
+      <para>
+	Most Photovoltaic panels are wired to support either 12VDC or
+	24VDC. A few panels used for PV Direct systems are up to
+	110VDC. At one time most PV power systems were wired for
+	12VDC, but there are problems with wire size, and sufficient
+	voltage for heavy loads. It is entirely possible to have the
+	voltage of your PV array be different than your batteries and
+	household power.
+      </para>	
+
+      <para>
+	In my own case, I wired up 4 panels in series at 12VDC apiece,
+	to get a 48VDC array voltage. This was so I could run the
+	wires from the array to my existing power shed 140 feet away,
+	and not use insanely big wires. Big wires are expensive, hard
+	to work with, and tough to run through conduit.
+      </para>
+
+      <para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/pvcombiner.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+	All the wires from the array go to a PV Combiner box, which
+	has fuses and switches in a more convienient place than on the
+	roof. From the combiner box, the #10 awg wires are all
+	connected using junction blocks, and then it goes to two pairs
+	of #2 awg wires that run through conduit to the power shed.
+      </para>
+
+    </sect2>
+
+    <sect2 id="howwiring">
+      <title>The Wiring</title>
+
+      <para>
+	The advantages of 12VDC are that many parts are inexpensive,
+	and commonly available. Automotive fuses, cigarette lighter
+	sockets, lights, can all be adapted. The main disadvantage is
+	the voltage drop on long wire runs makes you either keep
+	everything near the batteries, or run larger (and more
+	expensive) wires.
+      </para>
+
+      <para>
+	The advantages of 24VDC are that the higher voltage is better
+	for heavy loads like refridgerators, water pumps, and light
+	bulbs all start faster and run better on 24VDC. You can also
+	use commonly available Romex (10 or 12 awg) for most of the
+	wiring, and there is less problems due to voltage drop. The
+	main disadvantage is that it's much harder to find 24VDC ballasts
+	for lights and other components.
+      </para>
+
+      <para>
+	You really want to pay attention to correctly sizing the
+	wires, because burning your house down would be a bad
+	thing. Typically for the inverter to battery run, you keep the
+	distance short, like 5 - 10 feet at the most. For this run
+	the wires must be able to handle to full power your inverter
+	puts out. So if you have a 4000 watt inverter, your wires need
+	to handle that. There is special cable made by Trace and
+	others for this (#0 awg, at $5/foot) which being
+	multi-stranded, is easier to work with. Other folks use
+	welding wire even though it isn't specified by the NEC code
+	because it has the same performance at high voltage, and it's
+	much cheaper.
+      </para>
+
+      <para>
+	The battery interconnects also need to be rather large, since
+	they also have to handle large voltages. Most battery
+	companies will supply with a set of interconnects if you buy
+	more than 6 batteries. Otherwise you can buy them from a
+	number of soalr energy suppliers, or make your own. Most do it
+	yourself types are made using copper tubing, hammered flat on
+	one end with a hole drilled in it, and the other end swagged,
+	crimped, soldered, or welded to the end.
+      </para>
+
+      <para>
+	The panels themselves can usually be wired with standard 10
+	awg or 12 awg wire between them. The connections into the
+	junction box needs to be water proof, and caulking just
+	doesn't quite cut it... I've seen more than a few systems have
+	problems when water got in and fried something. I prefer using
+	3 conductor tray cable, which is properly rated for outside
+	use, and being round, watertight connectors are easier to
+	find.
+      </para>
+
+      <para>
+	A charge controller is needed between the PV array, and the
+	batteries. This will need to be 12, 24, or 48 volts, depending
+	on your system. Some charge controllers will take 48VDC, and
+	output 12VDC or 24VDC, which is great if you have a long wire
+	run between your array and the batteries.
+      </para>
+
+
+    </sect2>
+
+    <sect2 id="howpower">
+      <title>The Power Distribution Center</title>
+
+      <para>
+	The distribution center is where all the wires come together,
+	and then go out again to the rest of the house. The first
+	component is the main shutoff switch, which is typically 250
+	amps. This is between the batteries and everything else, and
+	shuts down *everything*.
+      </para>
+
+      <para>
+	From there, the 24VDC goes to the house, and to the
+	inverter. It is also possible to add an equalizer to get 12VDC
+	from a 24VDC system. Ideally theer are also cutoffs using 60
+	amp breakers for the 12 and 24VDC sub systems. It is perfectly
+	fine to have a series of disconnects using 15 amp breakers to
+	give you fine tuning of what can be shut off for maintainance
+	purposes. I personally have a main disconnect on every sub
+	system, and then the 120VAC, 12VDC, and 24VDC subsystems all
+	go to breaker boxes where they get further sub divided for
+	lights, pumps, fridge, fans, etc...
+      </para>
+
+      <para>
+	While you can build up your own power center from parts, it's
+	a bit more work, and potentially more expensive than buying a
+	pre-manufactured power center. Both Outback and Trace build
+	power centers, all prewired for their inverters, charge
+	controllers, and other components. My own system, which was
+	built by canabalizing the old system, and splicing in new
+	components, is probably more work than most folsk want to deal
+	with.
+      </para>
+
+    </sect2>
+
+    <sect2 id="howbatteries">
+      <title>The Battery Bank</title>
+
+      <para>
+	Most batteries for off-grid houses are 6VDC, or 2VDC. A few
+	are 12VDC, but this isn't very common. Most of the old
+	telephone company, or old missle silo batteries with a 50 year
+	life span, are 2VDC.
+      </para>
+
+      <para>
+	There are several types of batteries, but what it all comes
+	down to is how many years life can you expect. Longer lasting
+	batteries cost more, but may last 15 - 20 years. Cheaper
+	batteries cost less, but then you have to replace them every
+	5-7 years.
+      </para>
+
+      <para>
+	There is also the issue of size. To get the same amount of
+	power, you can have many little batteries, or a few big
+	ones. While the many small ones may be cheaper initially, the
+	wiring can be a nightmare. Usually batter banks with over 16
+	batteries should be wired with solid bars, rather than
+	wire. So using fewer big batteries, you can reduce the wiring
+	hassle to some thing more manageable.
+      </para>
+
+    </sect2>
+
+  </sect1>
+
+  <!-- ============= My System ============================== -->
+  <sect1 id="mysystem"> 
+    <title>My Hybrid System</title>
+
+    <para>
+      For an example, I'll document my own power system, which
+      I've spent the last few years upgrading to a more state of the
+      art system. My double geodesic domes were originally built in
+      1980, and for that time, it was a pretty standard design. How
+      times change... 
+    </para>
+
+    <sect2 id="photovoltaics">
+      <title>Photovoltaics</title>
+
+      <para>
+	For a long time we've limped by on the 20 year old
+	photovoltaic panels that were there when I bought my
+	house. These panels comprised of 8 Arco 16-2000 panels (rated
+	at 35 watts), and 2 Solec Panels (rated at 90 watts) for a
+	grand total of 460 (if running at full efficiency) watts. This
+	isn't much when compared with other fully off-grid houses. We've
+	managed by being heavily propane dependant. I recently
+	installed 16 Evergreen EC-110 panels to reduce my propane
+	dependancy, and switch to more DC devices.
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/newpv.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+      </para>
+
+      <para>
+	Upgrading the photovoltaic array turned out to be more of a
+	carpentry and ditch digging project than an electrical one. I
+	was working on a 45 degree roof, too steep to stand on, and
+	impossible to get a ladder on. So I was forced to hanging in a
+	climbing harness off of a few climbing bolts I put in. Once I
+	got a few of the footers installed through the wood shake roof,
+	I could then use those for foot rests, tie off points, or
+	directional anchors. It did make things a bit slow though,
+	plus working on flashing and reshingling parts of a wood roof
+	are a major pain in the neck.
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/barerack.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+      </para>
+
+      <para>
+	When it comes to working on a wood shake roof, you need to buy
+	round standoffs to use instead of the feet that come with the
+	rack. These ate the size of plumbing vent pipes, so you can
+	use standard vent pipe flashing to keep your roof from
+	leaking. I also sealed all the bolt holes with caulk, and
+	tarred the flashing into place.
+      </para>
+
+      <para>
+	The slowest part was probably digging the 130 foot trench deep
+	enough. Here in the Colorado Rockies, ditch digging should be
+	an olympic sport. Rather than go through the house, entailing
+	lots of conduit work, and digging some how under my deck
+	without destroying it, I went around the house from the garage
+	(where the new panels are now) to the power shed. About a quarter
+	of the trench was through previous excavated dirt around the
+	septic tank, so digging through that wasn't hard at all. But
+	the other half involved drilling rocks, and lots of sledge
+	hammering. Good exercise, but really slow.
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/abelditch.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+      </para>
+
+    </sect2> 
+
+    <sect2 id="windgenerators">
+      <title>Wind Generators</title>
+
+      <para>
+	When I bought this place, it came with an ancient Paris
+	Dunn 5kw wind generator that was broken, and a small
+	WhisperLight 430 that soon after I bought this house. I
+	recently installed a recording wind meter on my tower, and the
+	data has been good. At least during this dark time of the
+	fall, we get less than 3 hours of sunlight, but the wind has
+	been blowing about 30mph steadily for weeks! So this summer I
+	plan to install a new Bergey XL-1 1000 Watt wind generator.
+      </para>
+
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="images/tower.png" format="png"/>
+	</imageobject>
+      </mediaobject>
+      
+    </sect2> 
+
+    <sect2 id="control">
+      <title>Power Center</title>
+
+      <para>
+	My old power system was a joke of homebuilt and ancient
+	electronics. For one thing, it only had a single disconnect
+	for everything, including all the DC and AC circuits. After we
+	suffered through a major crash because of the lack of
+	electrical isolation, I decided to redesign it all. The
+	spontaneously fried Heart inverter was replaced with a Trace
+	4024 Inverter, and I added all the disconnects required by the
+	NEC code, as well as a few more for ease of maintainance.
+      </para>
+
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="images/rewire01.png" format="png"/>
+	</imageobject>
+      </mediaobject>
+      
+      <para>
+	The rewiring project of the power center started well, but
+	at this altitude, the weather can change quick. It went from a 
+	reasonably warm spring day, to a windy cold one. It took about
+	3 days, but I replaced everything, brought it up to code, and
+	left room for future expansion as well. It was a bit of a
+	canabalizing project mixed with redesigning, reusing
+	components, and adding more disconnects and a new charge
+	controller.
+      </para>
+
+    </sect2> 
+
+    <sect2 id="Batteries">
+      <title>Batteries</title>
+
+      <para>
+	When I bought this place, it came with 12 Trojan L16
+	batteries that were about 7 years old. (a little past
+	warrenty). These died a year or so later due to age. I
+	replaced them with a 8 Surette 6CS-25PS batteries (roughly 3
+	times the storage capacity) I have heard stories the original
+	owners used dozens of car batteries for power.
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/batt01.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+      </para>
+
+      <para>
+	I've got neighbors with amazingly small systems. My closest
+	neighbor (over the hill) runs on 16 golf cart batteries.
+	Another neighbor ran on 4. It's doable if you don't mind
+	running a backup generator alot, but I prefer sufficient
+	backup storage.
+      </para> 
+
+    </sect2> 
+
+    <sect2 id="backup">
+      <title>Backup Generator</title>
+
+      <para>
+	I have a Honda 5000 watt generator that puts out both 120VAC,
+	as well as 240VAC. This is mostly used to run the 240VAC deep
+	well pump. I soon plan to replace that pump with a DC
+	one. This generator has been modified to run on propane, which
+	is much nicer in cold or bad weather than dealing with fuel
+	cans. It does suck quite a bit of propane however.
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/abelgen.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+      </para>
+
+      <para>
+	One day, while I was filling the cistern, the generator caught
+	on fire. If I hadn't been around and had a working fire
+	extinqusher handy, it might have been a disaster. This is one
+	good reason to never have an automatic startup switch for your
+	generator. This day it was particularly stressful, as I was
+	filling the cistern because there was a large forest fire 2-3
+	miles away.
+      </para> 
+
+    </sect2> 
+
+  </sect1>
+
+  <!-- ============= NEC Compliance ============================== -->
+  <sect1 id="neccomply"> 
+    <title>The NEC and You</title>
+
+    <para>
+      The National Electrical Code was developed by, and is still
+      maintained by the National Fire Protection Association
+      (NFPA). A number of years ago the code was updated for
+      photovoltaic and wind power systems based on research done at
+      <ulink type="http" url="http://www.re.sandia.gov">Sandia
+      National Labs</ulink> in New Mexico.
+    </para>
+
+    <para>
+      A good start on understanding the NEC code is 
+      <ulink type="http"
+	     url="http://www.senecass.com/NEC2000.pdf">this
+      document</ulink> called "Photovoltaic Power Systems and the
+      National Code". It was written by John Wiles, one of the main
+      researchers at Sandia, and is an expanded version of the
+      section of the code that deals with photovoltaic systems. The
+      basic idea of the NEC code is to avoid fires, and other
+      associated problems caused by insufficient wiring.
+    </para>
+
+    <para>
+      The NEC code document itself costs about $65, and is available
+      from the <ulink type="http" url="http://www.nfpa.org">National
+      Fire Protection Association</ulink>. Although the actual code
+      as published needs to the one you should use for all design
+      decisions, <ulink type="http"
+      url="http://www.senecass.com/NEC-code-draft.pdf">here is a
+      copy of a rough draft</ulink> of the code that can give you an
+      idea what the NEC actually looks like. Warning, this is a big
+      document.
+    </para>
+
+  </sect1>
+
+  <!-- ============= Resources ============================== -->
+  <sect1 id="resources"> 
+    <title>Other Resources</title>
+    
+    <sect2 id="Literature">
+      <title>Literature</title>
+      <para>
+	<ulink type="http" url="http://www.homepower.com">Home Power
+	Magazine</ulink>, of course. My favorite source of
+	inspiration.
+      </para>
+
+    </sect2>
+
+    <sect2 id="supplies">
+      <title>Sources of Supplies</title>
+      <para>
+	<ulink type="http" url="http://www.realgoods.com">Real
+	Goods</ulink> is the largest, and one of the oldest renewable
+	suppliers around. A few years ago they merged with my local
+	supplier, Jade Mountain.
+      </para>
+      
+      <para>
+	<ulink type="http" url="http://www.outbackpower.com/">Outback
+	Power Systems</ulink> makes inverters and other power system
+	components. I use their MX60 60 Amp charge controller because
+	it takes 48 VDC input, and puts out 24VDC.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.traceengineering.com">Trace
+	Engineering</ulink> has been the standard in inverters for
+	many years.
+      </para>
+
+      <para>
+	<ulink type="http" url="http://www.rvpowerproducts.com">RV
+	Products</ulink> makes charge controllers.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.bergey.com/">Bergey</ulink> makes the best and
+	most reliable wind generators.
+      </para>
+
+      <para>
+	<ulink type="http" url="http://www.worldpowertech.com">World
+	Power Technologies</ulink> makes the Whisperlight series of
+	wind generators.
+      </para>
+
+      <para>
+	<ulink type="http" url="http://www.vanner.com">Vanner Inc.</ulink>
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.honda-generators.com">Honda Generators</ulink>
+	Other than cars, Honda is know for it's generators.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.telemobile.com">Telemobile</ulink> makes
+	dedicated wireless phone systems that are good enough to
+	support a dial up modem connection.I have a Ptel system
+	installed.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.rollsbattery.com">Rolls/Surette
+	Batteries</ulink> Rolls Battery makes large household sized
+	batteries with a ling lifespan and easy maintainance.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.trojan-battery.com">Trojan Battery</ulink>
+	makes batteries that have long been the standard for off-grid
+	houses.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.dankoffsolar.com/">Dankoff </ulink> imports
+	several different types of water pumps for all sizes and
+	budgets.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.evergreensolar.com/">Evergreen Solar</ulink>
+	makes photovoltaic panels in a very different way which is
+	more environmentally friendly than most manufacturers.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.unirac.com/">Uni-Rac</ulink> makes really nice
+	racks for mounting solar panels too. I've also built my owm
+	racks out of wood or metal, but the Uni-Rac's made this
+	project much easier and were worth the money.
+      </para>
+
+      <para>
+	<ulink type="http"
+	       url="http://www.sunfrost.com/">SunFrost</ulink> makes very
+	energy efficient DC freezers and refridgeraters.
+      </para>
+
+
+    </sect2>
+
+    <sect2 id="other">
+      <title>Web Sites</title>
+
+      <para>
+	
+      </para>
+
+    </sect2>
+    
+  </sect1>
+
+
+  <!-- ============= Authors ================================ -->
+
+  <sect1 id="authors">
+    <title>Authors</title>
+    <para>
+      <application>GNUae</application> was written by Rob Savoye
+      (<email>rob@senecass.com</email>).  Please send all comments,
+      suggestions, and bug reports to <email>rob@senecass.com</email>
+    </para>
+
+  </sect1>
+
+
+  <!-- ============= Application License ============================= -->
+  
+  <sect1 id="license">
+    <title>License</title>
+    <para>
+      This program is free software; you can redistribute it and/or
+      modify it under the terms of the <citetitle>GNU General Public
+      License</citetitle> as published by the Free Software Foundation;
+      either version 2 of the License, or (at your option) any later
+      version.
+    </para>
+    <para>
+      This program is distributed in the hope that it will be useful, but
+      WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      <citetitle>GNU General Public License</citetitle> for more details.
+    </para>
+    <para>
+      A copy of the <citetitle>GNU General Public License</citetitle> is
+      included as an appendix to the <citetitle>GNOME Users
+      Guide</citetitle>.  You may also obtain a copy of the
+      <citetitle>GNU General Public License</citetitle> from the Free
+      Software Foundation by visiting <ulink type="http"
+      url="http://www.fsf.org">their Web site</ulink> or by writing to
+      <address>
+	Free Software Foundation, Inc.
+	<street>59 Temple Place</street> - Suite 330
+	<city>Boston</city>, <state>MA</state> <postcode>02111-1307</postcode>
+	<country>USA</country>
+      </address>
+    </para>
+  </sect1>
+</article>

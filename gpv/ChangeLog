@@ -1,3 +1,7 @@
+2004-09-19  Rob Savoye  <rob@direwolf.welcomehome.org>
+
+	* src/system.c: Don't include Gtk Extra headers.
+
 2004-09-18  Rob Savoye  <rob@direwolf.welcomehome.org>
 
 	* Makefile.am (install-html): Add target to all makefiles so it'll

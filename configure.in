@@ -80,5 +80,4 @@ dnl AC_CONFIG_SUBDIRS(example/calc)
 AC_OUTPUT(Makefile
 src/Makefile
 src/testsuite/Makefile
-doc/Makefile
 )

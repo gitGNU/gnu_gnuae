@@ -8829,7 +8829,7 @@ fi
 
 
 
-                                        ac_config_files="$ac_config_files Makefile src/Makefile src/testsuite/Makefile doc/Makefile"
+                              ac_config_files="$ac_config_files Makefile src/Makefile src/testsuite/Makefile"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -9388,7 +9388,6 @@ do
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "src/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
   "src/testsuite/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/testsuite/Makefile" ;;
-  "doc/Makefile" ) CONFIG_FILES="$CONFIG_FILES doc/Makefile" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5

@@ -20,7 +20,7 @@
 
 AUTOMAKE_OPTIONS = # dejagnu
 
-SUBDIRS = libltdl src gpv doc
+SUBDIRS = libltdl src gpv 
 
 TLCSH = @TCLSH@
 FULLVERSION = $(VERSION).0

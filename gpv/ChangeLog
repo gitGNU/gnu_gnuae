@@ -1,4 +1,5 @@
 2004-09-18  Rob Savoye  <rob@direwolf.welcomehome.org>
 
+	* configure.in: Don't use /* */ with AH_TEMPLATE.
 	* Add template to keep autoheader happy.
 

@@ -6,7 +6,7 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* /* Enable libsm */ */
+/* Enable libsm */
 #undef HAVE_LIBSM
 
 /* Define to 1 if you have the <memory.h> header file. */
@@ -57,7 +57,7 @@
 /* Define to 1 if you have the ANSI C header files. */
 #undef STDC_HEADERS
 
-/* /* Enable libsm */ */
+/* Enable libsm */
 #undef USE_GTKPLOT
 
 /* Version number of package */

@@ -132,8 +132,9 @@
 	non-NEC compliant wiring led to the inverter blowing out a
 	short time after I bought the house due to poor electrical
 	isolation. (the generator shorted out, and took the inverter
-	with it) Then we had no AC power till I replaced the
-	inverter...(and then later redesigned and rebuilt everything)
+	with it) Then we had no AC power till I replaced the inverter...
+	(and then later redesigned and rebuilt everything, which is
+	what spawned GnuAE)
       </para>
       
       <para>
@@ -1047,6 +1048,38 @@
 	batteries should be wired with solid bars, rather than
 	wire. So using fewer big batteries, you can reduce the wiring
 	hassle to some thing more manageable.
+      </para>
+
+    </sect2>
+
+    <sect2 id="wiringdias">
+      <title>An Example Wiring Diagram</title>
+      
+      <para>
+	This is a wiring diagram based on my own system. The original
+	DIA files, and an updated version of this is available on the
+	<ulink type="http" url="http://www.gnu.org/software/gnuae">GnuAE web site.</ulink>
+	In this example, 4, 12VDC panels are wired in series to get a
+	48VDC string of panels. Each string of 4 panels went on a
+	separate rack. All the wires from the panels go to a PV
+	combiner box, which is fused, and that used junction blocks to
+	wire them all into 2 pairs of #2AWG wires that run through
+	conduit to the power shed. From there, the power goes to the
+	charge controllers.
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/pv-wiring.png" format="png"/>
+	  </imageobject>
+	</mediaobject>
+      </para>
+
+      <para>
+	From the batteries, the power goes to the inverter, or fed
+	directly to the house as 24VDC and 12VDC. The generator is
+	also wired so it can use the inverter or the GenMaster to
+	charge the batteries. You'll notice the array of photovoltaic
+	panels are grounded seperately from the power distribution
+	center.
       </para>
 
     </sect2>

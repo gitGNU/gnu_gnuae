@@ -50,7 +50,7 @@ GAE_AC_PATH_TCLSH
 GAE_AC_PATH_DEJAGNU
 
 # Find Abelmon's libraries.
-GAE_AC_PATH_ABELMON
+dnl GAE_AC_PATH_ABELMON
 
 AC_CHECK_LIB(abel, main)
 

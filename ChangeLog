@@ -1,3 +1,9 @@
+2005-02-23  Rob Savoye  <rob@bertha.welcomehome.org>
+
+	* src/NEC.cc: Change the data in table9, it was wrong.
+	* src/nec_table.h:  Rearrange the field of nec_table9 to match the
+	table.
+
 2004-09-29  Rob Savoye  <rob@direwolf.welcomehome.org>
 
 	* src/Nec.cc: Use INT_MAX, rather than MAXINT, so it builds on

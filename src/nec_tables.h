@@ -94,16 +94,16 @@ struct nec_table8
 struct conduit_type 
 {
   float pvc;
-  float steel;
   float aluminum;
+  float steel;
 };
 
 struct nec_table9
 {
   int awg;
   struct conduit_type Xl;
-  struct conduit_type uncoated;
-  struct conduit_type resistance;
+  struct conduit_type copper;
+  struct conduit_type aluminum;
   struct conduit_type copperZ;
   struct conduit_type aluminumZ;
 };

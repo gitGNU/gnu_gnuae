@@ -65,6 +65,7 @@ extern "C" {
       { 600, 61,     -1, 0.893, 0.0214, 0.0223 },
       {   0,  0,      0,     0,      0,      0 }
     };
+
   
   /*
     NEC Table 310.11. This is the derating for the number of

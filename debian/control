@@ -1,0 +1,11 @@
+Source: gnuae
+Section: devel
+Priority: optional
+Maintainer: Rob Savoye <senecass.com>
+Standards-Version: 2.5.0.0
+
+Package: gnuae
+Architecture: all
+Depends: expect, dpkg (>=1.2.1)
+Description: is a program for designing alternate energy power systems for off-grid houses.
+

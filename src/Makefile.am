@@ -20,16 +20,17 @@
 
 AUTOMAKE_OPTIONS = # dejagnu
 
-TLCSH = @TCLSH@
-FULLVERSION = $(VERSION).0
+# TLCSH = @TCLSH@
+FULLVERSION = $(VERSION).3
 
 SUBDIRS = # testsuite
 
-INCLUDES = -I$(srcdir)/../../abelmon/libabel
+INCLUDES = #-I$(srcdir)/../../abelmon/libabel
 
-DL_LIB = @DL_LIB@
-LIBLTDL = @LIBLTDL@
-INCLTDL = @INCLTDL@
+# We don't need libdl cause we're not loading any shared modules directly
+DL_LIB = # @DL_LIB@
+LIBLTDL = # @LIBLTDL@
+INCLTDL = # @INCLTDL@
 # ABELLIB = ../../abelmon/libabel
 ABELLIB =
 

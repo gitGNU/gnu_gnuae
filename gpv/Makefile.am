@@ -35,3 +35,27 @@ dist-hook:
 
 
 force:
+
+# Build an RPM package
+#rpm: dist $(srcdir)/redhat/gnuae.spec
+#	cp -f $(srcdir)/redhat/gnuae.spec /usr/src/redhat/SPECS/
+#	cp -f gnuae-${VERSION}.tar.gz /usr/src/redhat/SOURCES/
+#	rpm -ba /usr/src/redhat/SPECS/gnuae.spec
+
+# Build a Debian GNU/Linux package
+#deb: dist
+#	rm -rf gnuae-${VERSION}
+#	tar xfz gnuae-${VERSION}.tar.gz
+#	cp -fr $(srcdir)/debian/deb gnuae-${VERSION}/
+#	(cd gnuae-${VERSION}; dpkg-buildpackage)
+
+# Most proprietary Unices use /opt for optional packages.
+PKGDIR = /opt
+
+#$(PKGDIR)/gnuae:
+#	rm -rf gnuae-${VERSION}
+#	mkdir gnuae-${VERSION}
+#	cd gnuae-${VERSION}
+#	$(srcdir)/configure -v --prefix $@
+#	make install
+

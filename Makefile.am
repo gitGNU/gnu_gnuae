@@ -20,40 +20,39 @@
 
 AUTOMAKE_OPTIONS = # dejagnu
 
-SUBDIRS = libltdl src gpv 
+SUBDIRS = src gpv # libltdl 
 
-TLCSH = @TCLSH@
-FULLVERSION = $(VERSION).0
+FULLVERSION = 0.3.0
+VERSION = 0.3
 
-# Set ourselves up to build a RedHat package
-dist2: rpmspec overview.html
+# Set ourselves up to build a RedHat package. The "dist" target used by
+# Automake isn't sufficient tp dop more than build a tarball
+tarball: 
 	-rm -fr gnuae-${FULLVERSION}
 	cp -fpr $(srcdir) gnuae-${FULLVERSION}
 	@echo "clean up stuff we don't want in the source file"
-	(cd gnuae-${FULLVERSION} ; $(srcdir)/Clean.tcl)
-	-mkdir -p doc/overview
-	-cp -fr doc/overview gnuae-${FULLVERSION}/doc/
+	-mkdir -p gpv/doc/C/html
+	-cp -fr gpv/doc/C/html gnuae-${FULLVERSION}/doc/
 	tar cvf ../gnuae-${FULLVERSION}.tar gnuae-${FULLVERSION}
-	gzip -9fv ../gnuae-${VERSION}.tar
+	bzip2 -9kfv ../gnuae-${FULLVERSION}.tar
+	gzip -9fv ../gnuae-${FULLVERSION}.tar
 	cp -f ../gnuae-${FULLVERSION}.tar.gz /usr/src/redhat/SOURCES/
-	cp -f $(srcdir)/redhat/gnuae.spec /usr/src/redhat/SPECS/
 
 rpmspec:
 	cp -f $(srcdir)/redhat/gnuae.spec /usr/src/redhat/SPECS/
 
-rpm: dist rpmspec
-	cp -f $(distdir).tar.gz /usr/src/redhat/SOURCES/
-	rpm -ba /usr/src/redhat/SPECS/gnuae.spec
+rpm: tarball rpmspec
+	cp -f ../gnuae-${FULLVERSION}.tar.gz /usr/src/redhat/SOURCES/
+	cp -f ../gnuae-${FULLVERSION}.tar.bz2 /usr/src/redhat/SOURCES/
+	rpmbuild -ba $(srcdir)/redhat/gnuae.spec
 
-overview.html install-doc doc html dvi ps pdf rtf:
-	cd doc && $(MAKE) $(FLAGS_TO_PASS) $@
+# Build a Debian GNU/Linux package
+deb: tarball
+	rm -rf gnuae-${FULLVERSION}
+	tar zxfz ../gnuae-${FULLVERSION}.tar.gz
+	cp -fr $(srcdir)/debian gnuae-${FULLVERSION}/
+	(cd gnuae-${FULLVERSION}; dpkg-buildpackage -d)
 
-# Automake sucks when it comes to building a distribution, so
-# we just copy the source tree onto of what Automake did, and
-# then we Sanitize it. Automake only includes the source files.
-# We want all the testsuites, data files, and html versions of the doc.
-dist-hook: rpmspec overview.html
-	-rm -fr $(distdir)
-	cp -fpr $(srcdir) $(distdir)
-	(cd $(distdir) ; $(TCLSH) $(srcdir)/Clean.tcl)
-	-cp -fr doc/overview $(distdir)/doc/
+
+install-doc doc html dvi ps pdf rtf:
+	cd gpv/doc && $(MAKE) $(FLAGS_TO_PASS) $@

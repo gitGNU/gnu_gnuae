@@ -164,6 +164,22 @@ EXTRA_DIST = \
 	autogen.sh \
 	gpv.glade
 
+
+# Build an RPM package
+#rpm: dist $(srcdir)/redhat/gnuae.spec
+#	cp -f $(srcdir)/redhat/gnuae.spec /usr/src/redhat/SPECS/
+#	cp -f gnuae-${VERSION}.tar.gz /usr/src/redhat/SOURCES/
+#	rpm -ba /usr/src/redhat/SPECS/gnuae.spec
+
+# Build a Debian GNU/Linux package
+#deb: dist
+#	rm -rf gnuae-${VERSION}
+#	tar xfz gnuae-${VERSION}.tar.gz
+#	cp -fr $(srcdir)/debian/deb gnuae-${VERSION}/
+#	(cd gnuae-${VERSION}; dpkg-buildpackage)
+
+# Most proprietary Unices use /opt for optional packages.
+PKGDIR = /opt
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -600,6 +616,13 @@ dist-hook:
 	fi
 
 force:
+
+#$(PKGDIR)/gnuae:
+#	rm -rf gnuae-${VERSION}
+#	mkdir gnuae-${VERSION}
+#	cd gnuae-${VERSION}
+#	$(srcdir)/configure -v --prefix $@
+#	make install
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

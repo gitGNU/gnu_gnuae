@@ -2,7 +2,12 @@
 
 	* Makefile.am (install-html): Add target to all makefiles so it'll
 	work recursively. This properly installs the generated html files
-	so the old Gnome 1.x help system will work.
+	so the old Gnome 1.x help system will work. Add targets for making
+	tarballs and rpms, since the automake support for this isn't
+	sufficient.
+	* redhat/gnuae.spec: New config file for making rpm packages.
+	* debian/{changelog,conffiles,control,copyright,postinst,preinst,rules}:
+	New config files for making Debian packages.
 	* configure.in: Don't use /* */ with AH_TEMPLATE.
 	* Add template to keep autoheader happy.
 

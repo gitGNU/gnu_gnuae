@@ -1,0 +1,7 @@
+#! /bin/sh
+
+set -i
+
+#install-info --quiet --section "Development" "Development" \
+#/usr/doc/dejagnu.info.gz
+

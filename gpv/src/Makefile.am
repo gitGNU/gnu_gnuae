@@ -2,15 +2,14 @@
 
 INCLTDL = -I${top_srcdir}/../libltdl
 INSTALL_STRIP_PROGRAM = ${SHELL} $(install_sh) -c -s
-LIBLTDL = ../../libltdl/libltdlc.la
-ABELLIB = ../../../abelmon/libabel
+LIBLTDL = #../../libltdl/libltdlc.la
+ABELLIB = #../../../abelmon/libabel
 
-INCLUDES = -I$(top_srcdir)/../../abelmon/libabel \
-	-I$(top_srcdir)/../src \
-	-I$(srcdir)/../gstripchart/src \
-	$(GNOME_INCLUDEDIR) \
-	$(LIBGUPPI_CFLAGS) \
-	$(GTK_EXTRA_CFLAGS)
+INCLUDES = -I$(top_srcdir)/../src \
+	   -I$(srcdir)/../gstripchart/src \
+	      $(GNOME_INCLUDEDIR) \
+	      $(LIBGUPPI_CFLAGS) \
+	      $(GTK_EXTRA_CFLAGS)
 
 bin_PROGRAMS = gpv # ngpv
 if GTKPLOT

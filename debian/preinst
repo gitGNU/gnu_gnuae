@@ -1,0 +1,8 @@
+#!/bin/sh -e
+#
+# Debian package preinst
+
+case "$1" in
+  install|upgrade)
+		   ;;
+esac

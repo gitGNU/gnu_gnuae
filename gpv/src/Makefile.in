@@ -159,15 +159,14 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 
 INCLTDL = -I${top_srcdir}/../libltdl
-LIBLTDL = ../../libltdl/libltdlc.la
-ABELLIB = ../../../abelmon/libabel
+LIBLTDL = #../../libltdl/libltdlc.la
+ABELLIB = #../../../abelmon/libabel
 
-INCLUDES = -I$(top_srcdir)/../../abelmon/libabel \
-	-I$(top_srcdir)/../src \
-	-I$(srcdir)/../gstripchart/src \
-	$(GNOME_INCLUDEDIR) \
-	$(LIBGUPPI_CFLAGS) \
-	$(GTK_EXTRA_CFLAGS)
+INCLUDES = -I$(top_srcdir)/../src \
+	   -I$(srcdir)/../gstripchart/src \
+	      $(GNOME_INCLUDEDIR) \
+	      $(LIBGUPPI_CFLAGS) \
+	      $(GTK_EXTRA_CFLAGS)
 
 
 bin_PROGRAMS = gpv # ngpv
@@ -214,8 +213,7 @@ PROGRAMS = $(bin_PROGRAMS) $(noinst_PROGRAMS)
 am_gpv_OBJECTS = main.$(OBJEXT) support.$(OBJEXT) interface.$(OBJEXT) \
 	callbacks.$(OBJEXT) system.$(OBJEXT)
 gpv_OBJECTS = $(am_gpv_OBJECTS)
-am__DEPENDENCIES_2 = ../../libltdl/libltdlc.la
-am__DEPENDENCIES_3 = $(am__DEPENDENCIES_2) "-dlopen" self
+am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1) "-dlopen" self
 gpv_LDFLAGS =
 am_testgtkplot3d_OBJECTS = testgtkplot3d.$(OBJEXT)
 testgtkplot3d_OBJECTS = $(am_testgtkplot3d_OBJECTS)

@@ -7,7 +7,7 @@ AC_CONFIG_SUBDIRS(gpv)
 dnl AC_CONFIG_SUBDIRS(gpv libltdl)
 
 dnl These are required by automake
-AM_INIT_AUTOMAKE(gnuae, 0.1)
+AM_INIT_AUTOMAKE(gnuae, 0.3)
 AM_MAINTAINER_MODE
 AC_PROG_MAKE_SET
 AC_EXEEXT
@@ -33,7 +33,7 @@ AC_SUBST(INCLTDL)
 AC_SUBST(LIBLTDL)
 AC_SUBST(LIBTOOL_DEPS)
                                                                                 
-
+AC_CHECK_HEADERS(values.h)
 
 dnl See which dynamic library reader we can use
 AC_CHECK_HEADERS(dlfcn.h dl.h)
@@ -46,14 +46,14 @@ AC_SUBST(DL_LIB)
 
 dnl Find the Tcl Shell, cause the "Clean.tcl program needs it when
 dnl we build a release
-GAE_AC_PATH_TCLSH
+dnl GAE_AC_PATH_TCLSH
 
 GAE_AC_PATH_DEJAGNU
 
 # Find Abelmon's libraries.
 dnl GAE_AC_PATH_ABELMON
 
-AC_CHECK_LIB(abel, main)
+dnl AC_CHECK_LIB(abel, main)
 
 dnl AC_ARG_ENABLE(trace, [  --enable-trace          Enable support for debug tracing],
 dnl [case "${enableval}" in

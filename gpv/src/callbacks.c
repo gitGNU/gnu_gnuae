@@ -1,12 +1,32 @@
-#ifdef HAVE_CONFIG_H
-#  include <config.h>
-#endif
+//
+//   Copyright (C) 2004 Free Software Foundation, Inc.
+//
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation; either version 2 of the License, or
+//   (at your option) any later version.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with this program; if not, write to the Free Software
+//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
+#include "config.h"
 
+#ifdef HAVE_VALUES_H
+#include <values.h>
+#endif
+#include <limits.h>
 #include <math.h>
 #include <gnome.h>
 #include <gtk/gtk.h>
 #include <gdk/gdk.h>
 #include <gtk/gtkstatusbar.h>
+
 #ifdef USE_GTKPLOT
 #include <gtkextra/gtkplot.h>
 #include <gtkextra/gtkplot3d.h>
@@ -1070,7 +1090,7 @@ on_table_310_15b2_activate             (GtkMenuItem     *menuitem,
     items[0] = buf;
     
     buf = g_malloc(7);
-    if ( _table_310_15B2[i].highconductors == MAXINT)
+    if ( _table_310_15B2[i].highconductors == INT_MAX)
       sprintf(buf, "41 or above");
     else
       sprintf(buf, "%d", _table_310_15B2[i].highconductors);

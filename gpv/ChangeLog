@@ -1,3 +1,7 @@
+2004-09-29  Rob Savoye  <rob@direwolf.welcomehome.org>
+
+	* src/*.cc, *.h: Update copyright message in all files.
+
 2004-09-19  Rob Savoye  <rob@direwolf.welcomehome.org>
 
 	* src/system.c: Don't include Gtk Extra headers.

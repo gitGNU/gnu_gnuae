@@ -1,0 +1,9 @@
+2004-09-29  Rob Savoye  <rob@direwolf.welcomehome.org>
+
+	* src/Nec.cc: Use INT_MAX, rather than MAXINT, so it builds on
+	MacOSX.
+
+	* src/{Battery.cc, DataType.cc, NECcalc.cc, Pumps.cc, Centers.cc,
+	Inverters.cc, NEC.cc, PVPanel.cc, Chargers.cc, Loads.cc,
+	nec_tables.cc, SandiaCalc.cc, Combiners.cc, Main.cc,
+	PhantasmCalc.cc,Wire.cc: Initial checkin.

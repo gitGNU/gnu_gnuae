@@ -18,6 +18,9 @@ AC_PROG_LIBTOOL
 dnl Define template for autoheader
 AH_TEMPLATE([HAVE_LIBSM], [Enable libsm])
 AH_TEMPLATE([USE_GTKPLOT], [Enable libsm])
+AH_TEMPLATE([HAVE_ORBIT], [Enable orbit])
+
+AC_CHECK_HEADERS(values.h)
 
 GNOME_COMPILE_WARNINGS
 GNOME_X_CHECKS
@@ -30,6 +33,10 @@ AC_ARG_ENABLE(gtkplot, [  --enable-gtkplot          Enable support for GtkPlot],
   *)   AC_MSG_ERROR([bad value ${enableval} for enable-gtkplot option]) ;;
 esac])
 
+AM_CONDITIONAL(ORBIT, test x$orbit = xyes)
+if test x"$gtkplot" = x"yes" ; then
+  AC_DEFINE(HAVE_ORBIT)
+fi
 AM_CONDITIONAL(GTKPLOT, test x$gtkplot = xyes)
 if test x"$gtkplot" = x"yes" ; then
   AC_DEFINE(USE_GTKPLOT)

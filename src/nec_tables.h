@@ -1,5 +1,5 @@
 /* 
- *   Copyright (C) 2003 Free Software Foundation, Inc.
+ *   Copyright (C) 2004 Free Software Foundation, Inc.
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -19,7 +19,11 @@
 #ifndef __NEC_TABLES_H__
 #define __NEC_TABLES_H__
 
+#include "config.h"
+
+#ifdef HAVE_VALUES_H
 #include <values.h>
+#endif
 
 const float FEEDERDROP   = 5.0;     // The allowable percentage for feeder lines
 const float BRANCHDROP   = 3.0;     // The allowable percentage for branch lines

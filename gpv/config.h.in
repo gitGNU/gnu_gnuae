@@ -12,6 +12,9 @@
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
+/* Enable orbit */
+#undef HAVE_ORBIT
+
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
 
@@ -32,6 +35,9 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the <values.h> header file. */
+#undef HAVE_VALUES_H
 
 /* Define to 1 if you have the <X11/SM/SMlib.h> header file. */
 #undef HAVE_X11_SM_SMLIB_H

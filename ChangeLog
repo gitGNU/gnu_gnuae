@@ -1,3 +1,35 @@
+2005-11-06  Rob Savoye  <rob@bertha.welcomehome.org>
+
+	* ext: New directory for PHP extension.
+	* ext/acinclude.m4: Created by phpize.
+	* ext/config.h.in: Created by phpize.
+	* ext/configure: Created by phpize.
+	* ext/libtool: Created by phpize.
+	* ext/aclocal.m4: Created by phpize.
+	* ext/configure.in: Created by phpize.
+	* ext/ltmain.sh: Created by phpize.
+	* ext/config.m4: Created by phpize.
+	* ext/Makefile.global: Created by phpize.
+	* ext/missing: Created by phpize.
+	* ext/config.guess: Created by phpize.
+	* ext/mkinstalldirs: Created by phpize.
+	* ext/config.h: Created by phpize.
+	* ext/config.sub: Created by phpize.
+	* ext/install-sh: Created by phpize.
+	* ext/build: New directory for building php extensions created
+	by phpize.
+	* ext/build/libtool.m4: New file created by phpize.
+	* ext/build/mkdep.awk: New file created by phpize.
+	* ext/build/scan_makefile_in.awk: New file created by phpize.
+	* ext/build/shtool: New file created by phpize.
+	* ext/php_wrapper.h: Header file for extension API.
+	* ext/wrapper.c: Wrappers for libgnuaec.
+	* configure.in: Add ext directory.
+	* configure: Regenerated.
+	* Makefile.am: Add ext directory to SUBDIRS.
+	* Makefile.in: Regenerated.
+
+
 2005-02-23  Rob Savoye  <rob@bertha.welcomehome.org>
 
 	* src/NEC.cc: Change the data in table9, it was wrong.

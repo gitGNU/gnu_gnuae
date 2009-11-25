@@ -3,7 +3,7 @@ AC_PREREQ(2.50)
 AC_INIT(src/PVPanel.cc)
 AM_CONFIG_HEADER(config.h)
 
-AC_CONFIG_SUBDIRS(gpv)
+AC_CONFIG_SUBDIRS(ext gpv)
 dnl AC_CONFIG_SUBDIRS(gpv libltdl)
 
 dnl These are required by automake
@@ -90,6 +90,9 @@ dnl esac])
 dnl AM_CONDITIONAL(CYGWIN, test x$CYGWIN = xyes)
 
 dnl AC_CONFIG_SUBDIRS(example/calc)
+
+dnl AC_CONFIG_LINKS(ext/NEC.cc:src/NEC.cc)
+dnl AC_CONFIG_LINKS(ext/NEC.cpp:src/NEC.cc)
 
 AC_OUTPUT(Makefile
 src/Makefile

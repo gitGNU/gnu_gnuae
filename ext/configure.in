@@ -1,6 +1,11 @@
 dnl This file becomes configure.in for self-contained extensions.
 
-AC_INIT(config.m4)
+AC_PREREQ(2.50)
+AC_INIT(config.m4, trunk)
+
+AM_INIT_AUTOMAKE
+AM_MAINTAINER_MODE
+AC_PROG_MAKE_SET
 
 PHP_INIT_BUILD_SYSTEM
 
@@ -60,7 +65,32 @@ sinclude(config.m4)
 enable_static=no
 enable_shared=yes
 
+AC_MSG_CHECKING([For the version of libtool])
+if test -d ${srcdir}/libltdl/libltdl; then
+ltver=2.x
+else
+ltver=1.x
+fi
+ltmajor=`echo $ltver | cut -d '.' -f 1`
+AC_MSG_RESULT([$ltver])
+AM_CONDITIONAL(LIBLTDL2, [test $ltmajor -eq 2])
+AM_CONDITIONAL(LIBLTDL1, [test $ltmajor -eq 1])
+if test $ltmajor -eq 1; then
+	AC_LIBLTDL_CONVENIENCE
+	AC_LIBTOOL_DLOPEN
+	AC_LIBTOOL_WIN32_DLL
+	AC_DISABLE_STATIC
+else
+	LT_INIT([dlopen win32-dll disable-static])
+	dnl lt_ltdl_dir=libbase/libltdl
+	LTDL_INIT([convenience recursive])
+	AC_CONFIG_FILES([libltdl/Makefile])
+fi
 AC_PROG_LIBTOOL
+
+dnl Dont ever install libltdl
+AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" = xyes)
+AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
 
 all_targets='$(PHP_MODULES)'
 install_targets=install-modules

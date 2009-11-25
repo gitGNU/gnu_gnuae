@@ -15,16 +15,16 @@ ZEND_END_MODULE_GLOBALS(gnuae)
 #else
 #define GNUAE_G(v) (gnuae_globals.v)
 #endif
-
+     
 #define PHP_GNUAE_WORLD_VERSION "1.0"
 #define PHP_GNUAE_WORLD_EXTNAME "gnuae"
 
 
-/* PHP_MINIT_FUNCTION(gnuae); */
-/* PHP_MSHUTDOWN_FUNCTION(gnuae); */
-/* PHP_RINIT_FUNCTION(gnuae); */
+PHP_MINIT_FUNCTION(gnuae);
+PHP_MSHUTDOWN_FUNCTION(gnuae);
+PHP_RINIT_FUNCTION(gnuae);
 
-PHP_FUNCTION(gnuae_world);
+//PHP_FUNCTION(gnuae_world);
 
 PHP_FUNCTION(nec_volt_drop);
 PHP_FUNCTION(nec_volt_loss);

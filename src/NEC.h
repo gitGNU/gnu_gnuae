@@ -81,11 +81,11 @@ namespace gnuae
       float voltDrop(int awg, int distance, float volts, float amps, float temp,
                      int conductors, wiremetal_t type);
       
-      float voltLoss(int distance, int awg, float amps);
-      float voltLoss(int distance, int awg, float amps, int conductors);
-      float voltLoss(int distance, int awg, float amps, float temp, int conductors);
-      float voltLoss(int distance, int awg, float amps, float temp, int conductors,
-                     wiremetal_t type);
+      double voltLoss(int distance, int awg, double amps);
+      double voltLoss(int distance, int awg, double amps, int conductors);
+      double voltLoss(int distance, int awg, double amps, double temp, int conductors);
+      double voltLoss(int distance, int awg, double amps, double temp, int conductors,
+                      wiremetal_t type);
       int findGauge(int distance, float volts, float amps);
       int findGauge(int distance, float volts, float amps, int conductors);
       int findGauge(int distance, float volts, float amps, float temp, int conductors);
@@ -191,7 +191,7 @@ extern "C" {
   void nec_toggle_debug(int val);
   float nec_volt_drop(int awg, int distance, float volts, float amps,
                       float temp, int conductors);
-  float nec_volt_loss(int distance, int awg, float amps, float temp,
+  float nec_volt_loss(int distance, int awg, double amps, double temp,
                       int conductors);
   float nec_watts(float volts, float amps);
   float nec_amps(float watts, float volts);
@@ -199,7 +199,7 @@ extern "C" {
   float nec_resistance(int awg, float temp);
 
   float nec_wire_derate(int awg, float temp);
-  float nec_ampacity(int strings, float isc);
+  float nec_ampacity(float amps);
   float nec_crystal_comp(float temp);
 
   float nec_over_current(int strings, float isc);

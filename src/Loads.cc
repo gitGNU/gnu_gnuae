@@ -30,6 +30,8 @@
 #include <map>
 #include <vector>
 #include <string>
+#include <cstdlib>
+#include <cstring>
 #include <iterator>
 #include <cmath>
 #ifdef __STDC_HOSTED__

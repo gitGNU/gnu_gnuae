@@ -870,23 +870,23 @@ NEC::voltDrop(int awg, int distance, float volts, float amps, float temp,
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
 }
 
-float
-NEC::voltLoss(int distance, int awg, float amps)
+double
+NEC::voltLoss(int distance, int awg, double amps)
 {
   return voltLoss(distance, awg, amps, NOMINALTEMP, 1);
 }
 
-float
-NEC::voltLoss(int distance, int awg, float amps, int conductors)
+double
+NEC::voltLoss(int distance, int awg, double amps, int conductors)
 {
   return voltLoss(distance, awg, amps, NOMINALTEMP, conductors);
 }
 
-float
-NEC::voltLoss(int distance, int awg, float amps, float temp, int conductors)
+double
+NEC::voltLoss(int distance, int awg, double amps, double temp, int conductors)
 {
-  float res;
-  float volts;
+  double res;
+  double volts;
   
   if (_debug)
     cerr << "The voltage loss using Table 8 for distance is " << distance
@@ -906,8 +906,8 @@ NEC::voltLoss(int distance, int awg, float amps, float temp, int conductors)
   return volts;
 }
 
-float
-NEC::voltLoss(int distance, int awg, float amps, float temp, int conductors,
+double
+NEC::voltLoss(int distance, int awg, double amps, double temp, int conductors,
               wiremetal_t type)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
@@ -1405,7 +1405,7 @@ extern "C" {
     return _nec.voltDrop(awg, distance, volts, amps, temp, conductors);
   }
   
-  float nec_volt_loss(int distance, int awg, float amps, float temperature,
+  float nec_volt_loss(int distance, int awg, double amps, double temperature,
                       int conductors)
   {
     return _nec.voltLoss(distance, awg, amps, temperature, conductors);
@@ -1436,7 +1436,7 @@ extern "C" {
     //    return _nec.wireDerate(awg, temperature);
   }
   
-  float nec_over_urrent(int strings, float isc)
+  float nec_over_current(int strings, float isc)
   {
     return _nec.overCurrent(strings, isc);
   }
@@ -1497,6 +1497,11 @@ extern "C" {
                           wiretype_t type)
   {
     return _nec.wireAmpacity(awg, temp, conductors, conduit, type);
+  }
+
+  float nec_ampacity(float amps)
+  {
+    return _nec.ampacity(amps);
   }
 
   float nec_find_conduit(int awg, int conductors, wiretype_t wire, conduit_type_t conduit)

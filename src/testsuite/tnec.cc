@@ -2,11 +2,52 @@
 #include "config.h"
  
 #include <cstdio>
+#include <iostream>
 #include <cstddef>
 #include <cstring>
 
 #include "err.h"
- 
+#include "NEC.h"
+
+extern "C" {
+  void nec_toggle_debug(int val);
+  float nec_volt_drop(int awg, int distance, float volts, float amps,
+                      float temp, int conductors);
+  float nec_volt_loss(int distance, int awg, float amps, float temp,
+                      int conductors);
+  float nec_watts(float volts, float amps);
+  float nec_amps(float watts, float volts);
+  float nec_volts(float watts, float amps);
+  float nec_resistance(int awg, float temp);
+
+  float nec_wire_derate(int awg, float temp);
+  float nec_ampacity(float amps);
+  float nec_crystal_comp(float temp);
+
+  float nec_over_current(int strings, float isc);
+  int nec_find_gauge(int distance, float volts, float amps, float temp,
+                     int conductors);
+  float nec_find_conduit(int awg, int conductors, wiretype_t wire,
+                         conduit_type_t conduit);
+  int nec_find_ground();
+  
+  int nec_awg_pv2pv(int distance, float volts, float amps, float temp,
+                    int conductors);
+  int nec_awg_pv2combiner(int distance, float volts, float amps, float temp,
+                          int conductors);
+  int nec_awg_combiner2charger(int distance, float volts, float amps, float temp,
+                               int conductors);
+  int nec_awg_wind2charger(int distance, float volts, float amps, float temp,
+                           int conductors);
+  int nec_awg_charger2battery(int distance, float volts, float amps, float temp,
+                              int conductors);
+  
+  int nec_awg_battery2inverter(int distance, float volts, float amps, float temp,
+                               int conductors);  
+  float nec_wire_ampacity(int awg, int temp, int conductors, int conduit,
+                          wiretype_t type);
+}
+
 // Testing support
 #include "dejagnu.h"
  
@@ -42,13 +83,35 @@ main(int argc, char *argv[])
       break;
     }
   }
-                                                                                
-  // get the file name from the command line
-  if (optind < argc) {
-    //    procname = argv[optind];
-    //      cout << "Will use \"" << procname << "\" for demo " << endl;
-  }
-   }
+    
+    cout << "nec_watts: " <<  nec_watts(24.0, 5.6) << endl;
+    cout << "nec_amps: " <<  nec_amps(123, 12.0) << endl;
+    cout << "nec_volts: " <<  nec_volts(123, 5.6) << endl;
+    cout << "nec_wire_ampacity: " <<  nec_wire_ampacity(1, 2, 3, 4, THHN) << endl;
+    cout << "nec_crystal_comp: " <<  nec_crystal_comp(67.8) << endl;
+    cout << "nec_volt_drop: " <<  nec_volt_drop(2, 140, 48.1, 32.1, 67.8, 2) << endl;
+    //    cout << "nec_over_current: " <<  nec_over_current(3, 23.4) << endl;
+    
+    cout << "nec_volt_loss: " <<  nec_volt_loss(140, 2, 23.4, 56.7, 2) << endl;
+    cout << "nec_resistance: " <<  nec_resistance(2, 12.3) << endl;
+    cout << "nec_find_conduit: " <<  nec_find_conduit(2, 2, THHN, EMT ) << endl;
+    // cout << "nec_wire_derate: " <<  nec_wire_derate(2, 12.3) << endl;
+    cout << "nec_find_gauge: " <<  nec_find_gauge(140, 48.1, 22.3, 45.3, 2) << endl;
+ 
+    // cout << "nec_find_ground: " <<  nec_find_ground() << endl;
+    cout << "nec_awg_pv2pv: " <<  nec_awg_pv2pv(2, 48.3, 45.6, 18.9, 2) << endl;
+    cout << "nec_awg_pv2combiner: " <<  nec_awg_pv2combiner(20, 48.3, 45.6, 18.9, 2) << endl;
+    cout << "nec_awg_combiner2charger: " <<  nec_awg_combiner2charger(140, 48.3, 45.6, 18.9, 2) << endl;
+    cout << "nec_awg_wind2charger: " <<  nec_awg_wind2charger(140, 48.3, 45.6, 18.9, 2) << endl;
+    cout << "nec_awg_charger2battery: " <<  nec_awg_charger2battery(4, 48.3, 45.6, 18.9, 2) << endl;
+    cout << "nec_awg_battery2inverter: " <<  nec_awg_battery2inverter(7, 48.3, 45.6, 18.9, 2) << endl;
+    
+    // get the file name from the command line
+    if (optind < argc) {
+      //    procname = argv[optind];
+      //      cout << "Will use \"" << procname << "\" for demo " << endl;
+    }
+}
                                                                                 
 static void
 usage (void)

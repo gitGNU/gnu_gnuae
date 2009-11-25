@@ -270,6 +270,7 @@ struct nec_table5
 };
 
 
+extern "C" {
 extern struct nec_table8 _table8[];
 extern struct derate _derate[];
 extern struct nec_table_690_7 _table_690_7[];
@@ -279,6 +280,7 @@ extern struct nec_table_310_15B6 _table_310_15B6[];
 extern struct nec_table_310_16 _table_310_16[];
 extern struct nec_table_310_16 _table_310_17[];
 extern struct nec_table_690_31C _table_690_31C[];
+}
 
 #if 0
 extern struct nec_table4 _nec_table4_emt;

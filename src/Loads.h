@@ -42,11 +42,13 @@ typedef struct load
   int    active;
 } load_t;
 
-extern const char *load_strs[];
-extern const char *loadgroup_strs[];
 
 #ifdef __cplusplus
 
+extern "C" {
+extern const char *load_strs[];
+extern const char *loadgroup_strs[];
+}
 #include <map>
 #include <vector>
 #include <string>

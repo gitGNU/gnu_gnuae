@@ -20,6 +20,8 @@
 #include "config.h"
 
 #include <string>
+#include <cstdlib>
+#include <cstdio>
 #include <getopt.h>
 #include <iostream>
 

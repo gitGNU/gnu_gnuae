@@ -1,5 +1,5 @@
 # 
-#   Copyright (C) 2003 Free Software Foundation, Inc.
+#   Copyright (C) 2004 Free Software Foundation, Inc.
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 
 AUTOMAKE_OPTIONS = # dejagnu
 
-# TLCSH = @TCLSH@
 FULLVERSION = $(VERSION).3
 
 SUBDIRS = # testsuite

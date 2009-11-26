@@ -220,10 +220,10 @@ do
       # that haven't really changed. They clutter up the checkin messages.
       if test x"$1" = x ; then
         echo "Running automake --add-missing --copy $am_opt ..."
-        ${AUTOMAKE:-automake} --add-missing --copy $am_opt
+        ${AUTOMAKE:-automake} -Wno-portability --add-missing --copy $am_opt
       fi
       echo "Running autoconf ..."
-      ${AUTOCONF:-autoconf}
+      ${AUTOCONF:-autoconf} -Wno-portability
     )
   fi
 done

@@ -35,46 +35,16 @@ AC_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_INSTALL
 
-AC_MSG_CHECKING([For the version of libtool])
-if test -d ${srcdir}/libltdl/libltdl; then
-ltver=2.x
-else
-ltver=1.x
-fi
-ltmajor=`echo $ltver | cut -d '.' -f 1`
-AC_MSG_RESULT([$ltver])
-AM_CONDITIONAL(LIBLTDL2, [test $ltmajor -eq 2])
-AM_CONDITIONAL(LIBLTDL1, [test $ltmajor -eq 1])
-if test $ltmajor -eq 1; then
-	AC_LIBLTDL_CONVENIENCE
-	AC_LIBTOOL_DLOPEN
-	AC_LIBTOOL_WIN32_DLL
-	AC_DISABLE_STATIC
-else
-	LT_INIT([dlopen win32-dll disable-static])
-	dnl lt_ltdl_dir=libbase/libltdl
-	LTDL_INIT([convenience recursive])
-	AC_CONFIG_FILES([libltdl/Makefile])
-fi
+dnl LT_INIT([dlopen win32-dll disable-static])
+dnl LTDL_INIT([installable recursive])
+AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
 dnl Dont ever install libltdl
 AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" = xyes)
 AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
 
-AC_SUBST(INCLTDL)
-AC_SUBST(LIBLTDL)
-
-DLOPEN="-dlopen"
-DLPREOPEN="-dlpreopen"
-AC_SUBST(DLOPEN)
-AC_SUBST(DLPREOPEN)
-                                                                                
-dnl Substitute INCLTDL and LIBLTDL in the Makefiles
-AC_SUBST(INCLTDL)
-AC_SUBST(LIBLTDL)
-AC_SUBST(LIBTOOL_DEPS)
-                                                                                
+AC_SUBST(LIBTOOL_DEPS)                                                                                
 AC_CHECK_HEADERS(values.h)
 
 dnl See which dynamic library reader we can use

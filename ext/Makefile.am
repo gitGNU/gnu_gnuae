@@ -1,27 +1,51 @@
-mkinstalldirs = $(top_srcdir)/build/shtool mkdir -p
-INSTALL = $(top_srcdir)/build/shtool install -c
-INSTALL_DATA = $(INSTALL) -m 644
+## Process this file with automake to generate Makefile.in
+# 
+#   Copyright (C) 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+# 
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-# EXTRA_INCLUDES = -I$(top_srcdir)/../src
+AUTOMAKE_OPTIONS = 
 
-DEFS = -DPHP_ATOM_INC -I$(top_builddir)/include -I$(top_builddir)/main -I$(top_srcdir)
-COMMON_FLAGS = $(DEFS) $(INCLUDES) $(EXTRA_INCLUDES) $(CPPFLAGS) $(PHP_FRAMEWORKPATH)
+pluginsdir = $(libdir)/gnuae/plugins
 
+plugins_LTLIBRARIES = libphpgnuae.la
+
+AM_CPPFLAGS = -DPHP_ATOM_INC \
+	-I$(top_srcdir)/src \
+	-I$(srcdir) \
+	$(PHP_INCLUDES)
 
 all: $(all_targets) 
 	@echo
 	@echo "Build complete."
 	@echo "(It is safe to ignore warnings about tempnam and tmpnam)."
 	@echo
-	
-build-modules: $(PHP_MODULES)
 
-libphp4.la: $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS)
-	$(LIBTOOL) --mode=link $(CC) -rpath $(phptempdir) $(EXTRA_LDFLAGS) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $@
-	-@$(LIBTOOL) --silent --mode=install cp libphp4.la $(phptempdir)/libphp4.la >/dev/null 2>&1
+libphpgnuae_la_SOURCES = wrapper.c
+libphpgnuae_la_LDFLAGS = -export-dynamic -avoid-version -module # -rpath $(phplibdir)
+libphpgnuae_la_LIBDADD = ../src/NEC.lo
 
-libs/libphp4.bundle: $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS)
-	$(CC) $(MH_BUNDLE_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(PHP_GLOBAL_OBJS:.lo=.o) $(PHP_SAPI_OBJS:.lo=.o) $(PHP_FRAMEWORKS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $@ && cp $@ libs/libphp4.so
+#libphp5_la_SOURCES = wrapper.c
+#libphp5_la_LDFLAGS = $(EXTRA_LDFLAGS) $(LDFLAGS) #-rpath $(phptempdir)
+#libphp5_la_LIBDADD = $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS)
+
+#libphp4.la: $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS)
+#	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -rpath $(phptempdir) $(EXTRA_LDFLAGS) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $@
+#	-@$(LIBTOOL) --silent --mode=install cp libphp4.la $(phptempdir)/libphp4.la >/dev/null 2>&1
+
+#libs/libphp4.bundle: $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS)
+#	$(CC) $(MH_BUNDLE_FLAGS) $(CFLAGS_CLEAN) $(EXTRA_CFLAGS) $(LDFLAGS) $(EXTRA_LDFLAGS) $(PHP_GLOBAL_OBJS:.lo=.o) $(PHP_SAPI_OBJS:.lo=.o) $(PHP_FRAMEWORKS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $@ && cp $@ libs/libphp4.so
 
 install: $(all_targets) $(install_targets)
 
@@ -75,6 +99,7 @@ distclean: clean
 	rm -f config.cache config.log config.status Makefile.objects Makefile.fragments libtool main/php_config.h stamp-h php4.spec sapi/apache/libphp4.module buildmk.stamp
 	egrep define'.*include/php' configure|sed 's/.*>//'|xargs rm -f
 	find . -name Makefile | xargs rm -f
+
 
 .PHONY: all clean install distclean test
 .NOEXPORT:

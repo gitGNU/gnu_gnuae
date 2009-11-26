@@ -26,15 +26,21 @@ AM_CPPFLAGS = -DPHP_ATOM_INC \
 	-I$(srcdir) \
 	$(PHP_INCLUDES)
 
-all: $(all_targets) 
-	@echo
-	@echo "Build complete."
-	@echo "(It is safe to ignore warnings about tempnam and tmpnam)."
-	@echo
-
 libphpgnuae_la_SOURCES = wrapper.c
 libphpgnuae_la_LDFLAGS = -export-dynamic -avoid-version -module # -rpath $(phplibdir)
-libphpgnuae_la_LIBDADD = ../src/NEC.lo
+libphpgnuae_la_LIBADD = \
+	../src/Battery.lo \
+	../src/Centers.lo \
+	../src/Chargers.lo \
+	../src/Combiners.lo \
+	../src/Inverters.lo \
+	../src/Loads.lo \
+	../src/NEC.lo \
+	../src/PVPanel.lo \
+	../src/PhantasmCalc.lo \
+	../src/Pumps.lo \
+	../src/SandiaCalc.lo \
+	../src/Wire.lo
 
 #libphp5_la_SOURCES = wrapper.c
 #libphp5_la_LDFLAGS = $(EXTRA_LDFLAGS) $(LDFLAGS) #-rpath $(phptempdir)

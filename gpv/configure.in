@@ -7,7 +7,7 @@ AM_CONFIG_HEADER(config.h)
 dnl Pick up the Gnome macros.
 dnl AM_ACLOCAL_INCLUDE(macros)
 
-GNOME_INIT
+dnl GNOME_INIT
 AC_ISC_POSIX
 AC_PROG_CC
 AC_PROG_CXX
@@ -40,7 +40,7 @@ fi
 AM_CONDITIONAL(GTKPLOT, test x$gtkplot = xyes)
 if test x"$gtkplot" = x"yes" ; then
   AC_DEFINE(USE_GTKPLOT)
-  AM_PATH_GTK_EXTRA
+dnl  AM_PATH_GTK_EXTRA
 fi
 
 AC_OUTPUT([

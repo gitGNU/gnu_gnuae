@@ -745,7 +745,12 @@ GTKPLOT_FALSE
 GTKPLOT_TRUE
 ORBIT_FALSE
 ORBIT_TRUE
-WARN_CFLAGS
+PTHREAD_LIB
+XPM_LIBS
+GTK_LIBS
+GTK_CFLAGS
+GTK_CONFIG
+cflags_set
 CXXCPP
 OTOOL64
 OTOOL
@@ -870,6 +875,9 @@ with_gnu_ld
 enable_libtool_lock
 enable_compile_warnings
 enable_iso_c
+with_gtk_prefix
+with_gtk_exec_prefix
+enable_gtktest
 enable_gtkplot
 '
       ac_precious_vars='build_alias
@@ -1509,9 +1517,9 @@ Optional Features:
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
-  --enable-compile-warnings=[no/minimum/yes/maximum/error]
-                          Turn on compiler warnings
+  --enable-compile-warnings=no/minimum/yes	Turn on compiler warnings.
   --enable-iso-c          Try to warn if code is not ISO C
+  --disable-gtktest       Do not try to compile and run a test GTK program
   --enable-gtkplot          Enable support for GtkPlot
 
 Optional Packages:
@@ -1520,6 +1528,8 @@ Optional Packages:
   --with-pic              try to use only PIC/non-PIC objects [default=use
                           both]
   --with-gnu-ld           assume the C compiler uses GNU ld [default=no]
+  --with-gtk-prefix=PFX   Prefix where GTK is installed (optional)
+  --with-gtk-exec-prefix=PFX Exec prefix where GTK is installed (optional)
 
 Some influential environment variables:
   CC          C compiler command
@@ -2938,7 +2948,6 @@ ac_config_headers="$ac_config_headers config.h"
 
 
 
-GNOME_INIT
 DEPDIR="${am__leading_dot}deps"
 
 ac_config_commands="$ac_config_commands depfiles"
@@ -6603,13 +6612,13 @@ if test "${lt_cv_nm_interface+set}" = set; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:6606: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:6615: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6609: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:6618: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:6612: output\"" >&5)
+  (eval echo "\"\$as_me:6621: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -7814,7 +7823,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 7817 "configure"' > conftest.$ac_ext
+  echo '#line 7826 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -9617,11 +9626,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9620: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9629: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9624: \$? = $ac_status" >&5
+   echo "$as_me:9633: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9956,11 +9965,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9959: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9968: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9963: \$? = $ac_status" >&5
+   echo "$as_me:9972: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -10061,11 +10070,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10064: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10073: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10068: \$? = $ac_status" >&5
+   echo "$as_me:10077: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10116,11 +10125,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:10119: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:10128: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:10123: \$? = $ac_status" >&5
+   echo "$as_me:10132: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -12499,7 +12508,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12502 "configure"
+#line 12511 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -12595,7 +12604,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 12598 "configure"
+#line 12607 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -14551,11 +14560,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14554: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14563: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:14558: \$? = $ac_status" >&5
+   echo "$as_me:14567: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -14650,11 +14659,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14653: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14662: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14657: \$? = $ac_status" >&5
+   echo "$as_me:14666: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -14702,11 +14711,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:14705: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:14714: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:14709: \$? = $ac_status" >&5
+   echo "$as_me:14718: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15688,83 +15697,39 @@ done
 
 
 
-
-    # Check whether --enable-compile-warnings was given.
+  # Check whether --enable-compile-warnings was given.
 if test "${enable_compile_warnings+set}" = set; then :
   enableval=$enable_compile_warnings;
 else
-  enable_compile_warnings="yes"
+  enable_compile_warnings=minimum
 fi
 
 
-    warnCFLAGS=
-    if test "x$GCC" != xyes; then
-	enable_compile_warnings=no
-    fi
-
-    warning_flags=
-    realsave_CFLAGS="$CFLAGS"
-
-    case "$enable_compile_warnings" in
-    no)
-	warning_flags=
-	;;
-    minimum)
-	warning_flags="-Wall"
-	;;
-    yes)
-	warning_flags="-Wall -Wmissing-prototypes"
-	;;
-    maximum|error)
-	warning_flags="-Wall -Wmissing-prototypes -Wnested-externs -Wpointer-arith"
-	CFLAGS="$warning_flags $CFLAGS"
-	for option in -Wno-sign-compare; do
-		SAVE_CFLAGS="$CFLAGS"
-		CFLAGS="$CFLAGS $option"
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether gcc understands $option" >&5
-$as_echo_n "checking whether gcc understands $option... " >&6; }
-		cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  has_option=yes
-else
-  has_option=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-		CFLAGS="$SAVE_CFLAGS"
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $has_option" >&5
-$as_echo "$has_option" >&6; }
-		if test $has_option = yes; then
-		  warning_flags="$warning_flags $option"
-		fi
-		unset has_option
-		unset SAVE_CFLAGS
-	done
-	unset option
-	if test "$enable_compile_warnings" = "error" ; then
-	    warning_flags="$warning_flags -Werror"
-	fi
-	;;
-    *)
-	as_fn_error "Unknown argument '$enable_compile_warnings' to --enable-compile-warnings" "$LINENO" 5
-	;;
-    esac
-    CFLAGS="$realsave_CFLAGS"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking what warning flags to pass to the C compiler" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking what warning flags to pass to the C compiler" >&5
 $as_echo_n "checking what warning flags to pass to the C compiler... " >&6; }
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $warning_flags" >&5
-$as_echo "$warning_flags" >&6; }
+  warnCFLAGS=
+  if test "x$GCC" != xyes; then
+    enable_compile_warnings=no
+  fi
 
-    # Check whether --enable-iso-c was given.
+  if test "x$enable_compile_warnings" != "xno"; then
+    if test "x$GCC" = "xyes"; then
+      case " $CFLAGS " in
+      *\ \	-Wall\ \	*) ;;
+      *) warnCFLAGS="-Wall -Wunused" ;;
+      esac
+
+      ## -W is not all that useful.  And it cannot be controlled
+      ## with individual -Wno-xxx flags, unlike -Wall
+      if test "x$enable_compile_warnings" = "xyes"; then
+	warnCFLAGS="$warnCFLAGS -Wmissing-prototypes -Wmissing-declarations"
+      fi
+    fi
+  fi
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $warnCFLAGS" >&5
+$as_echo "$warnCFLAGS" >&6; }
+
+  # Check whether --enable-iso-c was given.
 if test "${enable_iso_c+set}" = set; then :
   enableval=$enable_iso_c;
 else
@@ -15772,28 +15737,615 @@ else
 fi
 
 
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking what language compliance flags to pass to the C compiler" >&5
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking what language compliance flags to pass to the C compiler" >&5
 $as_echo_n "checking what language compliance flags to pass to the C compiler... " >&6; }
-    complCFLAGS=
-    if test "x$enable_iso_c" != "xno"; then
-	if test "x$GCC" = "xyes"; then
-	case " $CFLAGS " in
-	    *\ \	-ansi\ \	*) ;;
-	    *) complCFLAGS="$complCFLAGS -ansi" ;;
-	esac
-	case " $CFLAGS " in
-	    *\ \	-pedantic\ \	*) ;;
-	    *) complCFLAGS="$complCFLAGS -pedantic" ;;
-	esac
-	fi
+  complCFLAGS=
+  if test "x$enable_iso_c" != "xno"; then
+    if test "x$GCC" = "xyes"; then
+      case " $CFLAGS " in
+      *\ \	-ansi\ \	*) ;;
+      *) complCFLAGS="$complCFLAGS -ansi" ;;
+      esac
+
+      case " $CFLAGS " in
+      *\ \	-pedantic\ \	*) ;;
+      *) complCFLAGS="$complCFLAGS -pedantic" ;;
+      esac
     fi
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: $complCFLAGS" >&5
+  fi
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $complCFLAGS" >&5
 $as_echo "$complCFLAGS" >&6; }
+  if test "x$cflags_set" != "xyes"; then
+    CFLAGS="$CFLAGS $warnCFLAGS $complCFLAGS"
+    cflags_set=yes
 
-    WARN_CFLAGS="$warning_flags $complCFLAGS"
+  fi
 
 
-GNOME_X_CHECKS
+	PTHREAD_LIB=""
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_create in -lpthread" >&5
+$as_echo_n "checking for pthread_create in -lpthread... " >&6; }
+if test "${ac_cv_lib_pthread_pthread_create+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpthread  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pthread_create ();
+int
+main ()
+{
+return pthread_create ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_pthread_pthread_create=yes
+else
+  ac_cv_lib_pthread_pthread_create=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthread_pthread_create" >&5
+$as_echo "$ac_cv_lib_pthread_pthread_create" >&6; }
+if test "x$ac_cv_lib_pthread_pthread_create" = x""yes; then :
+  PTHREAD_LIB="-lpthread"
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_create in -lpthreads" >&5
+$as_echo_n "checking for pthread_create in -lpthreads... " >&6; }
+if test "${ac_cv_lib_pthreads_pthread_create+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpthreads  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pthread_create ();
+int
+main ()
+{
+return pthread_create ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_pthreads_pthread_create=yes
+else
+  ac_cv_lib_pthreads_pthread_create=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthreads_pthread_create" >&5
+$as_echo "$ac_cv_lib_pthreads_pthread_create" >&6; }
+if test "x$ac_cv_lib_pthreads_pthread_create" = x""yes; then :
+  PTHREAD_LIB="-lpthreads"
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_create in -lc_r" >&5
+$as_echo_n "checking for pthread_create in -lc_r... " >&6; }
+if test "${ac_cv_lib_c_r_pthread_create+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lc_r  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char pthread_create ();
+int
+main ()
+{
+return pthread_create ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_c_r_pthread_create=yes
+else
+  ac_cv_lib_c_r_pthread_create=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_c_r_pthread_create" >&5
+$as_echo "$ac_cv_lib_c_r_pthread_create" >&6; }
+if test "x$ac_cv_lib_c_r_pthread_create" = x""yes; then :
+  PTHREAD_LIB="-lc_r"
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for __pthread_attr_init_system in -lpthread" >&5
+$as_echo_n "checking for __pthread_attr_init_system in -lpthread... " >&6; }
+if test "${ac_cv_lib_pthread___pthread_attr_init_system+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lpthread  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char __pthread_attr_init_system ();
+int
+main ()
+{
+return __pthread_attr_init_system ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_pthread___pthread_attr_init_system=yes
+else
+  ac_cv_lib_pthread___pthread_attr_init_system=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_pthread___pthread_attr_init_system" >&5
+$as_echo "$ac_cv_lib_pthread___pthread_attr_init_system" >&6; }
+if test "x$ac_cv_lib_pthread___pthread_attr_init_system" = x""yes; then :
+  PTHREAD_LIB="-lpthread"
+else
+  ac_fn_c_check_func "$LINENO" "pthread_create" "ac_cv_func_pthread_create"
+if test "x$ac_cv_func_pthread_create" = x""yes; then :
+
+fi
+
+
+fi
+
+
+fi
+
+
+fi
+
+
+fi
+
+
+
+
+
+
+# Check whether --with-gtk-prefix was given.
+if test "${with_gtk_prefix+set}" = set; then :
+  withval=$with_gtk_prefix; gtk_config_prefix="$withval"
+else
+  gtk_config_prefix=""
+fi
+
+
+# Check whether --with-gtk-exec-prefix was given.
+if test "${with_gtk_exec_prefix+set}" = set; then :
+  withval=$with_gtk_exec_prefix; gtk_config_exec_prefix="$withval"
+else
+  gtk_config_exec_prefix=""
+fi
+
+# Check whether --enable-gtktest was given.
+if test "${enable_gtktest+set}" = set; then :
+  enableval=$enable_gtktest;
+else
+  enable_gtktest=yes
+fi
+
+
+  for module in .
+  do
+      case "$module" in
+         gthread)
+             gtk_config_args="$gtk_config_args gthread"
+         ;;
+      esac
+  done
+
+  if test x$gtk_config_exec_prefix != x ; then
+     gtk_config_args="$gtk_config_args --exec-prefix=$gtk_config_exec_prefix"
+     if test x${GTK_CONFIG+set} != xset ; then
+        GTK_CONFIG=$gtk_config_exec_prefix/bin/gtk-config
+     fi
+  fi
+  if test x$gtk_config_prefix != x ; then
+     gtk_config_args="$gtk_config_args --prefix=$gtk_config_prefix"
+     if test x${GTK_CONFIG+set} != xset ; then
+        GTK_CONFIG=$gtk_config_prefix/bin/gtk-config
+     fi
+  fi
+
+  # Extract the first word of "gtk-config", so it can be a program name with args.
+set dummy gtk-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_GTK_CONFIG+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $GTK_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_GTK_CONFIG="$GTK_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_GTK_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_path_GTK_CONFIG" && ac_cv_path_GTK_CONFIG="no"
+  ;;
+esac
+fi
+GTK_CONFIG=$ac_cv_path_GTK_CONFIG
+if test -n "$GTK_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GTK_CONFIG" >&5
+$as_echo "$GTK_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  min_gtk_version=1.2.0
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GTK - version >= $min_gtk_version" >&5
+$as_echo_n "checking for GTK - version >= $min_gtk_version... " >&6; }
+  no_gtk=""
+  if test "$GTK_CONFIG" = "no" ; then
+    no_gtk=yes
+  else
+    GTK_CFLAGS=`$GTK_CONFIG $gtk_config_args --cflags`
+    GTK_LIBS=`$GTK_CONFIG $gtk_config_args --libs`
+    gtk_config_major_version=`$GTK_CONFIG $gtk_config_args --version | \
+           sed 's/\([0-9]*\).\([0-9]*\).\([0-9]*\)/\1/'`
+    gtk_config_minor_version=`$GTK_CONFIG $gtk_config_args --version | \
+           sed 's/\([0-9]*\).\([0-9]*\).\([0-9]*\)/\2/'`
+    gtk_config_micro_version=`$GTK_CONFIG $gtk_config_args --version | \
+           sed 's/\([0-9]*\).\([0-9]*\).\([0-9]*\)/\3/'`
+    if test "x$enable_gtktest" = "xyes" ; then
+      ac_save_CFLAGS="$CFLAGS"
+      ac_save_LIBS="$LIBS"
+      CFLAGS="$CFLAGS $GTK_CFLAGS"
+      LIBS="$GTK_LIBS $LIBS"
+      rm -f conf.gtktest
+      if test "$cross_compiling" = yes; then :
+  echo $ac_n "cross compiling; assumed OK... $ac_c"
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+int
+main ()
+{
+  int major, minor, micro;
+  char *tmp_version;
+
+  system ("touch conf.gtktest");
+
+  /* HP/UX 9 (%@#!) writes to sscanf strings */
+  tmp_version = g_strdup("$min_gtk_version");
+  if (sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) != 3) {
+     printf("%s, bad version string\n", "$min_gtk_version");
+     exit(1);
+   }
+
+  if ((gtk_major_version != $gtk_config_major_version) ||
+      (gtk_minor_version != $gtk_config_minor_version) ||
+      (gtk_micro_version != $gtk_config_micro_version))
+    {
+      printf("\n*** 'gtk-config --version' returned %d.%d.%d, but GTK+ (%d.%d.%d)\n",
+             $gtk_config_major_version, $gtk_config_minor_version, $gtk_config_micro_version,
+             gtk_major_version, gtk_minor_version, gtk_micro_version);
+      printf ("*** was found! If gtk-config was correct, then it is best\n");
+      printf ("*** to remove the old version of GTK+. You may also be able to fix the error\n");
+      printf("*** by modifying your LD_LIBRARY_PATH enviroment variable, or by editing\n");
+      printf("*** /etc/ld.so.conf. Make sure you have run ldconfig if that is\n");
+      printf("*** required on your system.\n");
+      printf("*** If gtk-config was wrong, set the environment variable GTK_CONFIG\n");
+      printf("*** to point to the correct copy of gtk-config, and remove the file config.cache\n");
+      printf("*** before re-running configure\n");
+    }
+#if defined (GTK_MAJOR_VERSION) && defined (GTK_MINOR_VERSION) && defined (GTK_MICRO_VERSION)
+  else if ((gtk_major_version != GTK_MAJOR_VERSION) ||
+	   (gtk_minor_version != GTK_MINOR_VERSION) ||
+           (gtk_micro_version != GTK_MICRO_VERSION))
+    {
+      printf("*** GTK+ header files (version %d.%d.%d) do not match\n",
+	     GTK_MAJOR_VERSION, GTK_MINOR_VERSION, GTK_MICRO_VERSION);
+      printf("*** library (version %d.%d.%d)\n",
+	     gtk_major_version, gtk_minor_version, gtk_micro_version);
+    }
+#endif /* defined (GTK_MAJOR_VERSION) ... */
+  else
+    {
+      if ((gtk_major_version > major) ||
+        ((gtk_major_version == major) && (gtk_minor_version > minor)) ||
+        ((gtk_major_version == major) && (gtk_minor_version == minor) && (gtk_micro_version >= micro)))
+      {
+        return 0;
+       }
+     else
+      {
+        printf("\n*** An old version of GTK+ (%d.%d.%d) was found.\n",
+               gtk_major_version, gtk_minor_version, gtk_micro_version);
+        printf("*** You need a version of GTK+ newer than %d.%d.%d. The latest version of\n",
+	       major, minor, micro);
+        printf("*** GTK+ is always available from ftp://ftp.gtk.org.\n");
+        printf("***\n");
+        printf("*** If you have already installed a sufficiently new version, this error\n");
+        printf("*** probably means that the wrong copy of the gtk-config shell script is\n");
+        printf("*** being found. The easiest way to fix this is to remove the old version\n");
+        printf("*** of GTK+, but you can also set the GTK_CONFIG environment to point to the\n");
+        printf("*** correct copy of gtk-config. (In this case, you will have to\n");
+        printf("*** modify your LD_LIBRARY_PATH enviroment variable, or edit /etc/ld.so.conf\n");
+        printf("*** so that the correct libraries are found at run-time))\n");
+      }
+    }
+  return 1;
+}
+
+_ACEOF
+if ac_fn_c_try_run "$LINENO"; then :
+
+else
+  no_gtk=yes
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+
+       CFLAGS="$ac_save_CFLAGS"
+       LIBS="$ac_save_LIBS"
+     fi
+  fi
+  if test "x$no_gtk" = x ; then
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+     :
+  else
+     { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+     if test "$GTK_CONFIG" = "no" ; then
+       echo "*** The gtk-config script installed by GTK could not be found"
+       echo "*** If GTK was installed in PREFIX, make sure PREFIX/bin is in"
+       echo "*** your path, or set the GTK_CONFIG environment variable to the"
+       echo "*** full path to gtk-config."
+     else
+       if test -f conf.gtktest ; then
+        :
+       else
+          echo "*** Could not run GTK test program, checking why..."
+          CFLAGS="$CFLAGS $GTK_CFLAGS"
+          LIBS="$LIBS $GTK_LIBS"
+          cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#include <gtk/gtk.h>
+#include <stdio.h>
+
+int
+main ()
+{
+ return ((gtk_major_version) || (gtk_minor_version) || (gtk_micro_version));
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+   echo "*** The test program compiled, but did not run. This usually means"
+          echo "*** that the run-time linker is not finding GTK or finding the wrong"
+          echo "*** version of GTK. If it is not finding GTK, you'll need to set your"
+          echo "*** LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf to point"
+          echo "*** to the installed location  Also, make sure you have run ldconfig if that"
+          echo "*** is required on your system"
+	  echo "***"
+          echo "*** If you have an old version installed, it is best to remove it, although"
+          echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH"
+          echo "***"
+          echo "*** If you have a RedHat 5.0 system, you should remove the GTK package that"
+          echo "*** came with the system with the command"
+          echo "***"
+          echo "***    rpm --erase --nodeps gtk gtk-devel"
+else
+   echo "*** The test program failed to compile or link. See the file config.log for the"
+          echo "*** exact error that occured. This usually means GTK was incorrectly installed"
+          echo "*** or that you have moved GTK since it was installed. In the latter case, you"
+          echo "*** may want to edit the gtk-config script: $GTK_CONFIG"
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+          CFLAGS="$ac_save_CFLAGS"
+          LIBS="$ac_save_LIBS"
+       fi
+     fi
+     GTK_CFLAGS=""
+     GTK_LIBS=""
+     { as_fn_set_status or gtk-config not in path
+as_fn_error "GTK not installed" "$LINENO" 5; }
+  fi
+
+
+  rm -f conf.gtktest
+
+					        CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
+
+        saved_ldflags="$LDFLAGS"
+        LDFLAGS="$LDFLAGS $GTK_LIBS"
+
+	gnome_cv_passdown_x_libs="$GTK_LIBS"
+	gnome_cv_passdown_X_LIBS="$GTK_LIBS"
+	gnome_cv_passdown_X_CFLAGS="$GTK_CFLAGS"
+	gnome_cv_passdown_GTK_LIBS="$GTK_LIBS"
+
+        LDFLAGS="$saved_ldflags $GTK_LIBS"
+
+	USE_DEVGTK=true
+
+
+	GNOME_HAVE_SM=true
+	case "$GTK_LIBS" in
+	 *-lSM*)
+	    	    ;;
+	 *)
+	    	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for SmcSaveYourselfDone in -lSM" >&5
+$as_echo_n "checking for SmcSaveYourselfDone in -lSM... " >&6; }
+if test "${ac_cv_lib_SM_SmcSaveYourselfDone+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lSM $x_libs -lICE $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char SmcSaveYourselfDone ();
+int
+main ()
+{
+return SmcSaveYourselfDone ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_SM_SmcSaveYourselfDone=yes
+else
+  ac_cv_lib_SM_SmcSaveYourselfDone=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_SM_SmcSaveYourselfDone" >&5
+$as_echo "$ac_cv_lib_SM_SmcSaveYourselfDone" >&6; }
+if test "x$ac_cv_lib_SM_SmcSaveYourselfDone" = x""yes; then :
+  GTK_LIBS="-lSM -lICE $GTK_LIBS"
+else
+  GNOME_HAVE_SM=false
+fi
+
+	    ;;
+	esac
+
+	if test "$GNOME_HAVE_SM" = true; then
+	   for ac_header in X11/SM/SMlib.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "X11/SM/SMlib.h" "ac_cv_header_X11_SM_SMlib_h" "$ac_includes_default"
+if test "x$ac_cv_header_X11_SM_SMlib_h" = x""yes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_X11_SM_SMLIB_H 1
+_ACEOF
+
+else
+  GNOME_HAVE_SM=false
+fi
+
+done
+
+	fi
+
+	if test "$GNOME_HAVE_SM" = true; then
+	   $as_echo "#define HAVE_LIBSM 1" >>confdefs.h
+
+	fi
+
+	XPM_LIBS=""
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for XpmFreeXpmImage in -lXpm" >&5
+$as_echo_n "checking for XpmFreeXpmImage in -lXpm... " >&6; }
+if test "${ac_cv_lib_Xpm_XpmFreeXpmImage+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lXpm $x_libs $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char XpmFreeXpmImage ();
+int
+main ()
+{
+return XpmFreeXpmImage ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"; then :
+  ac_cv_lib_Xpm_XpmFreeXpmImage=yes
+else
+  ac_cv_lib_Xpm_XpmFreeXpmImage=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_Xpm_XpmFreeXpmImage" >&5
+$as_echo "$ac_cv_lib_Xpm_XpmFreeXpmImage" >&6; }
+if test "x$ac_cv_lib_Xpm_XpmFreeXpmImage" = x""yes; then :
+  XPM_LIBS="-lXpm"
+fi
+
+
+
+
+        LDFLAGS="$saved_ldflags"
+
+
+
 
 # Check whether --enable-gtkplot was given.
 if test "${enable_gtkplot+set}" = set; then :
@@ -15828,7 +16380,6 @@ fi
 if test x"$gtkplot" = x"yes" ; then
   $as_echo "#define USE_GTKPLOT 1" >>confdefs.h
 
-  AM_PATH_GTK_EXTRA
 fi
 
 ac_config_files="$ac_config_files Makefile src/Makefile doc/Makefile doc/C/Makefile"

@@ -44,7 +44,7 @@ libphpgnuae_la_LIBADD = \
 
 #libphp5_la_SOURCES = wrapper.c
 #libphp5_la_LDFLAGS = $(EXTRA_LDFLAGS) $(LDFLAGS) #-rpath $(phptempdir)
-#libphp5_la_LIBDADD = $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS)
+#libphp5_la_LIBADD = $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS)
 
 #libphp4.la: $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS)
 #	$(LIBTOOL) --mode=link $(CC) $(CFLAGS) $(EXTRA_CFLAGS) -rpath $(phptempdir) $(EXTRA_LDFLAGS) $(LDFLAGS) $(PHP_RPATHS) $(PHP_GLOBAL_OBJS) $(PHP_SAPI_OBJS) $(EXTRA_LIBS) $(ZEND_EXTRA_LIBS) -o $@

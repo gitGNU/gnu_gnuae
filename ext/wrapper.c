@@ -76,7 +76,7 @@ PHP_RINIT_FUNCTION(gnuae)
   pvpanel_t *pvp;
 
   //pvnames = read_module_data_csv("");
-//  php_printf("Hey Now! from gnuae_rinit function<p>");
+  //  php_printf("Hey Now! from gnuae_rinit function<p>");
 
   return SUCCESS;
 }
@@ -133,6 +133,7 @@ PHP_FUNCTION(nec_amps)
     WRONG_PARAM_COUNT;
   }
   
+  php_printf("nec_amps called!");
   RETURN_DOUBLE(nec_amps(watts, volts));
 }
 

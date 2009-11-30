@@ -29,19 +29,19 @@ function totals () {
 
 
 // NEC Voltage Drop
-$foo = nec_volt_drop(8, 150, 12, 5, 75, 3);
-if (bccomp($foo, '2.70650362968') == 0) {
-  pass("nec_volt_drop(8, 150, 12, 5, 75, 3) == $foo");
+$foo = nec_volt_drop(2, 140, 48.1, 32.1, 67.8, 2);
+if (bccomp($foo, '1.4899') == 0) {
+  pass("nec_volt_drop(2, 140, 48.1, 32.1, 67.8, 2) == $foo");
  } else {
-  fail("nec_volt_drop(8, 150, 12, 5, 75, 3) == $foo");
+  fail("nec_volt_drop(2, 140, 48.1, 32.1, 67.8, 2) == $foo");
  }
 
 // NEC Voltage Loss
-$foo = nec_volt_loss(150, 8, 5, 75, 3);
-if (bccomp($foo, '2.70650362968') == 0) {
-  pass("nec_volt_loss(8, 150, 12, 5, 75, 3) == $foo");
+$foo = nec_volt_loss(140, 2, 23.4, 56.7, 2);
+if (bccomp($foo, '') == 0) {
+  pass("nec_volt_loss(140, 2, 23.4, 56.7, 2) == $foo");
  } else {
-  fail("nec_volt_lossp(8, 150, 12, 5, 75, 3) == $foo");
+  fail("nec_volt_loss(140, 2, 23.4, 56.7, 2) == $foo");
  }
 
 // NEC Watts
@@ -74,6 +74,105 @@ if (bccomp($foo, '0.576964795589') == 0) {
   pass("nec_resistance(8, 23) == $foo");
  } else {
   fail("nec_resistance(8, 23) == $foo");
+ }
+
+// NEC Wire Derate
+$foo = nec_wire_derate(8, 120);
+if (bccomp($foo, '120') == 0) {
+  pass("nec_wire_derate(8, 120) == $foo");
+ } else {
+  fail("nec_wire_derate(8, 120) == $foo");
+ }
+
+// NEC Ampacity
+$foo = nec_ampacity(12);
+if (bccomp($foo, '') == 0) {
+  pass("nec_ampacity(12) == $foo");
+ } else {
+  fail("nec_ampacity(12) == $foo");
+ }
+
+// NEC Crystal Comp
+$foo = nec_crystal_comp(120);
+if (bccomp($foo, '') == 0) {
+  pass("nec_crystal_comp(120) == $foo");
+ } else {
+  fail("nec_crystal_comp(120) == $foo");
+ }
+
+// NEC Over Current
+$foo = nec_over_current(3, 3.6);
+if (bccomp($foo, '') == 0) {
+  pass("nec_over_current(3, 3.6) == $foo");
+ } else {
+  fail("nec_over_current(3, 3.6) == $foo");
+ }
+
+// NEC Find Gauge
+$foo = nec_find_gauge(140, 48, 45, 75, 3);
+if (bccomp($foo, '4') == 0) {
+  pass("nec_find_gauge(140, 48, 45, 75, 3) == $foo");
+ } else {
+  fail("nec_find_gauge(140, 48, 45, 75, 3) == $foo");
+ }
+
+// NEC Find Conduit
+$foo = nec_find_conduit(2, 2, THHN, EMT);
+if (bccomp($foo, '') == 0) {
+  pass("nec_find_conduit(10, 3, THWN2, EMT) == $foo");
+ } else {
+  fail("nec_find_conduit(10, 3, THWN2, EMT) == $foo");
+ }
+
+// NEC Find Ground
+$foo = nec_find_ground();
+if (bccomp($foo, '') == 0) {
+  pass("nec_find_ground() == $foo");
+ } else {
+  fail("nec_find_ground() == $foo");
+ }
+
+// NEC AWG PV 2 PV
+$foo = nec_awg_pv2pv(2, 48.3, 45.6, 18.9, 2);
+if (bccomp($foo, '18') == 0) {
+  pass("nec_awg_pv2pv(2, 48.3, 45.6, 18.9, 2) == $foo");
+ } else {
+  fail("nec_awg_pv2pv(2, 48.3, 45.6, 18.9, 2) == $foo");
+ }
+
+$foo = nec_awg_pv2combiner(20, 48.3, 45.6, 18.9, 2);
+if (bccomp($foo, '18') == 0) {
+  pass("nec_awg_pv2combiner(20, 48.3, 45.6, 18.9, 2) == $foo");
+ } else {
+  fail("nec_awg_pv2combiner(20, 48.3, 45.6, 18.9, 2) == $foo");
+ }
+
+$foo = nec_awg_combiner2charger(140, 48.3, 45.6, 18.9, 2);
+if (bccomp($foo, '2') == 0) {
+  pass("nec_awg_combiner2charger(140, 48.3, 45.6, 18.9, 2) == $foo");
+ } else {
+  fail("nec_awg_combiner2charger(140, 48.3, 45.6, 18.9, 2) == $foo");
+ }
+
+$foo = nec_awg_wind2charger(140, 48.3, 45.6, 18.9, 2);
+if (bccomp($foo, '4') == 0) {
+  pass("nec_awg_wind2charger(140, 48.3, 45.6, 18.9, 2) == $foo");
+ } else {
+  fail("nec_awg_wind2charger(140, 48.3, 45.6, 18.9, 2) == $foo");
+ }
+
+$foo = nec_awg_charger2battery(4, 48.3, 45.6, 18.9, 2);
+if (bccomp($foo, '18') == 0) {
+  pass("nec_awg_charger2battery(4, 48.3, 45.6, 18.9, 2) == $foo");
+ } else {
+  fail("nec_awg_charger2battery(4, 48.3, 45.6, 18.9, 2) == $foo");
+ }
+
+$foo = nec_awg_battery2inverter(7, 48.3, 45.6, 18.9, 2);
+if (bccomp($foo, '16') == 0) {
+  pass("nec_awg_battery2inverter(7, 48.3, 45.6, 18.9, 2) == $foo");
+ } else {
+  fail("nec_awg_battery2inverter(7, 48.3, 45.6, 18.9, 2) == $foo");
  }
 
 // Dump the totals

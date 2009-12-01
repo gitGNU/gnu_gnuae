@@ -21,11 +21,10 @@ AC_PREREQ(2.50)
 AC_INIT(src/PVPanel.cc)
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR(macros)
-AC_CONFIG_SUBDIRS(gpv)
-dnl AC_CONFIG_SUBDIRS(gpv libltdl)
+dnl AC_CONFIG_SUBDIRS(gpv)
 
 dnl These are required by automake
-AM_INIT_AUTOMAKE(gnuae, 0.3)
+AM_INIT_AUTOMAKE(gnuae, 0.4)
 AM_MAINTAINER_MODE
 AC_PROG_MAKE_SET
 AC_EXEEXT

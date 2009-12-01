@@ -46,14 +46,7 @@ AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
 AC_SUBST(LIBTOOL_DEPS)                                                                                
 AC_CHECK_HEADERS(values.h)
 
-dnl See which dynamic library reader we can use
-AC_CHECK_HEADERS(dlfcn.h dl.h)
-AC_CHECK_LIB(dld, shl_load, DL_LIB="-ldld",[
-        AC_CHECK_LIB(dl, dlopen, DL_LIB="-ldl",
-AC_MSG_ERROR(Dynamic linking is not available on this platform.  Some
-apps, like panel, will not run properly.))
-])
-AC_SUBST(DL_LIB)
+GAE_PATH_MYSQL
 
 dnl Find the Tcl Shell, cause the "Clean.tcl program needs it when
 dnl we build a release

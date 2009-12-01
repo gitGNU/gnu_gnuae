@@ -1,1 +1,10 @@
-GNUae is a program, for designing alternate energy system.
+GnuAE is a program, for designing alternate energy system.
+
+After restartin the GnuAE project after a few years, it now has a
+slightly different focus. Rather than go through the pain updating the
+old Gtk 1.2 based GUI, I decided that turning GnuAE into a PHP
+extension, so it could be used via any web browser was a good
+idea. Now most of the internal functions are accessible through PHP,
+and I'm slowly creating a new UI in php. Other big changes were
+upgrading to the GPLv3, switching to Git, and adding SQL database
+support, instead of the csv files.

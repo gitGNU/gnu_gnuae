@@ -20,7 +20,7 @@ dnl
 AC_PREREQ(2.50)
 AC_INIT(src/PVPanel.cc)
 AM_CONFIG_HEADER(config.h)
-
+AC_CONFIG_MACRO_DIR(macros)
 AC_CONFIG_SUBDIRS(gpv)
 dnl AC_CONFIG_SUBDIRS(gpv libltdl)
 
@@ -62,7 +62,7 @@ dnl GAE_AC_PATH_TCLSH
 
 GAE_AC_PATH_DEJAGNU
 
-sinclude(ext/acinclude.m4)
+sinclude(php/acinclude.m4)
 
 # Find Abelmon's libraries.
 dnl GAE_AC_PATH_ABELMON
@@ -110,6 +110,6 @@ dnl AC_CONFIG_LINKS(ext/NEC.cpp:src/NEC.cc)
 
 AC_OUTPUT(Makefile
 src/Makefile
-ext/Makefile
+php/Makefile
 src/testsuite/Makefile
 )

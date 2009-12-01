@@ -20,10 +20,10 @@
 
 AUTOMAKE_OPTIONS = # dejagnu
 
-SUBDIRS = src gpv # libltdl 
+SUBDIRS = src php # gpv libltdl 
 
-FULLVERSION = 0.3.0
-VERSION = 0.3
+FULLVERSION = 0.4.0
+VERSION = 0.4
 
 # Set ourselves up to build a RedHat package. The "dist" target used by
 # Automake isn't sufficient tp dop more than build a tarball
@@ -54,5 +54,5 @@ deb: tarball
 	(cd gnuae-${FULLVERSION}; dpkg-buildpackage -d)
 
 
-install-doc doc html dvi ps pdf rtf:
-	cd gpv/doc && $(MAKE) $(FLAGS_TO_PASS) $@
+# install-doc doc html dvi ps pdf rtf:
+# 	cd gpv/doc && $(MAKE) $(FLAGS_TO_PASS) $@

@@ -129,10 +129,9 @@ esac
 ltdlver=`${LIBTOOLIZE:-libtoolize} --version | head -1 | cut -d ' ' -f 4`
 ltdlmajor=`echo $ltdlver | cut -d '.' -f 1`
 if test -z "$NO_LIBTOOLIZE" ; then
-  ltbasedir="libltdl"
-  libtoolflags="--force --copy  --ltdl"
+  libtoolflags="--force --copy"
   if test $ltdlmajor -eq 2; then
-    libtoolflags="${libtoolflags} ${ltbasedir} --quiet --recursive"
+    libtoolflags="${libtoolflags} --quiet --recursive"
   fi
   echo "Running libtoolize $ltdlver ${libtoolflags} ..."
   if ${LIBTOOLIZE:-libtoolize} ${libtoolflags}; then
@@ -146,10 +145,6 @@ if test -z "$NO_LIBTOOLIZE" ; then
         sed -e 's/include <config.h>/include <gnashconfig.h>/' $i.orig > $i
       done
     fi
-#            mv libltdl/ltdl.c libltdl/ltdl.c.orig
-#            sed -e 's/include <config.h>/include <gnashconfig.h>/' libltdl/ltdl.c.orig > libltdl/ltdl.c
-    # for libtool 1.x, we don't build in libltdl, it's built in libbase instead. autoconf doesn't like
-    # conditional output files, so we nuke the original libltdl/Makefile.am and replace it with a zero
     # sized one to keep autoconf happy.
     if test $ltdlmajor -eq 1; then
        mv libltdl/Makefile.am Makefile.am.orig

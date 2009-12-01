@@ -5,3 +5,7 @@ gpv2
 configure
 macros
 *~
+ltmain.sh
+TAGS
+aclocal.m4
+config.h.in

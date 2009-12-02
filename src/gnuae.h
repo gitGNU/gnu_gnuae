@@ -34,9 +34,13 @@ namespace gnuae {
 class GnuAE : public Database {
 public:
     static GnuAE& getDefaultInstance();
+    GnuAE();
     ~GnuAE();
+    
     void useSQL(bool x) { _usesql = x; };
     bool useSQL() { return _usesql; };
+    void useCSV(bool x) { _usecsv = x; };
+    bool useCSV() { return _usecsv; };
 
     void dump();
 private:
@@ -50,6 +54,7 @@ private:
     Pumps	_pumps;
     Wire	_wire;
     bool	_usesql;
+    bool	_usecsv;
 };
     
 } // end of gnuae namespace

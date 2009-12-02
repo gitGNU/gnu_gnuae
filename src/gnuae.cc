@@ -31,6 +31,13 @@ GnuAE::getDefaultInstance()
     return gae;
 }    
 
+GnuAE::GnuAE() 
+    : _usesql(false),
+      _usecsv(false)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+}
+
 GnuAE::~GnuAE()
 {
     // DEBUGLOG_REPORT_FUNCTION;
@@ -54,6 +61,12 @@ GnuAE::dump()
         cerr << "Using SQL Queries" << endl;
     } else {
         cerr << "Not using SQL Queries" << endl;
+    }
+
+    if (_usecsv) {
+        cerr << "Using CSV files to load memory" << endl;
+    } else {
+        cerr << "Using SQL Queries to load memory" << endl;
     }
 }
 

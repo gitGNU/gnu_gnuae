@@ -100,16 +100,23 @@ bool
 Database::openDB (void)
 {
   // DEBUGLOG_REPORT_FUNCTION;
+    return openDB(_dbhost, _dbuser, _dbpasswd);
+}
+
+bool
+Database::openDB (std::string &host, std::string &user, std::string &passwd)
+{
+  // DEBUGLOG_REPORT_FUNCTION;
 
     unsigned long flag = 0;
 
     dbglogfile <<"Connecting to MySQL database "  << _dbname.c_str()
-               << " on " << _dbhost.c_str()
-               << " as user " << _dbuser.c_str() << endl;
+               << " on " << host.c_str()
+               << " as user " << user.c_str() << endl;
 
     mysql_init(&_mysql);
-    _connection = mysql_real_connect(&_mysql, _dbhost.c_str(), _dbuser.c_str(),
-        _dbpasswd.c_str(), _dbname.c_str(), 0, NULL, flag);
+    _connection = mysql_real_connect(&_mysql, host.c_str(), user.c_str(),
+        passwd.c_str(), _dbname.c_str(), 0, NULL, flag);
 
     /* check for a connection error */
     if(_connection == NULL) {
@@ -119,7 +126,7 @@ Database::openDB (void)
     }
 
     dbglogfile << "Connected to MySQL database " << _dbname.c_str()
-               <<  " on host " <<_dbhost.c_str() << endl;
+               <<  " on host " << host.c_str() << endl;
 
 #if 0
     if(mysql_select_db(&_mysql, "mydb")){ 

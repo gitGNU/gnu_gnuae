@@ -28,6 +28,7 @@
 
 #include "PVPanel.h"
 #include "log.h"
+#include "Database.h"
 #include "tcpip.h"
 
 using namespace std;
@@ -112,14 +113,19 @@ main(int argc, char **argv) {
 	}
     }
 
+#if 0
     Tcpip tcpip;
     // tcpip.toggleDebug(true);
     if (tcpip.createNetClient(hostname)) {
 	dbglogfile << hostname << endl;
     }
+#endif
 
+    Database db;
+    db.openDB();
+    
     if (!logopen)
-	//    dbglog.Open (DEFAULT_LOGFILE);
+	dbglogfile.Open (DEFAULT_LOGFILE);
 	
 #if 0
 	if (mod_filespec.size() == 0) {

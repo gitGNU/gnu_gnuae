@@ -59,6 +59,7 @@ class Database
   ~Database();
   
   bool openDB ();
+  bool openDB (std::string &host, std::string &user, std::string &passwd);
   bool closeDB ();
   /* bool queryInsert(const char *query); */
   /* void *queryResults(const char *query); */

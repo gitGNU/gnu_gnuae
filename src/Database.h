@@ -83,10 +83,10 @@ class Database
   MYSQL           _mysql;
 };
 
+} // end of gnuae namespace
+
 // __DATABASE_H__
 #endif
-
-} // end of gnuae namespace
 
 // local Variables:
 // mode: C++

@@ -41,17 +41,18 @@ typedef struct
 
 #include <map>
 
-namespace gnuae
+namespace gnuae {
+
+class Inverters
 {
-  class Inverters
-    {
-    public:
-      Inverters(void);
-      ~Inverters(void);      
-    private:
-      //      std::map<std::string, inverters_t> batteries;
-    };
+public:
+    Inverters(void);
+    ~Inverters(void);      
+    void dump();
+private:
+    //      std::map<std::string, inverters_t> batteries;
 };
+} // end of gnuae namespace
 
 extern "C" {
 #else

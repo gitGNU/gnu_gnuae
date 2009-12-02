@@ -23,6 +23,8 @@
 #include "config.h"
 #include <vector>
 
+namespace gnuae {
+    
 struct wire
 {
   char *awg;
@@ -35,11 +37,14 @@ struct wire
 class Wire
 {
 public:
-  Wire(void);
-  ~Wire(void);
+    Wire(void);
+    ~Wire(void);
+    void dump();
 private:
-  std::vector<struct wire *> _data;
+    std::vector<struct wire *> _data;
 };
+
+} // end of gnuae namespace
 
 // __WIRE_H__
 #endif

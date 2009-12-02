@@ -53,7 +53,8 @@ SRC = PVPanel.cc PVPanel.h \
 	MySQL.cc Database.h \
 	log.h log.cc \
 	err.h err.cc \
-	DataType.cc DataType.h
+	DataType.cc DataType.h \
+	gnuae.h gnuae.cc
 
 bin_PROGRAMS =  gnuae # neccalc
 

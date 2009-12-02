@@ -45,16 +45,17 @@ typedef struct
 
 #include <map>
 
-namespace gnuae
-{
-  class Chargers
-    {
-    public:
-      Chargers(void);
-      ~Chargers(void);      
-    private:
-      //      std::map<std::string, chargers_t> batteries;
-    };
+namespace gnuae {
+
+class Chargers {
+public:
+    Chargers(void);
+    ~Chargers(void);      
+    void dump();
+private:
+    //      std::map<std::string, chargers_t> batteries;
+};
+
 } // end of gnuae namespace
 
 extern "C" {

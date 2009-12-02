@@ -96,6 +96,22 @@ extern "C" {
   };
 };
 
+Chargers::Chargers() {
+
+}
+
+Chargers::~Chargers() {
+
+}
+
+void
+Chargers::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    cerr << "No Chargers data in memory." << endl;
+    
+}
+
 // local Variables:
 // mode: C++
 // indent-tabs-mode: t

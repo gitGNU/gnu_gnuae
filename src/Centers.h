@@ -35,15 +35,20 @@ typedef struct
 #include <map>
 
 namespace gnuae {
-  class Centers
-    {
-    public:
-      Centers(void);
-      ~Centers(void);      
-    private:
-      //      std::map<std::string, centers_t> batteries;
-    };
+
+class Centers
+{
+public:
+    Centers(void);
+    ~Centers(void);
+    
+    void dump();
+    
+private:
+    //      std::map<std::string, centers_t> batteries;
 };
+
+} // end of gnuae namespace
 
 extern "C" {
 #else

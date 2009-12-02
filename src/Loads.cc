@@ -124,7 +124,7 @@ extern "C" {
   };
 };
 
-Load::Load(void)
+Loads::Loads(void)
 {
   int i;
   char *home;
@@ -155,12 +155,12 @@ Load::Load(void)
 }
 
 
-Load::~Load(void)
+Loads::~Loads(void)
 {
 }
 
 void
-Load::dump(void)
+Loads::dump(void)
 {
   vector<string>::iterator it;
   vector<string> *loadnames;
@@ -183,7 +183,7 @@ Load::dump(void)
 }
 
 void
-Load::dump(struct load *entry)
+Loads::dump(struct load *entry)
 {
   cerr << "Dumping System Load for " << entry->name << endl;
 
@@ -212,7 +212,7 @@ Load::dump(struct load *entry)
 
 // Dump the data as a comma delimited ASCII text file
 void
-Load::writeLoads(string filespec)
+Loads::writeLoads(string filespec)
 {
   ofstream os;
   ostringstream tmpstr;
@@ -286,7 +286,7 @@ Load::writeLoads(string filespec)
 
 // Read the data from a comma delimited ASCII text file
 int
-Load::readLoadsCSV(std::string filespec)
+Loads::readLoadsCSV(std::string filespec)
 {
   load_t *thisload;
   char buf[LINELEN];
@@ -442,25 +442,25 @@ Load::readLoadsCSV(std::string filespec)
 
 // Calculated Array values
 int
-Load::calcArrayAmps(void)
+Loads::calcArrayAmps(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
-Load::calcArraySeries(void)
+Loads::calcArraySeries(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
-Load::calcArrayParallel(void)
+Loads::calcArrayParallel(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
-Load::calcArrayTotal(void)
+Loads::calcArrayTotal(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
@@ -468,32 +468,32 @@ Load::calcArrayTotal(void)
 
 // Calculated Battery values
 int
-Load::calcBatteryAmps(void)
+Loads::calcBatteryAmps(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
-Load::calcBatterySeries(void)
+Loads::calcBatterySeries(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
-Load::calcBatteryParallel(void)
+Loads::calcBatteryParallel(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
-Load::calcBatteryTotal(void)
+Loads::calcBatteryTotal(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 // Calculate the daily watts used by this device profile
 double
-Load::calcWatts(load_t *thisload)
+Loads::calcWatts(load_t *thisload)
 {
   double watts = 0.0, hours;
   
@@ -506,7 +506,7 @@ Load::calcWatts(load_t *thisload)
 
 // These are the calculated Values
 double
-Load::calcWatts(void)
+Loads::calcWatts(void)
 {
   vector<string>::iterator it;
   vector<string> *loadnames;
@@ -547,13 +547,13 @@ Load::calcWatts(void)
 }
 
 double
-Load::calcAmps(load_t *load)
+Loads::calcAmps(load_t *load)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
 
 double
-Load::calcAmps(void)
+Loads::calcAmps(void)
 {
   cerr << "FIXME: unimplemented!" << endl;
 }
@@ -561,7 +561,7 @@ Load::calcAmps(void)
 
 // Calculate the daily watts used by this device profile
 double
-Load::calcHoursDaily(load_t *thisload)
+Loads::calcHoursDaily(load_t *thisload)
 {
   double hours = 0.0;
   
@@ -583,7 +583,7 @@ Load::calcHoursDaily(load_t *thisload)
 
 // These are the calculated Values
 double
-Load::calcHoursDaily(void)
+Loads::calcHoursDaily(void)
 {
   vector<string>::iterator it;
   vector<string> *loadnames;
@@ -622,7 +622,7 @@ Load::calcHoursDaily(void)
 
 #if 0
 vector<string> *
-Load::names(void)
+Loads::names(void)
 {
   map<string, load_t *>::const_iterator it;;
   vector<string> *loadnames;
@@ -644,7 +644,7 @@ Load::names(void)
 #endif
 
 
-static Load _sl;
+static Loads _sl;
 
 extern "C" {
 

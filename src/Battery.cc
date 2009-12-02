@@ -26,9 +26,15 @@
 #include <cmath>
 
 #include "Battery.h"
+#include "log.h"
+#include "gnuae.h"
 
 using namespace std;
-using namespace gnuae;
+
+namespace gnuae {
+
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
 
 extern "C" {
   
@@ -82,6 +88,24 @@ extern "C" {
   };
 #endif
 };
+
+Battery::Battery() {
+
+};
+
+Battery::~Battery() {
+
+};
+
+void
+Battery::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    dbglogfile << "No Battery data in memory." << endl;
+    
+}
+
+} // end of gnuae namespace
 
 // local Variables:
 // mode: C++

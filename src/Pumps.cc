@@ -41,6 +41,22 @@ extern "C" {
   };
 };
 
+Pumps::Pumps() {
+
+}
+
+Pumps::~Pumps() {
+
+}
+
+void
+Pumps::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    cerr << "No Pump data in memory." << endl;
+    
+}
+
 // local Variables:
 // mode: C++
 // indent-tabs-mode: t

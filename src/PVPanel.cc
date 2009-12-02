@@ -30,6 +30,9 @@
 #include <cstdlib>
 
 #include "PVPanel.h"
+#include "log.h"
+#include "gnuae.h"
+
 #ifdef __STDC_HOSTED__
 #include <sstream>
 #else
@@ -37,18 +40,19 @@
 #endif
 
 using namespace std;
-using namespace gnuae;
+
+namespace gnuae {
 
 const int LINELEN = 1024;
 const int FIELDLEN = 512;
 
-// extern LogFile dbglog;
-#define dbglog cerr
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
 
 PVPanels::PVPanels(void)
 {
-  _debug = false;
-  _enhanced = true;
+    _debug = false;
+    _enhanced = true;
 }
 
 PVPanels::~PVPanels(void)
@@ -58,19 +62,17 @@ PVPanels::~PVPanels(void)
 void
 PVPanels::dump(void)
 {
-  struct pvpanel *pv;
-  std::vector<struct pvpanel *>::iterator it;
-
-  if (_data.size() == 0)
-    {
-      dbglog << "No PV Panel data in memory" << endl;
-      return;
+    struct pvpanel *pv;
+    std::vector<struct pvpanel *>::iterator it;
+    
+    if (_data.size() == 0) {
+	dbglogfile << "No PV Panel data in memory" << endl;
+	return;
     }
-  
-  for (it = _data.begin(); it != _data.end(); it++)
-    {
-      pv = *it;
-      dump(pv, _enhanced);
+    
+    for (it = _data.begin(); it != _data.end(); it++) {
+	pv = *it;
+	dump(pv, _enhanced);
     }
 }
 
@@ -78,82 +80,82 @@ void
 PVPanels::dump(pvpanel_t *pv)
 {
 
-  dump(pv, _enhanced);
+    dump(pv, _enhanced);
 }
 
 void
 PVPanels::dump(pvpanel_t *pv, bool enhanced)
 {
-  if (pv->Model != 0)
-    if (*pv->Model != 0)
-      cerr << "Model is " << pv->Model << endl;
-    else
-      cerr << "No Model specified" << endl;
-
-  if (pv->Vintage != 0)
-    if (*pv->Vintage != 0)
-      cerr << "Vintage is " << pv->Vintage << endl;
-    else
-      cerr << "No Vintage specified" << endl;
-
-  cerr << "Area is " << pv->Area << endl;
-  
-  if (pv->Material != 0)
-    if (*pv->Material != 0)
-      cerr << "Material is " << pv->Material << endl;
-    else
-      cerr << "No Material specified" << endl;
-  
-  cerr << "Series Cells is " << pv->Series_Cells << endl;
-  cerr << "Parallel_C-S is " << pv->Parallel_C_S << endl;
-  cerr << "Isco is " << pv->Isco << endl;
-  cerr << "Voco is " << pv->Voco << endl;
-  cerr << "Impo is " << pv->Impo << endl;
-  cerr << "Vmpo is " << pv->Vmpo << endl;
-  cerr << "aIsc is " << pv->aIsc << endl;
-  cerr << "aImp is " << pv->aImp << endl;
-  cerr << "C0 is " << pv->C0 << endl;
-  cerr << "C1 is " << pv->C1 << endl;
-  cerr << "BVoco is " << pv->BVoco << endl;
-  cerr << "mBVoc is " << pv->mBVoc << endl;
-  cerr << "BVmpo is " << pv->BVmpo << endl;
-  cerr << "mBVmp is " << pv->mBVmp << endl;
-  cerr << "n is " << pv->n << endl;
-  cerr << "C2 is " << pv->C2 << endl;
-  cerr << "C3 is " << pv->C3 << endl;
-  cerr << "A0 is " << pv->A0 << endl;
-  cerr << "A1 is " << pv->A1 << endl;
-  cerr << "A2 is " << pv->A2 << endl;
-  cerr << "A3 is " << pv->A3 << endl;
-  cerr << "A4 is " << pv->A4 << endl;
-  cerr << "B0 is " << pv->B0 << endl;
-  cerr << "B1 is " << pv->B1 << endl;
-  cerr << "B2 is " << pv->B2 << endl;
-  cerr << "B3 is " << pv->B3 << endl;
-  cerr << "B4 is " << pv->B4 << endl;
-  cerr << "B5 is " << pv->B5 << endl;
-  cerr << "d(Tc) is " << pv->d_Tc << endl;
-  cerr << "fd is " << pv->fd << endl;
-  cerr << "a is " << pv->a << endl;
-  cerr << "b is " << pv->b << endl;
-  cerr << "C4 is " << pv->C4 << endl;
-  cerr << "C5 is " << pv->C5 << endl;
-  cerr << "Ixo is " << pv->Ixo << endl;
-  cerr << "Ixxo is " << pv->Ixxo << endl;
-  cerr << "C6 is " << pv->C6 << endl;
-  cerr << "C7 is " << pv->C7 << endl;
-
-  if (pv->Picture)
-    cerr << "Picture is " << pv->Picture << endl;
-
-  if (pv->Description != 0)
-    cerr << "Description is " << pv->Description << endl;
-
-  if (pv->Price)
-    cerr << "Price is $" << pv->Price << endl;
-
-  if (pv->Manufacturer)
-    cerr << "Manufacturer is " << pv->Manufacturer << endl;
+    if (pv->Model != 0)
+	if (*pv->Model != 0)
+	    cerr << "Model is " << pv->Model << endl;
+	else
+	    cerr << "No Model specified" << endl;
+    
+    if (pv->Vintage != 0)
+	if (*pv->Vintage != 0)
+	    cerr << "Vintage is " << pv->Vintage << endl;
+	else
+	    cerr << "No Vintage specified" << endl;
+    
+    cerr << "Area is " << pv->Area << endl;
+    
+    if (pv->Material != 0)
+	if (*pv->Material != 0)
+	    cerr << "Material is " << pv->Material << endl;
+	else
+	    cerr << "No Material specified" << endl;
+    
+    cerr << "Series Cells is " << pv->Series_Cells << endl;
+    cerr << "Parallel_C-S is " << pv->Parallel_C_S << endl;
+    cerr << "Isco is " << pv->Isco << endl;
+    cerr << "Voco is " << pv->Voco << endl;
+    cerr << "Impo is " << pv->Impo << endl;
+    cerr << "Vmpo is " << pv->Vmpo << endl;
+    cerr << "aIsc is " << pv->aIsc << endl;
+    cerr << "aImp is " << pv->aImp << endl;
+    cerr << "C0 is " << pv->C0 << endl;
+    cerr << "C1 is " << pv->C1 << endl;
+    cerr << "BVoco is " << pv->BVoco << endl;
+    cerr << "mBVoc is " << pv->mBVoc << endl;
+    cerr << "BVmpo is " << pv->BVmpo << endl;
+    cerr << "mBVmp is " << pv->mBVmp << endl;
+    cerr << "n is " << pv->n << endl;
+    cerr << "C2 is " << pv->C2 << endl;
+    cerr << "C3 is " << pv->C3 << endl;
+    cerr << "A0 is " << pv->A0 << endl;
+    cerr << "A1 is " << pv->A1 << endl;
+    cerr << "A2 is " << pv->A2 << endl;
+    cerr << "A3 is " << pv->A3 << endl;
+    cerr << "A4 is " << pv->A4 << endl;
+    cerr << "B0 is " << pv->B0 << endl;
+    cerr << "B1 is " << pv->B1 << endl;
+    cerr << "B2 is " << pv->B2 << endl;
+    cerr << "B3 is " << pv->B3 << endl;
+    cerr << "B4 is " << pv->B4 << endl;
+    cerr << "B5 is " << pv->B5 << endl;
+    cerr << "d(Tc) is " << pv->d_Tc << endl;
+    cerr << "fd is " << pv->fd << endl;
+    cerr << "a is " << pv->a << endl;
+    cerr << "b is " << pv->b << endl;
+    cerr << "C4 is " << pv->C4 << endl;
+    cerr << "C5 is " << pv->C5 << endl;
+    cerr << "Ixo is " << pv->Ixo << endl;
+    cerr << "Ixxo is " << pv->Ixxo << endl;
+    cerr << "C6 is " << pv->C6 << endl;
+    cerr << "C7 is " << pv->C7 << endl;
+    
+    if (pv->Picture)
+	cerr << "Picture is " << pv->Picture << endl;
+    
+    if (pv->Description != 0)
+	cerr << "Description is " << pv->Description << endl;
+    
+    if (pv->Price)
+	cerr << "Price is $" << pv->Price << endl;
+    
+    if (pv->Manufacturer)
+	cerr << "Manufacturer is " << pv->Manufacturer << endl;
 }
 
 // This reads a Comma delimited text file that is exported from the
@@ -161,487 +163,486 @@ PVPanels::dump(pvpanel_t *pv, bool enhanced)
 int
 PVPanels::readModuleDataCSV(std::string filespec)
 {
-  struct pvpanel *pv;
-  char buf[LINELEN];
-  char *ptr, *token, *home;
-  float val;
-  int i;
-  ifstream in;
-  string tmpbuf, loadfile, field;
-  struct stat stats;
-  int lines = -1;
-  string::size_type pos1;
-        
-  
-  if (filespec.size() == 0) {
-    home = getenv("HOME");
+    struct pvpanel *pv;
+    char buf[LINELEN];
+    char *ptr, *token, *home;
+    float val;
+    int i;
+    ifstream in;
+    string tmpbuf, loadfile, field;
+    struct stat stats;
+    int lines = -1;
+    string::size_type pos1;
     
-    if (home) {
-      loadfile = home;
-      loadfile += "/.gnuae/modules.csv";
-      if (stat(loadfile.c_str(), &stats) == 0) {
-        filespec = loadfile;
-      } else {
-        loadfile = "/etc/gnuae/modules.csv";
-        if (stat(loadfile.c_str(), &stats) == 0) {
-          filespec = loadfile;
-        }
-      }
+    
+    if (filespec.size() == 0) {
+	home = getenv("HOME");
+	
+	if (home) {
+	    loadfile = home;
+	    loadfile += "/.gnuae/modules.csv";
+	    if (stat(loadfile.c_str(), &stats) == 0) {
+		filespec = loadfile;
+	    } else {
+		loadfile = "/etc/gnuae/modules.csv";
+		if (stat(loadfile.c_str(), &stats) == 0) {
+		    filespec = loadfile;
+		}
+	    }
+	}
     }
-  }
     
-  in.open(filespec.c_str());
-  dbglog << "Reading PV Module data from: " << filespec.c_str() << endl;
-      
-  if (!in)
-    {
-      dbglog << "Couldn't open file " << filespec.c_str() << endl;
-      return -1;
-    }
-
-  // Read in but ignore the first line, which are the headers in the
-  // data file.
-  in.getline(buf, LINELEN);
-  ptr = buf;
-  
-  while (!in.eof()) {
-    lines++;
-    // Get memory to hold the data
-    pv = new struct pvpanel;
+    in.open(filespec.c_str());
+    dbglogfile << "Reading PV Module data from: " << filespec.c_str() << endl;
     
+    if (!in)
+	{
+	    dbglogfile << "Couldn't open file " << filespec.c_str() << endl;
+	    return -1;
+	}
+    
+    // Read in but ignore the first line, which are the headers in the
+    // data file.
+    in.getline(buf, LINELEN);
+    ptr = buf;
+    
+    while (!in.eof()) {
+	lines++;
+	// Get memory to hold the data
+	pv = new struct pvpanel;
+	
 #if 0
-      // Get memory for the strings in the data structure
-      pv->Model = new char[FIELDLEN];
-      pv->Vintage = new char[FIELDLEN];
-      pv->Material = new char[FIELDLEN];
-      pv->Picture = new char[FIELDLEN];
-      pv->Description = new char[FIELDLEN];
+	// Get memory for the strings in the data structure
+	pv->Model = new char[FIELDLEN];
+	pv->Vintage = new char[FIELDLEN];
+	pv->Material = new char[FIELDLEN];
+	pv->Picture = new char[FIELDLEN];
+	pv->Description = new char[FIELDLEN];
 #endif
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        // The string has double quote marks on each end, which is used by
-        // the CSV format. So we drop them to have just the plain string left.
-        tmpbuf.erase(0, 1);
-        tmpbuf.erase(tmpbuf.size()-1, 1);
-        pv->Model = new char[strlen(buf)+1];
-        strcpy(pv->Model, tmpbuf.c_str());
-      }
-      else {
-        return lines;
-      }
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        // The string has double quote marks on each end, which is used by
-        // the CSV format. So we drop them to have just the plain string left.
-        tmpbuf.erase(0, 1);
-        tmpbuf.erase(tmpbuf.size()-1, 1);
-        pv->Vintage = new char[strlen(buf)+1];
-        strcpy(pv->Vintage, tmpbuf.c_str());
-      }
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Area = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        // The string has double quote marks on each end, which is used by
-        // the CSV format. So we drop them to have just the plain string left.
-        tmpbuf.erase(0, 1);
-        tmpbuf.erase(tmpbuf.size()-1, 1);
-        pv->Material = new char[strlen(buf)+1];
-        strcpy(pv->Material, tmpbuf.c_str());
-      }
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Series_Cells = atoi(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Parallel_C_S = atoi(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Isco = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Voco = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Impo = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Vmpo = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->aIsc = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->aImp = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C0 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C1 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->BVoco = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->mBVoc = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->BVmpo = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->mBVmp = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->n = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C2 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C3 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->A0 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->A1 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->A2 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->A3 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->A4 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->B0 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->B1 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->B2 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->B3 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->B4 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->B5 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->d_Tc = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->fd = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->a = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->b = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C4 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C5 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Ixo = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->Ixxo = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C6 = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      pv->C7 = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        // The string has double quote marks on each end, which is used by
-        // the CSV format. So we drop them to have just the plain string left.
-        tmpbuf.erase(0, 1);
-        tmpbuf.erase(tmpbuf.size()-1, 1);
-        pv->Picture = new char[strlen(buf)+1];
-        strcpy(pv->Picture, tmpbuf.c_str());
-      } else {
-        pv->Picture = 0;
-      }
-
-      // This gets messy, as the description string itself may include
-      // commas and/or quotes. So we read to the end of the line, and
-      // for the remaining fields, we work our way backward.
-      in.getline(buf, LINELEN, '\n'); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        if (_enhanced) {
-          // in.getline(buf, LINELEN, ','); // Get a token from the line
-          pos1 = tmpbuf.rfind(",", string::npos);
-          if (pos1 == string::npos) {
-            cerr << "Comma not found!" << endl;
-          } else {
-            field = tmpbuf.substr(pos1, string::npos);
-            field.erase(0, 1);    // erase the comma
-            if (field.substr(0, 1) == "\"") {
-              field.erase(0, 1);    // erase the double quote
-            }
-            if (field.size() > 0) {
-              field.erase(field.size(), 1); // erase last double quote
-              if (field.size() == 1) {
-                pv->Manufacturer = 0;
-              } else {
-                pv->Manufacturer = new char[field.size()+1];
-                strcpy(pv->Manufacturer, field.c_str());
-                tmpbuf.erase(pos1, string::npos); // erase this part from
-                                // the string
-              }
-            }
-          }
-          
-          pos1 = tmpbuf.rfind(",", pos1-1);
-          if (pos1 == string::npos) {
-            cerr << "Comma not found!" << endl;
-          } else {
-            field = tmpbuf.substr(pos1, string::npos);
-            field.erase(0, 1);    // erase the comma
-            if (field.size() > 0) {
-              field.erase(field.size(), string::npos);
-              pv->Price = atof(field.c_str());
-              tmpbuf.erase(pos1, string::npos); // erase this part from
-              // the string
-            }
-          }
-          tmpbuf.erase(0, 1);   // erase the first double quote
-          // Now erase the trailing double quote
-          if (tmpbuf.substr(tmpbuf.size()-1, 1) == "\"") {
-            tmpbuf.erase(tmpbuf.size()-1, 2);
-          }
-          if (tmpbuf.substr(tmpbuf.size()-2, 1) == "\"") {
-            tmpbuf.erase(tmpbuf.size()-2, 2);
-          }
-
-          pv->Description = new char[tmpbuf.size()+1];
-          strcpy(pv->Description, tmpbuf.c_str());
-        }
-      } // if _enhanced
-      
-  _data.push_back(pv);
-  }
-  
-  in.close();
-  return lines;
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    // The string has double quote marks on each end, which is used by
+	    // the CSV format. So we drop them to have just the plain string left.
+	    tmpbuf.erase(0, 1);
+	    tmpbuf.erase(tmpbuf.size()-1, 1);
+	    pv->Model = new char[strlen(buf)+1];
+	    strcpy(pv->Model, tmpbuf.c_str());
+	}
+	else {
+	    return lines;
+	}
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    // The string has double quote marks on each end, which is used by
+	    // the CSV format. So we drop them to have just the plain string left.
+	    tmpbuf.erase(0, 1);
+	    tmpbuf.erase(tmpbuf.size()-1, 1);
+	    pv->Vintage = new char[strlen(buf)+1];
+	    strcpy(pv->Vintage, tmpbuf.c_str());
+	}
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Area = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    // The string has double quote marks on each end, which is used by
+	    // the CSV format. So we drop them to have just the plain string left.
+	    tmpbuf.erase(0, 1);
+	    tmpbuf.erase(tmpbuf.size()-1, 1);
+	    pv->Material = new char[strlen(buf)+1];
+	    strcpy(pv->Material, tmpbuf.c_str());
+	}
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Series_Cells = atoi(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Parallel_C_S = atoi(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Isco = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Voco = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Impo = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Vmpo = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->aIsc = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->aImp = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C0 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C1 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->BVoco = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->mBVoc = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->BVmpo = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->mBVmp = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->n = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C2 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C3 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->A0 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->A1 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->A2 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->A3 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->A4 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->B0 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->B1 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->B2 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->B3 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->B4 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->B5 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->d_Tc = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->fd = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->a = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->b = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C4 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C5 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Ixo = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->Ixxo = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C6 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	pv->C7 = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    // The string has double quote marks on each end, which is used by
+	    // the CSV format. So we drop them to have just the plain string left.
+	    tmpbuf.erase(0, 1);
+	    tmpbuf.erase(tmpbuf.size()-1, 1);
+	    pv->Picture = new char[strlen(buf)+1];
+	    strcpy(pv->Picture, tmpbuf.c_str());
+	} else {
+	    pv->Picture = 0;
+	}
+	
+	// This gets messy, as the description string itself may include
+	// commas and/or quotes. So we read to the end of the line, and
+	// for the remaining fields, we work our way backward.
+	in.getline(buf, LINELEN, '\n'); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    if (_enhanced) {
+		// in.getline(buf, LINELEN, ','); // Get a token from the line
+		pos1 = tmpbuf.rfind(",", string::npos);
+		if (pos1 == string::npos) {
+		    cerr << "Comma not found!" << endl;
+		} else {
+		    field = tmpbuf.substr(pos1, string::npos);
+		    field.erase(0, 1);    // erase the comma
+		    if (field.substr(0, 1) == "\"") {
+			field.erase(0, 1);    // erase the double quote
+		    }
+		    if (field.size() > 0) {
+			field.erase(field.size(), 1); // erase last double quote
+			if (field.size() == 1) {
+			    pv->Manufacturer = 0;
+			} else {
+			    pv->Manufacturer = new char[field.size()+1];
+			    strcpy(pv->Manufacturer, field.c_str());
+			    tmpbuf.erase(pos1, string::npos); // erase this part from
+			    // the string
+			}
+		    }
+		}
+		
+		pos1 = tmpbuf.rfind(",", pos1-1);
+		if (pos1 == string::npos) {
+		    cerr << "Comma not found!" << endl;
+		} else {
+		    field = tmpbuf.substr(pos1, string::npos);
+		    field.erase(0, 1);    // erase the comma
+		    if (field.size() > 0) {
+			field.erase(field.size(), string::npos);
+			pv->Price = atof(field.c_str());
+			tmpbuf.erase(pos1, string::npos); // erase this part from
+			// the string
+		    }
+		}
+		tmpbuf.erase(0, 1);   // erase the first double quote
+		// Now erase the trailing double quote
+		if (tmpbuf.substr(tmpbuf.size()-1, 1) == "\"") {
+		    tmpbuf.erase(tmpbuf.size()-1, 2);
+		}
+		if (tmpbuf.substr(tmpbuf.size()-2, 1) == "\"") {
+		    tmpbuf.erase(tmpbuf.size()-2, 2);
+		}
+		
+		pv->Description = new char[tmpbuf.size()+1];
+		strcpy(pv->Description, tmpbuf.c_str());
+	    }
+	} // if _enhanced
+	
+	_data.push_back(pv);
+    }
+    
+    in.close();
+    return lines;
 }
 
 int
 PVPanels::readModuleDataXML(std::string filespec)
 {
-  
+    
 }
 
 vector<string> *
 PVPanels::names(void)
 {
-  vector<pvpanel_t *>::iterator it;
-  vector<string> *pvnames;
-  pvpanel_t *entry;
-  pvnames = new vector<string>;  
-  
-  if (_data.size() == 0) {
-    dbglog << "No PV Panel data in memory" << endl;
+    vector<pvpanel_t *>::iterator it;
+    vector<string> *pvnames;
+    pvpanel_t *entry;
+    pvnames = new vector<string>;  
+    
+    if (_data.size() == 0) {
+	dbglogfile << "No PV Panel data in memory" << endl;
+	return pvnames;
+    }
+    
+    for (it = _data.begin(); it != _data.end(); it++) {
+	entry = *it;
+	pvnames->push_back(entry->Model);
+    }
+    
     return pvnames;
-  }
-  
-  for (it = _data.begin(); it != _data.end(); it++) {
-    entry = *it;
-    pvnames->push_back(entry->Model);
-  }
-  
-  return pvnames;
 }
 
 vector<struct pvpanel *> *
 PVPanels::search(std::string search)
 {
-  std::vector<pvpanel_t *>::iterator it;
-  vector<struct pvpanel *> *pv;
-  pvpanel_t *entry;
-  pv = new vector<struct pvpanel *>;
-
-  if (_data.size() == 0)
-    {
-      dbglog << "No PV Panel data in memory" << endl;
-      return pv;
+    std::vector<pvpanel_t *>::iterator it;
+    vector<struct pvpanel *> *pv;
+    pvpanel_t *entry;
+    pv = new vector<struct pvpanel *>;
+    
+    if (_data.size() == 0) {
+	dbglogfile << "No PV Panel data in memory" << endl;
+	return pv;
     }
-
-  for (it = _data.begin(); it != _data.end(); it++)
-    {
-      if (strstr((*it)->Model, search.c_str())) {
-        entry = *it;
-        pv->push_back(entry);
-      }
+    
+    for (it = _data.begin(); it != _data.end(); it++) {
+	if (strstr((*it)->Model, search.c_str())) {
+	    entry = *it;
+	    pv->push_back(entry);
+	}
     }
-  
-  return pv;
+    
+    return pv;
 }
 
 void
 PVPanels::add(pvpanel_t *pv)
 {
-  _data.push_back(pv);
+    _data.push_back(pv);
 }
 
 void
 PVPanels::writeDatabase(string filespec)
 {
-  ofstream os;
-  ostringstream tmpstr;
-  int lines = -1;
-  vector<pvpanel_t *>::iterator it;
-  pvpanel_t *pv;
-  int i;
-  char *home;
-  string loadfile;
-  struct stat stats;
-  
-  if (_data.size() == 0) {
-    cerr << "No PV data in memory" << endl;
-    return;
-  }
-  
-  if (filespec.size() == 0) {
-    home = getenv("HOME");
+    ofstream os;
+    ostringstream tmpstr;
+    int lines = -1;
+    vector<pvpanel_t *>::iterator it;
+    pvpanel_t *pv;
+    int i;
+    char *home;
+    string loadfile;
+    struct stat stats;
     
-    if (home) {
-      loadfile = home;
-      loadfile += "/.gnuae/modules.csv";
-      if (stat(loadfile.c_str(), &stats) == 0) {
-        filespec = loadfile;
-      } else {
-        loadfile = "/etc/gnuae/modules.csv";
-        if (stat(loadfile.c_str(), &stats) == 0) {
-          filespec = loadfile;
-        }
-      }
+    if (_data.size() == 0) {
+	cerr << "No PV data in memory" << endl;
+	return;
     }
-  }
     
-  os.open(filespec.c_str(), ios::out);
-
-  cerr << "Opening modules file for writing: " << filespec << endl;
-  
-  // Write the headers so this can be imported easier into other programs,
-  // like spreadsheets.
-  os << "Model,Vintage,Area,Material,Series_Cells,Parallel_C-S,Isco,Voco,Impo,Vmpo,aIsc,aImp,C0,C1,BVoco,mBVoc,BVmpo,mBVmp,n,C2,C3,A0,A1,A2,A3,A4,B0,B1,B2,B3,B4,B5,d(Tc),fd,a,b,C4,C5,Ixo,Ixxo,C6,C7,Picture,Description";
-  
-  if (_enhanced) {
-    os << ",Price,Manufacturer";
-  }
-
-  os << endl;
-  
-  for (it = _data.begin(); it != _data.end(); it++) {
-    pv = *it;
-    if (pv->Model == 0) {
-      break;
+    if (filespec.size() == 0) {
+	home = getenv("HOME");
+	
+	if (home) {
+	    loadfile = home;
+	    loadfile += "/.gnuae/modules.csv";
+	    if (stat(loadfile.c_str(), &stats) == 0) {
+		filespec = loadfile;
+	    } else {
+		loadfile = "/etc/gnuae/modules.csv";
+		if (stat(loadfile.c_str(), &stats) == 0) {
+		    filespec = loadfile;
+		}
+	    }
+	}
     }
-
-    if (pv->Model)
-      os << "\"" << pv->Model << "\",";
-    else
-      os << "\"\",";
-    if (pv->Vintage)
-      os << "\"" << pv->Vintage << "\",";
-    else
-      os << "\"\",";
-    os << pv->Area << ",";
-    if (pv->Material)
-      os << "\"" << pv->Material << "\",";
-    else
-      os << "\"\",";
-    os << pv->Series_Cells << ",";
-    os << pv->Parallel_C_S << ",";
-    os << pv->Isco << ",";
-    os << pv->Voco << ",";
-    os << pv->Impo << ",";
-    os << pv->Vmpo << ",";
-    os << pv->aIsc << ",";
-    os << pv->aImp << ",";
-    os << pv->C0 << ",";
-    os << pv->C1 << ",";
-    os << pv->BVoco << ",";
-    os << pv->mBVoc << ",";
-    os << pv->BVmpo << ",";
-    os << pv->mBVmp << ",";
-    os << pv->n << ",";
-    os << pv->C2 << ",";
-    os << pv->C3 << ",";
-    os << pv->A0 << ",";
-    os << pv->A1 << ",";
-    os << pv->A2 << ",";
-    os << pv->A3 << ",";
-    os << pv->A4 << ",";
-    os << pv->B0 << ",";
-    os << pv->B1 << ",";
-    os << pv->B2 << ",";
-    os << pv->B3 << ",";
-    os << pv->B4 << ",";
-    os << pv->B5 << ",";
-    os << pv->d_Tc << ",";
-    os << pv->fd << ",";
-    os << pv->a << ",";
-    os << pv->b << ",";
-    os << pv->C4 << ",";
-    os << pv->C5 << ",";
-    os << pv->Ixo << ",";
-    os << pv->Ixxo << ",";
-    os << pv->C6 << ",";
-    os << pv->C7 << ",";
-    if (pv->Picture)
-      os << "\"" << pv->Picture << "\",";
-    else
-      os << "\"\",";
     
-      if (pv->Description)
-      os << "\"" << pv->Description << "\",";
-    else
-      os << "\"no description\",";
+    os.open(filespec.c_str(), ios::out);
+    
+    cerr << "Opening modules file for writing: " << filespec << endl;
+    
+    // Write the headers so this can be imported easier into other programs,
+    // like spreadsheets.
+    os << "Model,Vintage,Area,Material,Series_Cells,Parallel_C-S,Isco,Voco,Impo,Vmpo,aIsc,aImp,C0,C1,BVoco,mBVoc,BVmpo,mBVmp,n,C2,C3,A0,A1,A2,A3,A4,B0,B1,B2,B3,B4,B5,d(Tc),fd,a,b,C4,C5,Ixo,Ixxo,C6,C7,Picture,Description";
     
     if (_enhanced) {
-      /* Enhanced fields */
-      if (pv->Price)
-        os << pv->Price << ",";
-      else
-        os << ",";
-      if (pv->Manufacturer)
-        os << "\"" << pv->Manufacturer << "\""; 
-      else
-        os << "\"\"";
+	os << ",Price,Manufacturer";
     }
+    
     os << endl;
-    os.flush();
-  }
-
-  os.close(); 
+    
+    for (it = _data.begin(); it != _data.end(); it++) {
+	pv = *it;
+	if (pv->Model == 0) {
+	    break;
+	}
+	
+	if (pv->Model)
+	    os << "\"" << pv->Model << "\",";
+	else
+	    os << "\"\",";
+	if (pv->Vintage)
+	    os << "\"" << pv->Vintage << "\",";
+	else
+	    os << "\"\",";
+	os << pv->Area << ",";
+	if (pv->Material)
+	    os << "\"" << pv->Material << "\",";
+	else
+	    os << "\"\",";
+	os << pv->Series_Cells << ",";
+	os << pv->Parallel_C_S << ",";
+	os << pv->Isco << ",";
+	os << pv->Voco << ",";
+	os << pv->Impo << ",";
+	os << pv->Vmpo << ",";
+	os << pv->aIsc << ",";
+	os << pv->aImp << ",";
+	os << pv->C0 << ",";
+	os << pv->C1 << ",";
+	os << pv->BVoco << ",";
+	os << pv->mBVoc << ",";
+	os << pv->BVmpo << ",";
+	os << pv->mBVmp << ",";
+	os << pv->n << ",";
+	os << pv->C2 << ",";
+	os << pv->C3 << ",";
+	os << pv->A0 << ",";
+	os << pv->A1 << ",";
+	os << pv->A2 << ",";
+	os << pv->A3 << ",";
+	os << pv->A4 << ",";
+	os << pv->B0 << ",";
+	os << pv->B1 << ",";
+	os << pv->B2 << ",";
+	os << pv->B3 << ",";
+	os << pv->B4 << ",";
+	os << pv->B5 << ",";
+	os << pv->d_Tc << ",";
+	os << pv->fd << ",";
+	os << pv->a << ",";
+	os << pv->b << ",";
+	os << pv->C4 << ",";
+	os << pv->C5 << ",";
+	os << pv->Ixo << ",";
+	os << pv->Ixxo << ",";
+	os << pv->C6 << ",";
+	os << pv->C7 << ",";
+	if (pv->Picture)
+	    os << "\"" << pv->Picture << "\",";
+	else
+	    os << "\"\",";
+	
+	if (pv->Description)
+	    os << "\"" << pv->Description << "\",";
+	else
+	    os << "\"no description\",";
+	
+	if (_enhanced) {
+	    /* Enhanced fields */
+	    if (pv->Price)
+		os << pv->Price << ",";
+	    else
+		os << ",";
+	    if (pv->Manufacturer)
+		os << "\"" << pv->Manufacturer << "\""; 
+	    else
+		os << "\"\"";
+	}
+	os << endl;
+	os.flush();
+    }
+    
+    os.close(); 
 }
 
+} // end of gnuae namespace
 
-
+#if 0
 // This is for the C API. We have to instantiate a class for the C API
 // code to operate on.
 static PVPanels _pv;
@@ -707,8 +708,7 @@ extern "C" {
   }
 
   int
-  module_names(const char **namelist)
-  {
+  module_names(const char **namelist) {
     vector<string>::iterator it;
     vector<string> *pvnames;
     string entry;
@@ -717,7 +717,7 @@ extern "C" {
     pvnames = _pv.names();
     
     if (pvnames->size() == 0) {
-      dbglog << "No PV Panel data in memory" << endl;
+      dbglogfile << "No PV Panel data in memory" << endl;
       return 0;
     }
                 
@@ -725,15 +725,14 @@ extern "C" {
     for (it = pvnames->begin(); it != pvnames->end(); it++) {
       entry = *it;
       namelist[i++] = strdup(entry.c_str());
-      //      dbglog << "NAMELIST " << namelist[i-1] << endl;
+      //      dbglogfile << "NAMELIST " << namelist[i-1] << endl;
     }
     
     
     namelist[i++] = "eof";
-    dbglog << "EOF" << endl;
+    dbglogfile << "EOF" << endl;
 
     return pvnames->size();
-  }
 }
 
 #if 0
@@ -774,7 +773,8 @@ PVPanels::setPVPanels(std::vector<struct pvpanel *> ptr)
   _data = ptr;
 }
 #endif
-
+#endif
+    
 // local Variables:
 // mode: C++
 // indent-tabs-mode: t

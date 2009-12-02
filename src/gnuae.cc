@@ -15,12 +15,46 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+#include <iostream>
 #include "gnuae.h"
+#include "log.h"
+
+using namespace std;
 
 namespace gnuae {
 
-GnuAE::GnuAE() {
+GnuAE&
+GnuAE::getDefaultInstance()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    static GnuAE gae;
+    return gae;
+}    
 
+GnuAE::~GnuAE()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+}
+
+void
+GnuAE::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    _loads.dump();
+    _batteries.dump();
+    _pvpanels.dump();
+    _centers.dump();
+    _inverters.dump();
+    _chargers.dump();
+    _combiners.dump();
+    _pumps.dump();
+    _wire.dump();
+
+    if (_usesql) {
+        cerr << "Using SQL Queries" << endl;
+    } else {
+        cerr << "Not using SQL Queries" << endl;
+    }
 }
 
 } // end of gnuae namespace

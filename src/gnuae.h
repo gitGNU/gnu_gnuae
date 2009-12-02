@@ -16,6 +16,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #ifndef __GNUAE_H__
+#define __GNUAE_H__ 1
 
 #include "Database.h"
 #include "Battery.h"
@@ -28,15 +29,17 @@
 #include "Pumps.h"
 #include "Wire.h"
 
-namespace gnuae 
-{
+namespace gnuae {
 
-class GnuAE
-{
+class GnuAE : public Database {
 public:
-    GnuAE();
+    static GnuAE& getDefaultInstance();
+    ~GnuAE();
+    void useSQL(bool x) { _usesql = x; };
+    bool useSQL() { return _usesql; };
+
+    void dump();
 private:
-    Database	_db;
     Battery	_batteries;
     Centers	_centers;
     Chargers	_chargers;
@@ -46,8 +49,8 @@ private:
     PVPanels	_pvpanels;
     Pumps	_pumps;
     Wire	_wire;
+    bool	_usesql;
 };
-
     
 } // end of gnuae namespace
 

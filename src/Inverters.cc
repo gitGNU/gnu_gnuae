@@ -56,6 +56,21 @@ extern "C" {
   };
 };
 
+
+Inverters::Inverters() {
+}
+
+Inverters::~Inverters() {
+}
+
+void
+Inverters::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    cerr << "No Inverter data in memory." << endl;
+    
+}
+
 // local Variables:
 // mode: C++
 // indent-tabs-mode: t

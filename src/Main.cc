@@ -26,10 +26,19 @@
 #include <getopt.h>
 #include <iostream>
 
-#include "PVPanel.h"
-#include "log.h"
 #include "Database.h"
+#include "Battery.h"
+#include "Centers.h"
+#include "Chargers.h"
+#include "Combiners.h"
+#include "Inverters.h"
+#include "Loads.h"
+#include "PVPanel.h"
+#include "Pumps.h"
+#include "Wire.h"
+#include "log.h"
 #include "tcpip.h"
+#include "gnuae.h"
 
 using namespace std;
 using namespace gnuae;
@@ -37,6 +46,7 @@ using namespace gnuae;
 static void usage (const char *);
 
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
 
 int
 main(int argc, char **argv) {
@@ -66,7 +76,7 @@ main(int argc, char **argv) {
 	}
     }
     
-    while ((c = getopt (argc, argv, "dhvs:l:m:r:u:p:")) != -1) {
+    while ((c = getopt (argc, argv, "dhvs:l:m:r:u:p:x")) != -1) {
 	switch (c) {
 	  case 'd':
 	      dump = true;        
@@ -95,16 +105,24 @@ main(int argc, char **argv) {
 	      
 	  case 'r':
 	      hostname = optarg;
+	      gdata.dbHostSet(hostname);
 	      break;
 	      
 	      // Specify database user name.
 	  case 'u': 
 	      user = optarg;
+	      gdata.dbUserSet(user);
 	      break;
 	      
 	      // Specify database user password.
 	  case 'p':
 	      passwd = optarg;
+	      gdata.dbPasswdSet(passwd);
+	      break;
+	      
+	  case 'x':
+	      gdata.useSQL(true);
+	      dbglogfile << "Will use SQL queries instead of memory resident" << endl;
 	      break;
 	      
 	  default:
@@ -112,25 +130,14 @@ main(int argc, char **argv) {
 	      exit(0);
 	}
     }
-
-#if 0
-    Tcpip tcpip;
-    // tcpip.toggleDebug(true);
-    if (tcpip.createNetClient(hostname)) {
-	dbglogfile << hostname << endl;
-    }
-#endif
-
-    Database db;
-    db.openDB();
     
-    if (!logopen)
+    if (!logopen) {
 	dbglogfile.Open (DEFAULT_LOGFILE);
-	
+    }
 #if 0
-	if (mod_filespec.size() == 0) {
-		mod_filespec = "/home/rob/projects/gnu/gnuae/data/Modules.csv";
-	    }
+    if (mod_filespec.size() == 0) {
+	mod_filespec = "/home/rob/projects/gnu/gnuae/data/Modules.csv";
+    }
 #endif
     
     // cout << "Using " << mod_filespec << " for PV Modules data file" << endl;
@@ -139,14 +146,16 @@ main(int argc, char **argv) {
     //  usage (argv[0]);
     
     // if (pv.readModuleDataCSV(mod_filespec)) {
-	
+    
     // } else {
     // 	cerr << "Couldn't open PV module data file " << mod_filespec << endl;
     // }  
     
+    gdata.openDB();
+    
     // Dump the data in the data base
     if (dump) {
-	pv.dump();
+	gdata.dump();
     }
     
     // Search the database for all entries that match the search string
@@ -165,15 +174,14 @@ main(int argc, char **argv) {
 static void
 usage (const char *prog)
 {
-    cerr << "This program ...." << endl;
-    cerr << "Usage: " << prog << "[dlhv]" << endl;
+    cerr << "Usage: " << prog << "[dlhvrup]" << endl;
     cerr << "-h\tHelp" << endl;
     cerr << "-m\tPV Modules data file name" << endl;
     cerr << "-l\tLogfile name" << endl;
     cerr << "-d\tDump PV Modules data" << endl;
     cerr << "-s\tDump a specific model's data" << endl;
     cerr << "-v\tVerbose mode" << endl;
-    cerr << "-m\tRemote Machine (localhost)" << endl;
+    cerr << "-r\tRemote Machine (localhost)" << endl;
     cerr << "-u\tRemote Machine user" << endl;
     cerr << "-p\tRemote Machine password" << endl;
     exit (-1);

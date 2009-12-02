@@ -35,28 +35,28 @@ typedef struct
 
 #include <map>
 
-namespace gnuae
-{
-  class Combiners
-    {
-    public:
-      Combiners(void);
-      ~Combiners(void);      
-    private:
-      //      std::map<std::string, combiners_t> batteries;
-    };
+namespace gnuae {
+class Combiners {
+public:
+    Combiners(void);
+    ~Combiners(void);      
+    void dump();
+private:
+    //      std::map<std::string, combiners_t> batteries;
 };
+
+} // end of gnuae namespace
 
 extern "C" {
 #else
 // C API goes here
-  extern combiner_t combiners[];
+    extern combiner_t combiners[];
 #endif
-
+    
 #ifdef __cplusplus
 }
 #endif
-  
+
 // __COMBINERS_H__
 #endif
 

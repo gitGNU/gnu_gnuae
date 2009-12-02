@@ -38,15 +38,18 @@ typedef struct
 
 namespace gnuae
 {
-  class Battery
-    {
-    public:
-      Battery(void);
-      ~Battery(void);      
-    private:
-      //      std::map<std::string, battery_t> batteries;
-    };
+
+class Battery {
+public:
+    Battery(void);
+    ~Battery(void);      
+    
+    void dump();  
+private:
+    //      std::map<std::string, battery_t> batteries;
 };
+
+} // end of gnuae namespace
 
 extern "C" {
 #else

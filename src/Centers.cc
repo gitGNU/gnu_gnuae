@@ -31,7 +31,8 @@
 #include "Centers.h"
 
 using namespace std;
-using namespace gnuae;
+
+namespace gnuae {
 
 extern "C" {
   
@@ -53,6 +54,24 @@ extern "C" {
     {                0,                    0,      0,  0 }
   };
 };
+
+Centers::Centers() {
+
+};
+
+Centers::~Centers() {
+
+};
+
+void
+Centers::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    cerr << "No Load Centers data in memory." << endl;
+    
+}
+
+} // end of gnuae namespace
 
 // local Variables:
 // mode: C++

@@ -27,7 +27,8 @@
 #include "Combiners.h"
 
 using namespace std;
-using namespace gnuae;
+
+namespace gnuae {
 
 extern "C" {
   
@@ -41,6 +42,24 @@ extern "C" {
     { 0, 0, 0.0, 0, 0 }
   };
 };
+
+Combiners::Combiners() {
+
+}
+
+Combiners::~Combiners() {
+
+}
+
+void
+Combiners::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    cerr << "No Combiners data in memory." << endl;
+    
+}
+
+} // end of gnuae namespace
 
 // local Variables:
 // mode: C++

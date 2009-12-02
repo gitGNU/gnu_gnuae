@@ -56,11 +56,11 @@ extern const char *loadgroup_strs[];
 
 namespace gnuae
 {
-  class Load: public DataTypeMethods<load_t>
+  class Loads: public DataTypeMethods<load_t>
     {
     public:
-      Load(void);
-      ~Load(void);
+      Loads(void);
+      ~Loads(void);
       void dump(void);
       void dump(load_t *load);
       void writeLoads(std::string);

@@ -34,8 +34,7 @@ typedef struct
 
 #include <map>
 
-namespace gnuae
-{
+namespace gnuae {
   class Centers
     {
     public:

@@ -55,7 +55,7 @@ namespace gnuae
     private:
       //      std::map<std::string, chargers_t> batteries;
     };
-};
+} // end of gnuae namespace
 
 extern "C" {
 #else

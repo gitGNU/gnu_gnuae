@@ -33,8 +33,10 @@
 #include "DataType.h"
 
 using namespace std;
-using namespace gnuae;
 
+namespace gnuae {
+
+#if 0
 std::vector<std::string> *names(void)
 {
   // std::map<std::string, datatype *>::const_iterator it;
@@ -54,7 +56,10 @@ std::vector<std::string> *names(void)
   }
   return entrynames;
 }
-  
+#endif
+
+} // end of gnuae namespace
+
 // local Variables:
 // mode: C++
 // indent-tabs-mode: t

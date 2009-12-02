@@ -20,116 +20,156 @@
 #include "config.h"
 
 #include <string>
+#include <cstring>
 #include <cstdlib>
 #include <cstdio>
 #include <getopt.h>
 #include <iostream>
 
 #include "PVPanel.h"
+#include "log.h"
+#include "tcpip.h"
 
 using namespace std;
+using namespace gnuae;
 
 static void usage (const char *);
 
-
+int
 main(int argc, char **argv) {
-  int c, status, result;
-  bool logopen = false;
-  const char *errmsg;
-  char buf[30];
-  bool dump = false;
-  string mod_filespec, search;
-  PVPanels pv;
-  pvpanel_t *entry;
-  
-  while ((c = getopt (argc, argv, "dhvs:l:m:")) != -1) {
-    switch (c) {
-    case 'd':
-      dump = true;        
-      break;
-      
-    case 'l':
-      logopen = true;
-      //      dbglog.Open (optarg);
-      break;
-      
-    case 'm':
-      mod_filespec = optarg;
-      break;
-      
-    case 's':
-      search = optarg;
-      break;
-      
-    case 'h':
-      usage (argv[0]);
-      break;
-      
-    case 'v':
-      //      dbglog.set_verbosity();
-      cout << "Verbose output turned on" << endl;
-      break;
-      break;
-      
-    default:
-      usage (argv[0]);
-      break;
-    }
-  }
-  
-  if (!logopen)
-    //    dbglog.Open (DEFAULT_LOGFILE);
-
-  if (mod_filespec.size() == 0)
-    {
-      mod_filespec = "/home/rob/projects/gnu/gnuae/data/Modules.csv";
-    }
-
-  cout << "Using " << mod_filespec << " for PV Modules data file" << endl;
-
-  //  if (optind + 1 != argc)
-  //  usage (argv[0]);
-
-  if (pv.readModuleDataCSV(mod_filespec)) {
+    int c, status, result;
+    bool logopen = false;
+    const char *errmsg;
+    char buf[30];
+    bool dump = false;
+    string mod_filespec, search;
+#if 0
+    PVPanels pv;
+    pvpanel_t *entry;
+#endif
     
-  } else {
-    cerr << "Couldn't open PV module data file " << mod_filespec << endl;
-  }  
-  
-  // Dump the data in the data base
-  if (dump)
-    {
-      pv.dump();
+    string      hostname;
+    string      user;
+    string      passwd;
+    
+    // scan for the two main standard GNU options
+    for (c=0; c<argc; c++) {
+	if (strcmp("--help", argv[c]) == 0) {
+	    usage(argv[0]);
+	    exit(0);
+	}
+	if (strcmp("--version", argv[c]) == 0) {
+	    cerr << "GnuAE version: " << VERSION << endl;
+	    // fprintf (stderr, "GnuAE version: %s\n", VERSION);
+	    exit(0);
+	}
+    }
+    
+    while ((c = getopt (argc, argv, "dhvs:l:m:r:u:p:")) != -1) {
+	switch (c) {
+	  case 'd':
+	      dump = true;        
+	      break;
+	      
+	  case 'l':
+	      logopen = true;
+	      //      dbglog.Open (optarg);
+	      break;
+	      
+	  case 'm':
+	      mod_filespec = optarg;
+	      break;
+	      
+	  case 's':
+	      search = optarg;
+	      break;
+	      
+	  case 'h':
+	      usage (argv[0]);
+	      break;
+	      
+	  case 'v':
+	      // dbglog.set_verbosity();
+	      break;
+	      
+	  case 'r':
+	      hostname = optarg;
+	      break;
+	      
+	      // Specify database user name.
+	  case 'u': 
+	      user = optarg;
+	      break;
+	      
+	      // Specify database user password.
+	  case 'p':
+	      passwd = optarg;
+	      break;
+	      
+	  default:
+	      usage (argv[0]);
+	      exit(0);
+	}
     }
 
-  // Search the database for all entries that match the search string
-  if (search.size()) {
-    vector<pvpanel_t *>::iterator it;
-    vector<pvpanel_t *> *pvary;
-    pvary = pv.search(search);
+    Tcpip tcpip;
+    if (tcpip.createNetClient(hostname)) {
+	// dbglogfile << hostname << endl;
+    }
 
-    for (it = pvary->begin(); it != pvary->end(); it++)
-      {
-        entry = *it;
-        pv.dump(entry);
-      }
-  }
-  
+#if 0
+    if (!logopen)
+	//    dbglog.Open (DEFAULT_LOGFILE);
+	
+	if (mod_filespec.size() == 0) {
+		mod_filespec = "/home/rob/projects/gnu/gnuae/data/Modules.csv";
+	    }
+    
+    // cout << "Using " << mod_filespec << " for PV Modules data file" << endl;
+    
+    //  if (optind + 1 != argc)
+    //  usage (argv[0]);
+    
+    // if (pv.readModuleDataCSV(mod_filespec)) {
+	
+    // } else {
+    // 	cerr << "Couldn't open PV module data file " << mod_filespec << endl;
+    // }  
+    
+    // Dump the data in the data base
+    if (dump) {
+	pv.dump();
+    }
+    
+    // Search the database for all entries that match the search string
+    if (search.size()) {
+	vector<pvpanel_t *>::iterator it;
+	vector<pvpanel_t *> *pvary;
+	pvary = pv.search(search);
+	
+	for (it = pvary->begin(); it != pvary->end(); it++) {
+	    entry = *it;
+	    pv.dump(entry);
+	}
+    }    
+#endif
 }
 
 static void
 usage (const char *prog)
 {
-  fprintf (stderr, "This program ....\n"
-           );
-  fprintf (stderr, "Usage: %s [dlhv]\n", prog);
-  fprintf (stderr, "-h\tHelp\n");
-  fprintf (stderr, "-m\tPV Modules data file name\n");
-  fprintf (stderr, "-l\tLogfile name\n");
-  fprintf (stderr, "-d\tDump PV Modules data\n");
-  fprintf (stderr, "-s\tDump a specific model's data\n");
-  fprintf (stderr, "-v\tVerbose mode\n");
-  exit (-1);
+    cerr << "This program ...." << endl;
+    cerr << "Usage: " << prog << "[dlhv]" << endl;
+    cerr << "-h\tHelp" << endl;
+    cerr << "-m\tPV Modules data file name" << endl;
+    cerr << "-l\tLogfile name" << endl;
+    cerr << "-d\tDump PV Modules data" << endl;
+    cerr << "-s\tDump a specific model's data" << endl;
+    cerr << "-v\tVerbose mode" << endl;
+    cerr << "-m\tRemote Machine (localhost)" << endl;
+    cerr << "-u\tRemote Machine user" << endl;
+    cerr << "-p\tRemote Machine password" << endl;
+    exit (-1);
 }
 
 // local Variables:

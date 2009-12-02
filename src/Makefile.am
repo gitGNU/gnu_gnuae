@@ -34,10 +34,13 @@ INCLTDL = # @INCLTDL@
 # ABELLIB = ../../abelmon/libabel
 ABELLIB =
 
-lib_LTLIBRARIES = libgnuaec.la
+# lib_LTLIBRARIES = libgnuae.la
 
-libgnuaec_la_SOURCES = PVPanel.cc \
+SRC = PVPanel.cc PVPanel.h \
+	NEC.cc NEC.h nec_tables.h \
 	Wire.cc Wire.h \
+	tcpip.cc tcpip.h \
+	tcputil.cc tcputil.h \
 	SandiaCalc.cc SandiaCalc.h \
 	PhantasmCalc.cc PhantasmCalc.h \
 	Loads.cc Loads.h \
@@ -47,19 +50,17 @@ libgnuaec_la_SOURCES = PVPanel.cc \
 	Chargers.cc Chargers.h \
 	Combiners.cc Combiners.h \
 	Centers.cc Centers.h \
-	NEC.cc NEC.h nec_tables.h \
 	MySQL.cc Database.h \
 	log.h log.cc \
-	err.h err.cc
+	err.h err.cc \
+	DataType.cc DataType.h
 
-# 	DataType.cc DataType.h
+bin_PROGRAMS =  gnuae # neccalc
 
-bin_PROGRAMS = neccalc gnuae
+gnuae_SOURCES = Main.cc  $(SRC) 
+gnuae_LDADD = $(MYSQL_LIBS) # libgnuae.la 
+# gnuae_DEPENDENCIES = libgnuae.la
 
-gnuae_SOURCES = Main.cc
-gnuae_LDADD = -lgnuaec $(MYSQL_LIBS)
-
-neccalc_SOURCES = NECcalc.cc
-neccalc_LDADD = -lgnuaec $(MYSQL_LIBS)
-
+# neccalc_SOURCES = NECcalc.cc
+# neccalc_LDADD =  $(MYSQL_LIBS) libgnuae.la 
 

@@ -70,12 +70,10 @@ int LogFile::verbose;
 
 const unsigned char hexchars[]="0123456789abcdef";
 
-// Instantiate the log file
-LogFile dbglogfile;
-
 extern "C" char digit2hex(int);
 extern "C" int hex2digit (int);
 
+// LogFile& dbglogfile = LogFile::getDefaultInstance();
 
 ostream& operator<<(ostream& os, Verbose& b) {
   // dbglogfile.verbosity(b);
@@ -142,28 +140,16 @@ ostream &operator<<(ostream &os, LogFile &l) {
     return os << l.GetEntry();
 }
 
-// Make sure we can print outself to an output stream
+LogFile&
+LogFile::getDefaultInstance()
+{
+	static LogFile o;
+	return o;
+}
 
 const char *
 LogFile::GetEntry(void) {
     return logentry.c_str();
-}
-
-// Default constructor
-LogFile::LogFile (void) {
-    verbose = 0;
-    stamp = true;
-    LogFile::outstream.open (DEFAULT_LOGFILE, ios::out);
-    state = OPEN;
-}
-
-LogFile::LogFile (const char *filespec) {
-    verbose = 0;
-    stamp = true;
-    if (state == OPEN)
-      LogFile::outstream.close ();
-    LogFile::outstream.open (filespec, ios::out);
-    state = OPEN;
 }
 
 retcode_t

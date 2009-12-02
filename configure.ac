@@ -93,13 +93,6 @@ dnl   no)  asserts=no ;;
 dnl   *)   AC_MSG_ERROR(bad value ${enableval} for enable-assert option) ;;
 dnl esac])
 
-dnl AM_CONDITIONAL(CYGWIN, test x$CYGWIN = xyes)
-
-dnl AC_CONFIG_SUBDIRS(example/calc)
-
-dnl AC_CONFIG_LINKS(ext/NEC.cc:src/NEC.cc)
-dnl AC_CONFIG_LINKS(ext/NEC.cpp:src/NEC.cc)
-
 AC_OUTPUT(Makefile
 src/Makefile
 php/Makefile

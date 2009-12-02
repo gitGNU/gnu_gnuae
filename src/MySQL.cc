@@ -45,9 +45,10 @@ using namespace std;
 
 namespace gnuae {
 
+LogFile& dbglogfile = LogFile::getDefaultInstance();
+
 const int LINELEN = 80;
 const int QUERYLEN = 10000;
-extern LogFile dbglogfile;
 
 Database::Database()
     : _dbtype(NODB), _dbport(0)

@@ -30,6 +30,8 @@
 
 #include "Loads.h"
 
+namespace gnuae {
+
 template <class datatype>
 class DataTypeMethods
 {
@@ -59,7 +61,6 @@ public:
     
     std::vector<std::string> *dataNames(void) {
         // std::map<std::string, datatype *>::const_iterator itttt;
-        std::map<std::string, load_t *>::const_iterator it;
         // std::map<std::string, void *>::const_iterator it ;
         std::vector<std::string> *entrynames;
         datatype *entry;
@@ -70,6 +71,7 @@ public:
             return entrynames;
         }
         
+        std::map<std::string, load_t *>::const_iterator it;
         for (it = _data.begin(); it != _data.end(); it++) {
             entry = static_cast<datatype *>(it->second);
             entrynames->push_back(entry->name);
@@ -98,6 +100,8 @@ public:
 private:
     std::map<std::string, datatype *> _data;
 };
+
+} // end of gnuae namespace
 
 // __DATATYPE_H__
 #endif

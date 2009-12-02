@@ -55,10 +55,9 @@ public:
 std::string timestamp();
 
 // This is a basic file logging class
-class LogFile { // public std::ofstream {
+class LogFile { 
 public:
-  LogFile (void);
-  LogFile (const char *);
+  static LogFile& getDefaultInstance();
   ~LogFile(void) {
     if (state == OPEN) {
       //      flush();
@@ -119,28 +118,25 @@ private:
   friend std::ostream & operator << (std::ostream &os, LogFile& e);
 };
 
-extern LogFile dbglogfile;
-
 struct __Host_Function_Report__ {
     const char *func;
 
     __Host_Function_Report__(void) {
-      if (dbglogfile.GetState() == LogFile::OPEN)
-	dbglogfile  << "enter" << std::endl;
+      std::cerr  << "enter" << std::endl;
     }
 
     __Host_Function_Report__(char *_func) {
         func = _func;
-	dbglogfile << func << " enter" << std::endl;
+	std::cerr << func << " enter" << std::endl;
     }
 
     __Host_Function_Report__(const char *_func) {
         func = _func;
-	dbglogfile << func << " enter" << std::endl;
+	std::cerr << func << " enter" << std::endl;
     }
 
     ~__Host_Function_Report__(void) {
-	dbglogfile << func << " return" << std::endl;
+      std::cerr << func << " return" << std::endl;
     }
 };
 

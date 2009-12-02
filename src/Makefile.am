@@ -24,7 +24,8 @@ FULLVERSION = $(VERSION).3
 
 SUBDIRS = # testsuite
 
-INCLUDES = #-I$(srcdir)/../../abelmon/libabel
+INCLUDES = -I$(srcdir) \
+	$(MYSQL_CFLAGS)
 
 # We don't need libdl cause we're not loading any shared modules directly
 DL_LIB = # @DL_LIB@
@@ -46,22 +47,19 @@ libgnuaec_la_SOURCES = PVPanel.cc \
 	Chargers.cc Chargers.h \
 	Combiners.cc Combiners.h \
 	Centers.cc Centers.h \
-	NEC.cc NEC.h nec_tables.h
+	NEC.cc NEC.h nec_tables.h \
+	MySQL.cc Database.h \
+	log.h log.cc \
+	err.h err.cc
 
 # 	DataType.cc DataType.h
 
 bin_PROGRAMS = neccalc gnuae
 
 gnuae_SOURCES = Main.cc
-dnl gnuae_LDADD = $(ABELLIB)/libabel.la -lgnuaec $(LIBLTDL) "-dlopen" self
-dnl gnuae_DEPENDENCIES = $(ABELLIB)/libabel.la libgnuaec.la $(LIBLTDL)
-gnuae_LDADD = -lgnuaec $(LIBLTDL) "-dlopen" self
-gnuae_DEPENDENCIES = libgnuaec.la $(LIBLTDL)
+gnuae_LDADD = -lgnuaec $(MYSQL_LIBS)
 
 neccalc_SOURCES = NECcalc.cc
-dnl neccalc_LDADD = $(ABELLIB)/libabel.la -lgnuaec $(LIBLTDL) "-dlopen" self
-neccalc_LDADD = -lgnuaec $(LIBLTDL) "-dlopen" self
-dnl neccalc_DEPENDENCIES = $(ABELLIB)/libabel.la libgnuaec.la $(LIBLTDL)
-neccalc_DEPENDENCIES = libgnuaec.la $(LIBLTDL)
+neccalc_LDADD = -lgnuaec $(MYSQL_LIBS)
 
 

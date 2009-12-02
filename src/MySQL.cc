@@ -45,7 +45,7 @@ using namespace std;
 
 namespace gnuae {
 
-LogFile& dbglogfile = LogFile::getDefaultInstance();
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
 
 const int LINELEN = 80;
 const int QUERYLEN = 10000;

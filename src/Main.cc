@@ -35,6 +35,8 @@ using namespace gnuae;
 
 static void usage (const char *);
 
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+
 int
 main(int argc, char **argv) {
     int c, status, result;
@@ -43,10 +45,8 @@ main(int argc, char **argv) {
     char buf[30];
     bool dump = false;
     string mod_filespec, search;
-#if 0
     PVPanels pv;
     pvpanel_t *entry;
-#endif
     
     string      hostname;
     string      user;
@@ -73,7 +73,7 @@ main(int argc, char **argv) {
 	      
 	  case 'l':
 	      logopen = true;
-	      //      dbglog.Open (optarg);
+	      dbglogfile.Open (optarg);
 	      break;
 	      
 	  case 'm':
@@ -89,7 +89,7 @@ main(int argc, char **argv) {
 	      break;
 	      
 	  case 'v':
-	      // dbglog.set_verbosity();
+	      dbglogfile.set_verbosity();
 	      break;
 	      
 	  case 'r':
@@ -113,17 +113,19 @@ main(int argc, char **argv) {
     }
 
     Tcpip tcpip;
+    // tcpip.toggleDebug(true);
     if (tcpip.createNetClient(hostname)) {
-	// dbglogfile << hostname << endl;
+	dbglogfile << hostname << endl;
     }
 
-#if 0
     if (!logopen)
 	//    dbglog.Open (DEFAULT_LOGFILE);
 	
+#if 0
 	if (mod_filespec.size() == 0) {
 		mod_filespec = "/home/rob/projects/gnu/gnuae/data/Modules.csv";
 	    }
+#endif
     
     // cout << "Using " << mod_filespec << " for PV Modules data file" << endl;
     
@@ -152,7 +154,6 @@ main(int argc, char **argv) {
 	    pv.dump(entry);
 	}
     }    
-#endif
 }
 
 static void

@@ -76,7 +76,7 @@ main(int argc, char **argv) {
 	}
     }
     
-    while ((c = getopt (argc, argv, "dhvs:l:m:r:u:p:x")) != -1) {
+    while ((c = getopt (argc, argv, "dhvs:l:m:r:u:p:xc")) != -1) {
 	switch (c) {
 	  case 'd':
 	      dump = true;        
@@ -125,6 +125,11 @@ main(int argc, char **argv) {
 	      dbglogfile << "Will use SQL queries instead of memory resident" << endl;
 	      break;
 	      
+	  case 'c':
+	      gdata.useCSV(true);
+	      dbglogfile << "Will use CSV files to load memory resident" << endl;
+	      break;
+	      
 	  default:
 	      usage (argv[0]);
 	      exit(0);
@@ -152,6 +157,7 @@ main(int argc, char **argv) {
     // }  
     
     gdata.openDB();
+    gdata.loadData();
     
     // Dump the data in the data base
     if (dump) {

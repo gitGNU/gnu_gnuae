@@ -39,9 +39,15 @@ public:
     
     void useSQL(bool x) { _usesql = x; };
     bool useSQL() { return _usesql; };
+
     void useCSV(bool x) { _usecsv = x; };
     bool useCSV() { return _usecsv; };
+    
+    void setDataDir(std::string &x) { _datadir = x; };
+    std::string &getDataDir() { return _datadir; };
 
+    bool loadData();
+    
     void dump();
 private:
     Battery	_batteries;
@@ -55,6 +61,7 @@ private:
     Wire	_wire;
     bool	_usesql;
     bool	_usecsv;
+    std::string _datadir;
 };
     
 } // end of gnuae namespace

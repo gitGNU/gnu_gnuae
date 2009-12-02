@@ -26,8 +26,7 @@ enum loadtype  { NOLOAD, AC, DC };
 enum activedev { INACTIVE, ACTIVE };
 enum loadgroup { NOGROUP, HOUSEHOLD, TOOLS, KITCHEN, DIGITAL };
 
-typedef struct load 
-{
+typedef struct load {
   char  *name;
   char  *description;
   enum loadtype type;
@@ -42,53 +41,58 @@ typedef struct load
   int    active;
 } load_t;
 
-
 #ifdef __cplusplus
 
 extern "C" {
 extern const char *load_strs[];
 extern const char *loadgroup_strs[];
 }
+
 #include <map>
 #include <vector>
 #include <string>
 #include "DataType.h"
+#include "Database.h"
 
-namespace gnuae
-{
-  class Loads: public DataTypeMethods<load_t>
-    {
-    public:
-      Loads(void);
-      ~Loads(void);
-      void dump(void);
-      void dump(load_t *load);
-      void writeLoads(std::string);
-      int readLoadsCSV(std::string);
-      // Calculated Array values
-      int calcArrayAmps(void);
-      int calcArraySeries(void);
-      int calcArrayParallel(void);
-      int calcArrayTotal(void);
+namespace gnuae {
 
-      // Calculated Battery values
-      int calcBatteryAmps(void);
-      int calcBatterySeries(void);
-      int calcBatteryParallel(void);
-      int calcBatteryTotal(void);
+class Loads: public DataTypeMethods<load_t> {
+public:
+    Loads(void);
+    ~Loads(void);
+    void writeLoads(std::string);
+    int readLoadsCSV();
+    int readLoadsCSV(std::string);
+    int readLoadsSQL(Database &db);
+    
+    // Calculated Array values
+    int calcArrayAmps(void);
+    int calcArraySeries(void);
+    int calcArrayParallel(void);
+    int calcArrayTotal(void);
+    
+    // Calculated Battery values
+    int calcBatteryAmps(void);
+    int calcBatterySeries(void);
+    int calcBatteryParallel(void);
+    int calcBatteryTotal(void);
 
-      // These are the calculated Values
-      double calcWatts(load_t *load);
-      double calcWatts(void);
-      double calcAmps(void);
-      double calcAmps(load_t *load);
-      double calcHoursDaily(void);
-      double calcHoursDaily(load_t *load);
-      std::vector<std::string> *names(void);
-    private:
-      bool _debug;
-    };
+    // These are the calculated Values
+    double calcWatts(load_t *load);
+    double calcWatts(void);
+    double calcAmps(void);
+    double calcAmps(load_t *load);
+    double calcHoursDaily(void);
+    double calcHoursDaily(load_t *load);
+    std::vector<std::string> *names(void);
+
+    // Dump data of course
+    void dump(void);
+    void dump(load_t *load);
+private:
+    bool _debug;
 };
+} // end of gnuae namespace
 
 extern "C" {
 #else

@@ -16,12 +16,17 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <iostream>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <cstdlib> 
 #include "gnuae.h"
 #include "log.h"
 
 using namespace std;
 
 namespace gnuae {
+
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
 
 GnuAE&
 GnuAE::getDefaultInstance()
@@ -36,11 +41,33 @@ GnuAE::GnuAE()
       _usecsv(false)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    char *home = getenv("HOME");
+    if (home) {
+        // The default data directory is the user's home config directory.
+        _datadir = home;
+        _datadir += "/.gnuae";
+    } else {
+        _datadir = "/etc/gnuae/";
+    }
 }
 
 GnuAE::~GnuAE()
 {
     // DEBUGLOG_REPORT_FUNCTION;
+}
+
+bool
+GnuAE::loadData()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    if (_usecsv) {
+        dbglogfile << "Loading CSV files as data source." << endl;
+        _loads.readLoadsCSV();
+    } else {
+        dbglogfile << "Loading from SQL Database as data source." << endl;
+        _loads.readLoadsSQL(*this);
+    }
+
 }
 
 void

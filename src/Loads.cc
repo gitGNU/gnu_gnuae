@@ -41,9 +41,14 @@
 #endif
 
 #include "Loads.h"
+#include "log.h"
+#include "gnuae.h"
 
 using namespace std;
-using namespace gnuae;
+namespace gnuae {
+
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
 
 extern "C" {
   const char *load_strs[] =  {
@@ -62,7 +67,7 @@ extern "C" {
 
   const int LINELEN = 1024;
   const int FIELDLEN = 512;
-  
+#if 0
   load_t loads[] = {
     // DC loads
     { "Wireless Phone", "Telemobile PTEL Wireless Phone",DC, HOUSEHOLD, 12.,    3., 0., 0, 1, 0.25, 1, 0 },
@@ -122,38 +127,13 @@ extern "C" {
 #endif
     { 0, 0, NOLOAD, NOGROUP, 0., 0., 0., 0, 0, 0., 0, 0 }
   };
+#endif
 };
 
 Loads::Loads(void)
-{
-  int i;
-  char *home;
-  string loadfile;
-  struct stat stats;
-
-  home = getenv("HOME");
-
-  if (home) {
-    loadfile = home;
-    loadfile += "/.gnuae/loads.csv";
-    if (stat(loadfile.c_str(), &stats) == 0) {
-      readLoadsCSV(loadfile);
-      return;
-    }
-    loadfile = "/etc/gnuae/loads.csv";
-    if (stat(loadfile.c_str(), &stats) == 0) {
-      readLoadsCSV(loadfile);
-      return;
-    }
-  }
+{    
   
-  for (i=0; loads[i].name!=0; i++)
-    {
-      //      _loaddata.insert( make_pair( loads[i].name, (load_t *)&loads[i]) );
-      addEntry(&loads[i]);
-    }
 }
-
 
 Loads::~Loads(void)
 {
@@ -286,183 +266,184 @@ Loads::writeLoads(string filespec)
 
 // Read the data from a comma delimited ASCII text file
 int
+Loads::readLoadsCSV()
+{
+    return readLoadsCSV("");
+}
+
+int
 Loads::readLoadsCSV(std::string filespec)
 {
-  load_t *thisload;
-  char buf[LINELEN];
-  float val;
-  int i;
-  ifstream in;
-  char *home;
-  string tmpbuf, loadfile;
-  int lines = -1;
-  struct stat stats;
-
-  //  cerr << "Opening file: " << filespec << endl;
-  if (filespec.size() == 0) {
-    home = getenv("HOME");
+    load_t *thisload;
+    char buf[LINELEN];
+    float val;
+    int i;
+    ifstream in;
+    char *home;
+    string tmpbuf, loadfile;
+    int lines = -1;
+    struct stat stats;
     
-    if (home) {
-      loadfile = home;
-      loadfile += "/.gnuae/loads.csv";
-      if (stat(loadfile.c_str(), &stats) == 0) {
-        filespec = loadfile;
-      } else {
-        loadfile = "/etc/gnuae/loads.csv";
-        if (stat(loadfile.c_str(), &stats) == 0) {
-          filespec = loadfile;
-        }
-      }
+    // Set a default data file if not specified.
+    if (filespec.empty()) {
+	// Get the data directory
+	loadfile = gdata.getDataDir();
+	loadfile += "/loads.csv";
+    } else {
+	loadfile = filespec;
     }
-  }
-
-  cout << "Reading load database from:" << filespec << endl;
-
-  in.open(filespec.c_str());
-
-  clearData();
-
-  if (!in) {
-    cerr << "Couldn't open file: " << filespec << endl;
-    return -1;
-  }
-
-  // Read in but ignore the first line, which are the headers in the
-  // data file. We ignore those, cause we *know* what all the fields are.
-  in.getline(buf, LINELEN);
-
-  while (!in.eof())
-    {
-      lines++;
-      // Get memory to hold the data
-      thisload = new load_t;
-
-      // Read in the name of the load
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        // The string has double quote marks on each end, which is used by
-        // the CSV format. So we drop them to have just the plain string left.
-        tmpbuf.erase(0, 1);
-        tmpbuf.erase(tmpbuf.size()-1, 1);
-        thisload->name = new char[strlen(buf)+1];
-        strcpy(thisload->name, tmpbuf.c_str());
-      } else {
-        return lines;
-      }
-
-      // Read in the description
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-
-      if (tmpbuf == "\"\"") {
-        thisload->description = NULL;
-      } else {
-        if (tmpbuf.size()) {
-          // The string has double quote marks on each end, which is used by
-          // the CSV format. So we drop them to have just the plain string left.
-          tmpbuf.erase(0, 1);
-          tmpbuf.erase(tmpbuf.size()-1, 1);
-          thisload->description = new char[strlen(buf)+1];
-          strcpy(thisload->description, tmpbuf.c_str());
-        } else {
-          return lines;
-        }
-      }
-
-      // Read in the load type. This is either AC or DC
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        // The string has double quote marks on each end, which is used by
-        // the CSV format. So we drop them to have just the plain string left.
-        tmpbuf.erase(0, 1);
-        tmpbuf.erase(tmpbuf.size()-1, 1);
-        if (tmpbuf == "AC")
+    
+    cout << "Reading load database from:" << loadfile << endl;
+    
+    clearData();
+    
+    // Just use ::open instead of stat to see if the file exists.
+    in.open(loadfile.c_str());
+    
+    if (!in) {
+	cerr << "Couldn't open file: " << loadfile << endl;
+	return -1;
+    }
+    
+    // Read in but ignore the first line, which are the headers in the
+    // data file. We ignore those, cause we *know* what all the fields are.
+    in.getline(buf, LINELEN);
+    
+    while (!in.eof()) {
+	lines++;
+	// Get memory to hold the data
+	thisload = new load_t;
+	
+	// Read in the name of the load
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    // The string has double quote marks on each end, which is used by
+	    // the CSV format. So we drop them to have just the plain string left.
+	    tmpbuf.erase(0, 1);
+	    tmpbuf.erase(tmpbuf.size()-1, 1);
+	    thisload->name = new char[strlen(buf)+1];
+	    strcpy(thisload->name, tmpbuf.c_str());
+	} else {
+	    return lines;
+	}
+	
+	// Read in the description
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	
+	if (tmpbuf == "\"\"") {
+	    thisload->description = NULL;
+	} else {
+	    if (tmpbuf.size()) {
+		// The string has double quote marks on each end, which is used by
+		// the CSV format. So we drop them to have just the plain string left.
+		tmpbuf.erase(0, 1);
+		tmpbuf.erase(tmpbuf.size()-1, 1);
+		thisload->description = new char[strlen(buf)+1];
+		strcpy(thisload->description, tmpbuf.c_str());
+	    } else {
+		return lines;
+	    }
+	}
+	
+	// Read in the load type. This is either AC or DC
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    // The string has double quote marks on each end, which is used by
+	    // the CSV format. So we drop them to have just the plain string left.
+	    tmpbuf.erase(0, 1);
+	    tmpbuf.erase(tmpbuf.size()-1, 1);
+	    if (tmpbuf == "AC")
           thisload->type = AC;
-        else
-          thisload->type = DC;
-      }
-      else {
-        return lines;
-      }
-      
-      // Read in the load group.
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      tmpbuf = buf;
-      if (tmpbuf.size()) {
-        // The string has double quote marks on each end, which is used by
-        // the CSV format. So we drop them to have just the plain string left.
-        tmpbuf.erase(0, 1);
-        tmpbuf.erase(tmpbuf.size()-1, 1);
-        if (tmpbuf == "HOUSEHOLD")
-          thisload->group = HOUSEHOLD;
-        if (tmpbuf == "DIGITAL")
-          thisload->group = DIGITAL;
-        if (tmpbuf == "TOOLS")
-          thisload->group = TOOLS;
-        if (tmpbuf == "KITCHEN")
-          thisload->group = KITCHEN;
-      }
-      else {
-        return lines;
-      }
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      thisload->voltage = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      thisload->wattage = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      thisload->amperage = atof(buf);
-      
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      thisload->hours = atoi(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      thisload->minutes = atoi(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      thisload->days = atof(buf);
-
-      in.getline(buf, LINELEN, ','); // Get a token from the line
-      thisload->quantity = atoi(buf);
-
-      in.getline(buf, LINELEN); // Get a token from the line
-      thisload->active = atoi(buf);      
-
-      addEntry(thisload);
-      //      dump(thisload);
+	    else
+		thisload->type = DC;
+	} else {
+	    return lines;
+	}
+	
+	// Read in the load group.
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	tmpbuf = buf;
+	if (tmpbuf.size()) {
+	    // The string has double quote marks on each end, which is used by
+	    // the CSV format. So we drop them to have just the plain string left.
+	    tmpbuf.erase(0, 1);
+	    tmpbuf.erase(tmpbuf.size()-1, 1);
+	    if (tmpbuf == "HOUSEHOLD")
+		thisload->group = HOUSEHOLD;
+	    if (tmpbuf == "DIGITAL")
+		thisload->group = DIGITAL;
+	    if (tmpbuf == "TOOLS")
+		thisload->group = TOOLS;
+	    if (tmpbuf == "KITCHEN")
+		thisload->group = KITCHEN;
+	} else {
+	    return lines;
+	}
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	thisload->voltage = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	thisload->wattage = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	thisload->amperage = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	thisload->hours = atoi(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	thisload->minutes = atoi(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	thisload->days = atof(buf);
+	
+	in.getline(buf, LINELEN, ','); // Get a token from the line
+	thisload->quantity = atoi(buf);
+	
+	in.getline(buf, LINELEN); // Get a token from the line
+	thisload->active = atoi(buf);      
+	
+	addEntry(thisload);
+	//      dump(thisload);
     }
+    
+    in.close();
+    return lines;
+}
 
-  in.close();
-  return lines;
+int
+Loads::readLoadsSQL(Database &db)
+{
+    DEBUGLOG_REPORT_FUNCTION;
 }
 
 // Calculated Array values
 int
 Loads::calcArrayAmps(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
 Loads::calcArraySeries(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
 Loads::calcArrayParallel(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
 Loads::calcArrayTotal(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 
@@ -470,92 +451,92 @@ Loads::calcArrayTotal(void)
 int
 Loads::calcBatteryAmps(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
 Loads::calcBatterySeries(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
 Loads::calcBatteryParallel(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 int
 Loads::calcBatteryTotal(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 // Calculate the daily watts used by this device profile
 double
 Loads::calcWatts(load_t *thisload)
 {
-  double watts = 0.0, hours;
-  
-  hours = calcHoursDaily(thisload);
-  watts = thisload->wattage *  thisload->quantity * hours;
-  // cerr << thisload->name << ": " << (thisload->wattage *  thisload->quantity *  thisload->days * hours ) / 7 << endl;
-
-  return watts;
+    double watts = 0.0, hours;
+    
+    hours = calcHoursDaily(thisload);
+    watts = thisload->wattage *  thisload->quantity * hours;
+    // cerr << thisload->name << ": " << (thisload->wattage *  thisload->quantity *  thisload->days * hours ) / 7 << endl;
+    
+    return watts;
 }
 
 // These are the calculated Values
 double
 Loads::calcWatts(void)
 {
-  vector<string>::iterator it;
-  vector<string> *loadnames;
-  load_t *thisload;
-  double watts = 0.0, hours;
-  
-  loadnames = dataNames();
-  
-  if (loadnames->size() == 0) {
-    cerr << "No Load data in memory" << endl;
-    return 0.0;
-  }
-  
-  //    namelist[i++] = strdup("Hey Now");
-  for (it = loadnames->begin(); it != loadnames->end(); it++) {
-    thisload = findEntry(*it);
-    if (thisload->active) {
-      //      hours = thisload->hours + (thisload->minutes/60);
-      watts += calcWatts(thisload); // (thisload->wattage *  thisload->quantity *  thisload->days * hours)/7;
-#if 0
-      cerr << "hours = " << thisload->hours << " , minutes = " << thisload->minutes
-           << " sum = " <<  hours << endl;
-      cerr << thisload->name << ": ";
-      cerr << thisload->wattage << " * ";
-      cerr << thisload->quantity << " * ";
-      cerr << thisload->days << " * ";
-      cerr << hours;
-      cerr << thisload->name << ": " << (thisload->wattage *  thisload->quantity *  thisload->days * hours ) / 7;
-      cerr << "watts:\ttotal watts is: " << watts << endl;
-#endif
+    vector<string>::iterator it;
+    vector<string> *loadnames;
+    load_t *thisload;
+    double watts = 0.0, hours;
+    
+    loadnames = dataNames();
+    
+    if (loadnames->size() == 0) {
+	cerr << "No Load data in memory" << endl;
+	return 0.0;
     }
-  }
-
-  // Adjust for inefficiencies
-  watts *= 1.015;
-  
-  return watts;
+    
+    //    namelist[i++] = strdup("Hey Now");
+    for (it = loadnames->begin(); it != loadnames->end(); it++) {
+	thisload = findEntry(*it);
+	if (thisload->active) {
+	    //      hours = thisload->hours + (thisload->minutes/60);
+	    watts += calcWatts(thisload); // (thisload->wattage *  thisload->quantity *  thisload->days * hours)/7;
+#if 0
+	    cerr << "hours = " << thisload->hours << " , minutes = " << thisload->minutes
+		 << " sum = " <<  hours << endl;
+	    cerr << thisload->name << ": ";
+	    cerr << thisload->wattage << " * ";
+	    cerr << thisload->quantity << " * ";
+	    cerr << thisload->days << " * ";
+	    cerr << hours;
+	    cerr << thisload->name << ": " << (thisload->wattage *  thisload->quantity *  thisload->days * hours ) / 7;
+	    cerr << "watts:\ttotal watts is: " << watts << endl;
+#endif
+	}
+    }
+    
+    // Adjust for inefficiencies
+    watts *= 1.015;
+    
+    return watts;
 }
 
 double
 Loads::calcAmps(load_t *load)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 double
 Loads::calcAmps(void)
 {
-  cerr << "FIXME: unimplemented!" << endl;
+    cerr << "FIXME: unimplemented!" << endl;
 }
 
 
@@ -563,21 +544,21 @@ Loads::calcAmps(void)
 double
 Loads::calcHoursDaily(load_t *thisload)
 {
-  double hours = 0.0;
-  
-      //      hours = thisload->hours + (thisload->minutes/60);
-
-  hours = ((thisload->hours + (thisload->minutes/60)) * thisload->days) / 7;
-
+    double hours = 0.0;
+    
+    //      hours = thisload->hours + (thisload->minutes/60);
+    
+    hours = ((thisload->hours + (thisload->minutes/60)) * thisload->days) / 7;
+    
 #if 0
-  cerr << "Hours used daily for " << thisload->name
-       << " is " << hours
-       << ", hours is " << thisload->hours
-       << ", minutes is " << thisload->minutes
-       << ", days is " << thisload->days
-       << endl;
+    cerr << "Hours used daily for " << thisload->name
+	 << " is " << hours
+	 << ", hours is " << thisload->hours
+	 << ", minutes is " << thisload->minutes
+	 << ", days is " << thisload->days
+	 << endl;
 #endif
-  return hours;
+    return hours;
 }
 
 
@@ -585,207 +566,209 @@ Loads::calcHoursDaily(load_t *thisload)
 double
 Loads::calcHoursDaily(void)
 {
-  vector<string>::iterator it;
-  vector<string> *loadnames;
-  load_t *thisload;
-  double hours = 0.0;
-  
-  loadnames = dataNames();
-  
-  if (loadnames->size() == 0) {
-    cerr << "No Load data in memory" << endl;
-    return 0.0;
-  }
-  
-  //    namelist[i++] = strdup("Hey Now");
-  for (it = loadnames->begin(); it != loadnames->end(); it++) {
-    thisload = findEntry(*it);
-    if (thisload->active) {
-      hours += calcHoursDaily(thisload);
-#if 0
-      cerr << "hours = " << thisload->hours << " , minutes = " << thisload->minutes
-           << " sum = " <<  hours << endl;
-      cerr << thisload->name << ": ";
-      cerr << thisload->wattage << " * ";
-      cerr << thisload->quantity << " * ";
-      cerr << thisload->days << " * ";
-      cerr << hours;
-      cerr << minutes;
-      cerr << thisload->name << ": " << (thisload->wattage *  thisload->quantity *  thisload->days * hours ) / 7;
-      cerr << "watts:\ttotal watts is: " << watts << endl;
-#endif
+    vector<string>::iterator it;
+    vector<string> *loadnames;
+    load_t *thisload;
+    double hours = 0.0;
+    
+    loadnames = dataNames();
+    
+    if (loadnames->size() == 0) {
+	cerr << "No Load data in memory" << endl;
+	return 0.0;
     }
-  }
-  
-  return hours;
+    
+    //    namelist[i++] = strdup("Hey Now");
+    for (it = loadnames->begin(); it != loadnames->end(); it++) {
+	thisload = findEntry(*it);
+	if (thisload->active) {
+	    hours += calcHoursDaily(thisload);
+#if 0
+	    cerr << "hours = " << thisload->hours << " , minutes = " << thisload->minutes
+		 << " sum = " <<  hours << endl;
+	    cerr << thisload->name << ": ";
+	    cerr << thisload->wattage << " * ";
+	    cerr << thisload->quantity << " * ";
+	    cerr << thisload->days << " * ";
+	    cerr << hours;
+	    cerr << minutes;
+	    cerr << thisload->name << ": " << (thisload->wattage *  thisload->quantity *  thisload->days * hours ) / 7;
+	    cerr << "watts:\ttotal watts is: " << watts << endl;
+#endif
+	}
+    }
+    
+    return hours;
 }
 
 #if 0
 vector<string> *
 Loads::names(void)
 {
-  map<string, load_t *>::const_iterator it;;
-  vector<string> *loadnames;
-  load_t *entry;
-  loadnames = new vector<string>;  
-  
-  if (_data.size() == 0) {
-    cerr << "No Load data in memory!" << endl;
+    map<string, load_t *>::const_iterator it;;
+    vector<string> *loadnames;
+    load_t *entry;
+    loadnames = new vector<string>;  
+    
+    if (_data.size() == 0) {
+	cerr << "No Load data in memory!" << endl;
+	return loadnames;
+    }
+    
+    for (it = _data.begin(); it != _data.end(); it++) {
+	entry = it->second;
+	loadnames->push_back(entry->name);
+    }
+    
     return loadnames;
-  }
-  
-  for (it = _data.begin(); it != _data.end(); it++) {
-    entry = it->second;
-    loadnames->push_back(entry->name);
-  }
-  
-  return loadnames;
 }
 #endif
-
 
 static Loads _sl;
 
 extern "C" {
-
-  void dump_loads(void)
-  {
-    _sl.dump();
-  }
-  
-  void dump_load(load_t *load)
-  {
-    _sl.dump(load);
-  }
-  
-  int load_size(void)
-  {
-    return _sl.dataSize();
-  }
-
-  int
-  load_names(const char **namelist)
-  {
-    vector<string>::iterator it;
-    vector<string> *loadnames;
-    string entry;
-    int i = 0;
-
-    loadnames = _sl.dataNames();
     
-    if (loadnames->size() == 0) {
-      cerr << "No Load data in memory" << endl;
-      return 0;
+    void dump_loads(void)
+    {
+	_sl.dump();
     }
     
-    //    namelist[i++] = strdup("Hey Now");
-    for (it = loadnames->begin(); it != loadnames->end(); it++) {
-      entry = *it;
-      namelist[i++] = strdup(entry.c_str());
-      //      dbglog << "NAMELIST " << namelist[i-1] << endl;
+    void dump_load(load_t *load)
+    {
+	_sl.dump(load);
     }
-    namelist[i++] = "eof";
-
-    return i;
-  }
-
-  // Add a new load into the database
-  void add_load(load_t *load)
-  {
-    _sl.addEntry(load);
-  }
-
-  // Edit an existing load entry in the database
-  void edit_load(load_t *load)
-  {
-    _sl.editEntry(load);
-  }
-  
-  load_t *find_load(const char *name)
-  {
-    return _sl.findEntry(name);
-  }
-
-  int calc_array_amps(void)
-  {
-    return _sl.calcArrayAmps();
-  }
-  
-  int calc_array_series(void)
-  {
-    return _sl.calcArraySeries();
-  }
-  
-  int calc_array_parallel(void)
-  {
-    return _sl.calcArrayParallel();
-  }
-  
-  int calc_array_total(void)
-  {
-    return _sl.calcArrayTotal();
-  }
-
-  int calc_battery_amps(void)
-  {
-    return _sl.calcBatteryAmps();
-  }
-  
-  int calc_battery_series(void)
-  {
-    return _sl.calcBatterySeries();
-  }
-  
-  int calc_battery_parallel(void)
-  {
-    return _sl.calcBatteryParallel();
-  }
-  
-  int calc_battery_total(void)
-  {
-    return _sl.calcBatteryTotal();
-  }
-  
-  double calc_watts_total(void)
-  {
-    return _sl.calcWatts();
-  }
-  
-  double calc_watts(load_t *load)
-  {
-    return _sl.calcWatts(load);
-  }
-  
-  double calc_amps_total(void)
-  {
-    return _sl.calcAmps();
-  }
-
-  double calc_amps(load_t *load)
-  {
-    return _sl.calcAmps(load);
-  }
-
-  double calc_hours_daily_total(void)
-  {
-    return _sl.calcHoursDaily();
-  }
-
-  double calc_hours_daily(load_t *load)
-  {
-    return _sl.calcHoursDaily(load);
-  }
-
-  void write_loads(const char *filespec) 
-  {
-    _sl.writeLoads(filespec);
-  }
-  
-  int read_loads_CSV(const char *filespec) 
-  {
-    return _sl.readLoadsCSV(filespec);
-  }
+    
+    int load_size(void)
+    {
+	return _sl.dataSize();
+    }
+    
+    int
+    load_names(const char **namelist)
+    {
+	vector<string>::iterator it;
+	vector<string> *loadnames;
+	string entry;
+	int i = 0;
+	
+	loadnames = _sl.dataNames();
+	
+	if (loadnames->size() == 0) {
+	    cerr << "No Load data in memory" << endl;
+	    return 0;
+	}
+	
+	//    namelist[i++] = strdup("Hey Now");
+	for (it = loadnames->begin(); it != loadnames->end(); it++) {
+	    entry = *it;
+	    namelist[i++] = strdup(entry.c_str());
+	    //      dbglog << "NAMELIST " << namelist[i-1] << endl;
+	}
+	namelist[i++] = "eof";
+	
+	return i;
+    }
+    
+    // Add a new load into the database
+    void add_load(load_t *load)
+    {
+	_sl.addEntry(load);
+    }
+    
+    // Edit an existing load entry in the database
+    void edit_load(load_t *load)
+    {
+	_sl.editEntry(load);
+    }
+    
+    load_t *find_load(const char *name)
+    {
+	return _sl.findEntry(name);
+    }
+    
+    int calc_array_amps(void)
+    {
+	return _sl.calcArrayAmps();
+    }
+    
+    int calc_array_series(void)
+    {
+	return _sl.calcArraySeries();
+    }
+    
+    int calc_array_parallel(void)
+    {
+	return _sl.calcArrayParallel();
+    }
+    
+    int calc_array_total(void)
+    {
+	return _sl.calcArrayTotal();
+    }
+    
+    int calc_battery_amps(void)
+    {
+	return _sl.calcBatteryAmps();
+    }
+    
+    int calc_battery_series(void)
+    {
+	return _sl.calcBatterySeries();
+    }
+    
+    int calc_battery_parallel(void)
+    {
+	return _sl.calcBatteryParallel();
+    }
+    
+    int calc_battery_total(void)
+    {
+	return _sl.calcBatteryTotal();
+    }
+    
+    double calc_watts_total(void)
+    {
+	return _sl.calcWatts();
+    }
+    
+    double calc_watts(load_t *load)
+    {
+	return _sl.calcWatts(load);
+    }
+    
+    double calc_amps_total(void)
+    {
+	return _sl.calcAmps();
+    }
+    
+    double calc_amps(load_t *load)
+    {
+	return _sl.calcAmps(load);
+    }
+    
+    double calc_hours_daily_total(void)
+    {
+	return _sl.calcHoursDaily();
+    }
+    
+    double calc_hours_daily(load_t *load)
+    {
+	return _sl.calcHoursDaily(load);
+    }
+    
+    void write_loads(const char *filespec) 
+    {
+	_sl.writeLoads(filespec);
+    }
+    
+    int read_loads_CSV(const char *filespec) 
+    {
+	return _sl.readLoadsCSV(filespec);
+    }
 }
+
+} // end of gnuae namespace
+
 
 // local Variables:
 // mode: C++

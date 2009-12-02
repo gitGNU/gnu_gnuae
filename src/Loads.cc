@@ -384,28 +384,28 @@ Loads::readLoadsCSV(std::string filespec)
 	}
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->voltage = atof(buf);
+	thisload->voltage = strtof(buf, NULL);
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->wattage = atof(buf);
+	thisload->wattage = strtof(buf, NULL);
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->amperage = atof(buf);
+	thisload->amperage = strtof(buf, NULL);
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->hours = atoi(buf);
+	thisload->hours = strtol(buf, NULL, 0);
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->minutes = atoi(buf);
+	thisload->minutes = strtol(buf, NULL, 0);
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->days = atof(buf);
+	thisload->days = strtof(buf, NULL);
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->quantity = atoi(buf);
+	thisload->quantity = strtol(buf, NULL, 0);
 	
 	in.getline(buf, LINELEN); // Get a token from the line
-	thisload->active = atoi(buf);      
+	thisload->active = strtol(buf, NULL, 0);      
 	
 	addEntry(thisload);
 	//      dump(thisload);

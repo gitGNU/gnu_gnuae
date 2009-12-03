@@ -24,12 +24,20 @@
 #include <cstdlib>
 #include <cmath>
 
+#include "log.h"
 #include "Inverters.h"
 #include "Chargers.h"
+#include "Database.h"
+#include "gnuae.h"
 
 using namespace std;
-using namespace gnuae;
 
+namespace gnuae {
+
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
+
+#if 0
 extern "C" {
   
   inverter_t inverters[] = {
@@ -55,7 +63,7 @@ extern "C" {
     { 0,                                0,      0.,    0, 0,  NO }
   };
 };
-
+#endif
 
 Inverters::Inverters() {
 }
@@ -63,13 +71,71 @@ Inverters::Inverters() {
 Inverters::~Inverters() {
 }
 
+int
+Inverters::readCSV(std::string)
+{
+
+}
+
+int
+Inverters::readSQL(Database &db)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    if (db.getState() == Database::DBOPENED) {
+	string query = "SELECT * from inverters";
+	vector<vector<string> > *result = db.queryResults(query);
+	vector<vector<string> >::iterator it;
+	for (it=result->begin(); it!=result->end(); ++it) {
+	    inverter_t *thisinvert = new inverter_t;
+	    vector<string> &row = *it;
+	    thisinvert->name = const_cast<char *>(row[1].c_str());
+	    thisinvert->manufacturer = const_cast<char *>(row[2].c_str());
+	    thisinvert->price = strtof(row[3].c_str(), NULL);
+	    thisinvert->wattage = strtol(row[4].c_str(), NULL, 0);
+	    thisinvert->voltage = strtol(row[5].c_str(), NULL, 0);
+	    thisinvert->LCD = static_cast<feature_e>(strtol(row[6].c_str(), NULL, 0));
+	    // thisinvert->group = static_cast<loadgroup>(strtol(row[4].c_str(), NULL, 0));
+	    // thisinvert->voltage = strtof(row[5].c_str(), NULL);
+	    // thisinvert->wattage = strtof(row[6].c_str(), NULL);
+	    // thisinvert->amperage = strtof(row[7].c_str(), NULL);
+	    addEntry(thisinvert);
+	}
+    }
+
+    dbglogfile << "Loaded " << dataSize() << " records from inverters table." << endl;
+
+    return dataSize();
+}
+
 void
 Inverters::dump()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    cerr << "No Inverter data in memory." << endl;
-    
+    if (!dataSize()) {
+	cerr << "No Inverter data in memory." << endl;
+    } else {
+	vector<string>::iterator it;
+	vector<string> *loadnames = dataNames();
+	for (it = loadnames->begin(); it != loadnames->end(); it++) {
+	    dump(findEntry(*it));
+	}
+    }
 }
+
+void
+Inverters::dump(inverter_t *it)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    if (it) {
+	cerr << "Inverter Name is: " << it->name;
+	cerr << ", Manufacturer is: " << it->manufacturer << endl;
+	// cerr << "Price is" << it->price << endl;
+	cerr << "\tWattage is:" << it->wattage
+	    << ", Voltage is:" << it->voltage << endl;
+    }
+}
+
+} // end of gnuae namespace
 
 // local Variables:
 // mode: C++

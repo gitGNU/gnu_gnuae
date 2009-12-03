@@ -63,9 +63,12 @@ GnuAE::loadData()
     if (_usecsv) {
         dbglogfile << "Loading CSV files as data source." << endl;
         _loads.readLoadsCSV();
+        dbglogfile << "Loaded " << _loads.dataSize() << "records from loads table." << endl;
     } else {
         dbglogfile << "Loading from SQL Database as data source." << endl;
         _loads.readLoadsSQL(*this);
+        _inverters.readSQL(*this);
+        _batteries.readSQL(*this);
     }
 
 }

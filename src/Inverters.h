@@ -22,6 +22,8 @@
 #include "config.h"
 
 #include "Chargers.h"
+#include "DataType.h"
+#include "Database.h"
 
 typedef struct
 {
@@ -43,12 +45,15 @@ typedef struct
 
 namespace gnuae {
 
-class Inverters
-{
+class Inverters : public DataTypeMethods<inverter_t> {
 public:
     Inverters(void);
     ~Inverters(void);      
+    int readCSV(std::string);
+    int readSQL(Database &db);
+
     void dump();
+    void dump(inverter_t *it);
 private:
     //      std::map<std::string, inverters_t> batteries;
 };

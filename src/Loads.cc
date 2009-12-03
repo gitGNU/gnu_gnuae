@@ -151,7 +151,7 @@ Loads::dump(void)
 
   loadnames = dataNames();
   
-  if (loadnames->size() == 0) {
+  if (dataSize() == 0) {
     cerr << "No Load data in memory" << endl;
     return;
   }
@@ -393,11 +393,11 @@ Loads::readLoadsSQL(Database &db)
 {
     DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
-	load_t *thisload = new load_t;
 	string query = "SELECT * from loads";
 	vector<vector<string> > *result = db.queryResults(query);
 	vector<vector<string> >::iterator it;
 	for (it=result->begin(); it!=result->end(); ++it) {
+	    load_t *thisload = new load_t;
 	    vector<string> &row = *it;
 	    thisload->name = const_cast<char *>(row[1].c_str());
 	    thisload->description = const_cast<char *>(row[2].c_str());
@@ -409,6 +409,10 @@ Loads::readLoadsSQL(Database &db)
 	    addEntry(thisload);
 	}
     }
+
+    dbglogfile << "Loaded " << dataSize() << " records from loads table." << endl;
+
+    return dataSize();
 }
 
 // Calculated Array values

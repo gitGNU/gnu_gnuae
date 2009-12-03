@@ -37,6 +37,7 @@ static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
 extern "C" {
+#if 0
   
   battery_t batteries[] = {
     // Trojan Batteries
@@ -75,7 +76,6 @@ extern "C" {
     { "8CS-25PS",        "Surette",       933., 8,  820, 1156 },
     { 0, 0, 0., 0, 0,0 }
   };
-#if 0
   struct temp_comp battery_comp[] = {
     { 80, 26.7, 1.0  },
     { 70, 21.2, 1.04 },
@@ -97,12 +97,67 @@ Battery::~Battery() {
 
 };
 
+int
+Battery::readCSV(std::string)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+}
+
+int
+Battery::readSQL(Database &db)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    if (db.getState() == Database::DBOPENED) {
+	string query = "SELECT * from batteries";
+	vector<vector<string> > *result = db.queryResults(query);
+	vector<vector<string> >::iterator it;
+	for (it=result->begin(); it!=result->end(); ++it) {
+	    battery_t *thisbat = new battery_t;
+	    vector<string> &row = *it;
+	    thisbat->name = const_cast<char *>(row[1].c_str());
+	    thisbat->manufacturer = const_cast<char *>(row[2].c_str());
+	    thisbat->price = strtof(row[3].c_str(), NULL);
+	    thisbat->voltage = strtol(row[4].c_str(), NULL, 0);
+	    thisbat->rate20 = strtol(row[5].c_str(), NULL, 0);
+	    thisbat->rate100 = strtol(row[6].c_str(), NULL, 0);
+	    addEntry(thisbat);
+	}
+    }
+
+    dbglogfile << "Loaded " << dataSize() << " records from batteries table." << endl;
+
+    return dataSize();
+}
+
 void
 Battery::dump()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    dbglogfile << "No Battery data in memory." << endl;
-    
+    if (!dataSize()) {
+	cerr << "No Battery data in memory." << endl;
+    } else {
+	vector<string>::iterator it;
+	vector<string> *loadnames = dataNames();
+	for (it = loadnames->begin(); it != loadnames->end(); ++it) {
+	    dump(findEntry(*it));
+	}
+    }
+}
+
+void
+Battery::dump(battery_t *bat)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    if (bat) {
+	dbglogfile << "Battery Name is: " << bat->name;
+	dbglogfile << ", Manufacturer is: " << bat->manufacturer << endl;
+	// dbglogfile << bat->price << endl;
+	dbglogfile << "\tVoltage is: "<< bat->voltage;
+	dbglogfile << ", Rate20 is: " << bat->rate20;
+	dbglogfile << ", Rate100 is: " << bat->rate100 << endl;
+    } else {
+	dbglogfile << "No Battery data in memory." << endl;
+    }
 }
 
 } // end of gnuae namespace

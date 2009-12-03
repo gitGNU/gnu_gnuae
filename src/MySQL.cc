@@ -150,10 +150,11 @@ Database::closeDB (void)
     return true;
 }
 
+// Return a vector of rows, each row being a vector of items.
 vector<vector<string> > *
 Database::queryResults(string &query)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     
     MYSQL_RES	*result;
     MYSQL_ROW	row;
@@ -164,26 +165,28 @@ Database::queryResults(string &query)
     dbglogfile << "Query is: \"" << query.c_str() << "\"" << endl;
 
     res = mysql_real_query(&_mysql, query.c_str(), query.size());
-    
-    switch (res) {
-      case CR_SERVER_LOST:
-      case CR_COMMANDS_OUT_OF_SYNC:
-      case CR_SERVER_GONE_ERROR:
-          dbglogfile << "MySQL connection error: "
-                     << mysql_error(&_mysql) << endl;
-          // Try to reconnect to the database
-          closeDB();
-          openDB();
+
+    // the result should be zero if sucessful
+    if (res) {
+        switch (res) {
+          case CR_SERVER_LOST:
+          case CR_COMMANDS_OUT_OF_SYNC:
+          case CR_SERVER_GONE_ERROR:
+              dbglogfile << "MySQL connection error: "
+                         << mysql_error(&_mysql) << endl;
+              // Try to reconnect to the database
+              closeDB();
+              openDB();
+              break;
+          case CR_UNKNOWN_ERROR:
+          default:
+              dbglogfile << "MySQL error on query for:" << mysql_error(&_mysql) << endl;
           break;
-      case CR_UNKNOWN_ERROR:
-      default:
-          dbglogfile << "MySQL error on query for:" << mysql_error(&_mysql) << endl;
-          break;
+        }
     }
     
     result = mysql_store_result(&_mysql);
     nrows = mysql_num_rows(result);
-
     row = mysql_fetch_row(result);
 
     // vector<vector<string> > *table = new vector<vector<string> >;
@@ -193,11 +196,6 @@ Database::queryResults(string &query)
         vector<string> data;
         // MYSQL_FIELD *fields = mysql_fetch_fields(result);
         // dbglogfile << fields->name << endl;
-#if 0
-        dbglogfile << "Row is: " << row[0] << ", " << row[1]<< ", " << row[2];
-        dbglogfile << row[3] << ", " << row[4] << ", " << row[5];
-        dbglogfile << row[6] << ", " << row[7] << endl;
-#endif
         for (int i=0; i<mysql_num_fields(result); i++) {
             data.push_back(row[i]);
         }

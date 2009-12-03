@@ -69,8 +69,10 @@ GnuAE::loadData()
         _loads.readLoadsSQL(*this);
         _inverters.readSQL(*this);
         _batteries.readSQL(*this);
-        _pvpanels.readSQL(*this);
         _centers.readSQL(*this);
+        _pvpanels.readSQL(*this);
+        _chargers.readSQL(*this);
+        _combiners.readSQL(*this);
     }
 
 }
@@ -81,13 +83,13 @@ GnuAE::dump()
     // DEBUGLOG_REPORT_FUNCTION;
     // _loads.dump();
     // _batteries.dump();
-    _pvpanels.dump();
-    _centers.dump();
+    // _centers.dump();
     // _inverters.dump();
-    _chargers.dump();
+    // _chargers.dump();
     _combiners.dump();
     _pumps.dump();
     _wire.dump();
+    _pvpanels.dump();
 
     if (_usesql) {
         cerr << "Using SQL Queries" << endl;

@@ -45,13 +45,21 @@ typedef struct
 
 #include <map>
 
+#include "DataType.h"
+#include "Database.h"
+
 namespace gnuae {
 
-class Chargers {
+class Chargers : public DataTypeMethods<charger_t> {
 public:
     Chargers(void);
-    ~Chargers(void);      
+    ~Chargers(void);
+
+    int readCSV(std::string);
+    int readSQL(Database &db);
+    
     void dump();
+    void dump(charger_t *cgr);
 private:
     //      std::map<std::string, chargers_t> batteries;
 };

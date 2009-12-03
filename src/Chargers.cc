@@ -26,12 +26,20 @@
 #include <cmath>
 
 #include "Chargers.h"
+#include "Database.h"
+#include "log.h"
+#include "gnuae.h"
 
 using namespace std;
-using namespace gnuae;
 
+namespace gnuae {
+
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
+
+#if 0
 extern "C" {
-  
+
   charger_t chargers[] = {
     // Outback charge controllers
     { "None",                       "",        0,  0,  0,  0,   0., 0,
@@ -95,6 +103,7 @@ extern "C" {
                                         NONE,     NONE,    NONE, NONE }
   };
 };
+#endif
 
 Chargers::Chargers() {
 
@@ -104,13 +113,86 @@ Chargers::~Chargers() {
 
 }
 
+int
+Chargers::readCSV(std::string)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+}
+
+int
+Chargers::readSQL(Database &db)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    if (db.getState() == Database::DBOPENED) {
+    	string query = "SELECT * from chargers";
+    	vector<vector<string> > *result = db.queryResults(query);
+    	vector<vector<string> >::iterator it;
+    	for (it=result->begin(); it!=result->end(); ++it) {
+    	    charger_t *thisch = new charger_t;
+    	    vector<string> &row = *it;
+    	    thisch->name = const_cast<char *>(row[1].c_str());
+    	    thisch->manufacturer = const_cast<char *>(row[2].c_str());
+    	    // thiscent->price = strtof(row[3].c_str(), NULL);
+    	    thisch->amperage = strtol(row[4].c_str(), NULL, 0);
+    	    thisch->volts_in = strtol(row[5].c_str(), NULL, 0);
+    	    thisch->volts_out = strtol(row[6].c_str(), NULL, 0);
+    	    thisch->efficiency = strtof(row[7].c_str(), NULL);
+    	    thisch->openmax = strtof(row[8].c_str(), NULL);
+	    thisch->lcd = static_cast<feature_e>(strtol(row[9].c_str(), NULL, 0));
+	    thisch->MPPT = static_cast<feature_e>(strtol(row[10].c_str(), NULL, 0));
+	    thisch->PWM = static_cast<feature_e>(strtol(row[11].c_str(), NULL, 0));
+	    thisch->tempsensor = static_cast<feature_e>(strtol(row[12].c_str(), NULL, 0));
+	    thisch->remote = static_cast<feature_e>(strtol(row[13].c_str(), NULL, 0));
+    	    addEntry(thisch);
+    	}
+    }
+
+    dbglogfile << "Loaded " << dataSize() << " records from centers table." << endl;
+
+    return dataSize();
+}
+
 void
 Chargers::dump()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    cerr << "No Chargers data in memory." << endl;
-    
+    if (!dataSize()) {
+    	cerr << "No Charger Controller data in memory." << endl;
+    } else {
+    	vector<string>::iterator it;
+    	vector<string> *loadnames = dataNames();
+    	for (it = loadnames->begin(); it != loadnames->end(); ++it) {
+    	    dump(findEntry(*it));
+    	}
+    }
 }
+
+void
+Chargers::dump(charger_t *cent)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    const char *feature_str[] = {
+    	"NONE",
+    	"YES",
+    	"NO",
+    	"OPTIONAL",
+    	"DEFAULT"
+    };
+
+    cerr << "Charge Controller name is: " << cent->name;
+    cerr << ", Manufacturer is: " << cent->manufacturer << endl;
+    // cerr << cent->price;
+    cerr << "Amperage is: " << cent->amperage;
+    cerr << ", Voltage in is: " << cent->volts_in;
+    cerr << ", Voltage out is: " << cent->volts_out << endl;
+    cerr << "LCD option is: " << feature_str[cent->lcd] << endl;
+    cerr << "MPPT option is: " << feature_str[cent->MPPT] << endl;
+    cerr << "PWM option is: " << feature_str[cent->PWM] << endl;
+    cerr << "Temp Sensor option is: " << feature_str[cent->tempsensor] << endl;
+    cerr << "Remote option is: " << feature_str[cent->remote] << endl;
+}
+
+} // end of gnuae namespace
 
 // local Variables:
 // mode: C++

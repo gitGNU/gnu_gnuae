@@ -35,12 +35,21 @@ typedef struct
 
 #include <map>
 
+#include "DataType.h"
+#include "Database.h"
+
 namespace gnuae {
-class Combiners {
+class Combiners : public DataTypeMethods<combiner_t> {
 public:
     Combiners(void);
-    ~Combiners(void);      
+
+    ~Combiners(void);
+    
+    int readCSV(std::string);
+    int readSQL(Database &db);
+    
     void dump();
+    void dump(combiner_t *comp);
 private:
     //      std::map<std::string, combiners_t> batteries;
 };

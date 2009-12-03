@@ -27,11 +27,11 @@ AM_CPPFLAGS = -DPHP_ATOM_INC \
 	-I$(srcdir) \
 	$(PHP_INCLUDES)
 
-ALL_OBJS = $(wildcard ../src/*.lo)
+ALL_OBJS = $(wildcard ../src/*.o)
 
 gnuae_la_SOURCES = wrapper.c
 gnuae_la_LDFLAGS = -export-dynamic -avoid-version -module # -rpath $(phplibdir)
-gnuae_la_LIBADD = $(ALL_OBJS) -lstdc++
+gnuae_la_LIBADD = $(ALL_OBJS) $(MYSQL_LIBS) -lstdc++
 
 install: gnuae.la
 	@echo "WARNING!"

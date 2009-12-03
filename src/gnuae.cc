@@ -73,6 +73,10 @@ GnuAE::loadData()
         _pvpanels.readSQL(*this);
         _chargers.readSQL(*this);
         _combiners.readSQL(*this);
+        _pumps.readSQL(*this);
+        // Wire data is static, and in the NEC spec, so it's not in
+        // the SQL database or CSV files.
+        // _wire.readSQL(*this);
     }
 
 }
@@ -86,7 +90,7 @@ GnuAE::dump()
     // _centers.dump();
     // _inverters.dump();
     // _chargers.dump();
-    _combiners.dump();
+    // _combiners.dump();
     _pumps.dump();
     _wire.dump();
     _pvpanels.dump();

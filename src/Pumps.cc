@@ -29,33 +29,87 @@
 #include <cmath>
 
 #include "Pumps.h"
+#include "Database.h"
+#include "log.h"
+#include "gnuae.h"
 
 using namespace std;
-using namespace gnuae;
 
-extern "C" {
-  
-  pump_t pumps[] = {
-    { "ETA ",            "Dankoff", 2000.0, 900.0, 24.0, 5.0 },
-    { 0, 0, 0., 0., 0., 0.0 }
-  };
-};
+namespace gnuae {
 
-Pumps::Pumps() {
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
 
+Pumps::Pumps()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
 }
 
-Pumps::~Pumps() {
+Pumps::~Pumps()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+}
 
+int
+Pumps::readCSV(std::string)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+}
+
+int
+Pumps::readSQL(Database &db)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    if (db.getState() == Database::DBOPENED) {
+    	string query = "SELECT * from pumps";
+    	vector<vector<string> > *result = db.queryResults(query);
+    	vector<vector<string> >::iterator it;
+    	for (it=result->begin(); it!=result->end(); ++it) {
+    	    pump_t *thisp = new pump_t;
+    	    vector<string> &row = *it;
+    	    thisp->name = const_cast<char *>(row[1].c_str());
+    	    thisp->manufacturer = const_cast<char *>(row[2].c_str());
+    	    // thiscent->price = strtof(row[3].c_str(), NULL);
+    	    thisp->wattage = strtof(row[4].c_str(), NULL);
+    	    thisp->voltage = strtof(row[5].c_str(), NULL);
+    	    thisp->gpm = strtof(row[6].c_str(), NULL);
+    	    addEntry(thisp);
+    	}
+    }
+
+    dbglogfile << "Loaded " << dataSize() << " records from pumps table." << endl;
+
+    return dataSize();
 }
 
 void
 Pumps::dump()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    cerr << "No Pump data in memory." << endl;
-    
+    if (!dataSize()) {
+    	cerr << "No Water Pump data in memory." << endl;
+    } else {
+    	vector<string>::iterator it;
+    	vector<string> *loadnames = dataNames();
+    	for (it = loadnames->begin(); it != loadnames->end(); ++it) {
+    	    dump(findEntry(*it));
+    	}
+    }
 }
+
+void
+Pumps::dump(pump_t *pump)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    cerr << "Water Pump name is: " << pump->name;
+    cerr << ", Manufacturer is: " << pump->manufacturer << endl;
+    // cerr << pup->price;
+    cerr << "\tWattage is: " << pump->wattage;
+    cerr << ", Voltage is: " << pump->voltage;
+    cerr << ", GPM is: " << pump->gpm << endl;
+}
+
+} // end of gnuae namespace
 
 // local Variables:
 // mode: C++

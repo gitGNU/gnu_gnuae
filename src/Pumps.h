@@ -34,14 +34,23 @@ typedef struct {
 #ifdef __cplusplus
 
 #include <map>
+#include "DataType.h"
 
 namespace gnuae {
 
-class Pumps {
+class Database;
+
+class Pumps : public DataTypeMethods<pump_t>
+{
 public:
     Pumps(void);
-    ~Pumps(void);      
+    ~Pumps(void);
+
+    int readCSV(std::string);
+    int readSQL(Database &db);
+    
     void dump();
+    void dump(pump_t *pump);
 private:
     //      std::map<std::string, pumps_t> batteries;
 };

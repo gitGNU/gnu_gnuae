@@ -187,7 +187,7 @@ Database::queryResults(string &query)
     
     result = mysql_store_result(&_mysql);
     nrows = mysql_num_rows(result);
-    row = mysql_fetch_row(result);
+    dbglogfile << nrows << " rows found for query." << endl;
 
     // vector<vector<string> > *table = new vector<vector<string> >;
     vector<vector<string> > *table = new vector<vector<string> >;

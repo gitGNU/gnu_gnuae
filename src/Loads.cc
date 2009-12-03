@@ -173,16 +173,9 @@ Loads::dump(struct load *entry)
     cerr << "\tThere is no device name" << endl;
   
   cerr << " in the " << loadgroup_strs[entry->group] << " category" << endl;
-  cerr << "\tThe Quantity is " << entry->quantity << endl;
   cerr << "\tThe Voltage is " << entry->voltage;
   cerr << ", the Wattage is " << entry->wattage;
   cerr << ". The Amperage is " << entry->amperage << endl;
-  cerr << "\tThis device is used for " << entry->hours << " hours and ";
-  cerr << entry->minutes << " minutes per day" << endl;
-  if (entry->active)
-    cerr << "\tThis device is ACTIVE" << endl;
-  else
-    cerr << "\tThis device is INACTIVE" << endl;
 
   if (entry->description != NULL)
     cerr << "\tThe Description is \"" << entry->description << "\"" << endl;
@@ -254,11 +247,6 @@ Loads::writeLoads(string filespec)
     os << thisload->voltage << ",";
     os << thisload->wattage << ",";
     os << thisload->amperage << ",";
-    os << thisload->hours << ",";
-    os << thisload->minutes << ",";
-    os << thisload->days << ",";
-    os << thisload->quantity << ",";
-    os << thisload->active << endl;
   }
 
   os.close();
@@ -392,21 +380,6 @@ Loads::readLoadsCSV(std::string filespec)
 	in.getline(buf, LINELEN, ','); // Get a token from the line
 	thisload->amperage = strtof(buf, NULL);
 	
-	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->hours = strtol(buf, NULL, 0);
-	
-	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->minutes = strtol(buf, NULL, 0);
-	
-	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->days = strtof(buf, NULL);
-	
-	in.getline(buf, LINELEN, ','); // Get a token from the line
-	thisload->quantity = strtol(buf, NULL, 0);
-	
-	in.getline(buf, LINELEN); // Get a token from the line
-	thisload->active = strtol(buf, NULL, 0);      
-	
 	addEntry(thisload);
 	//      dump(thisload);
     }
@@ -419,6 +392,23 @@ int
 Loads::readLoadsSQL(Database &db)
 {
     DEBUGLOG_REPORT_FUNCTION;
+    if (db.getState() == Database::DBOPENED) {
+	load_t *thisload = new load_t;
+	string query = "SELECT * from loads";
+	vector<vector<string> > *result = db.queryResults(query);
+	vector<vector<string> >::iterator it;
+	for (it=result->begin(); it!=result->end(); ++it) {
+	    vector<string> &row = *it;
+	    thisload->name = const_cast<char *>(row[1].c_str());
+	    thisload->description = const_cast<char *>(row[2].c_str());
+	    thisload->type = static_cast<loadtype>(strtol(row[3].c_str(), NULL, 0));
+	    thisload->group = static_cast<loadgroup>(strtol(row[4].c_str(), NULL, 0));
+	    thisload->voltage = strtof(row[5].c_str(), NULL);
+	    thisload->wattage = strtof(row[6].c_str(), NULL);
+	    thisload->amperage = strtof(row[7].c_str(), NULL);
+	    addEntry(thisload);
+	}
+    }
 }
 
 // Calculated Array values
@@ -479,7 +469,11 @@ Loads::calcWatts(load_t *thisload)
     double watts = 0.0, hours;
     
     hours = calcHoursDaily(thisload);
+#if 0
     watts = thisload->wattage *  thisload->quantity * hours;
+#else
+    dbglogfile << __FUNCTION__ << " unimplemented!" << endl;
+#endif
     // cerr << thisload->name << ": " << (thisload->wattage *  thisload->quantity *  thisload->days * hours ) / 7 << endl;
     
     return watts;
@@ -500,7 +494,10 @@ Loads::calcWatts(void)
 	cerr << "No Load data in memory" << endl;
 	return 0.0;
     }
-    
+
+#if 1
+    cerr << "FIXME: unimplemented!" << endl;
+#else
     //    namelist[i++] = strdup("Hey Now");
     for (it = loadnames->begin(); it != loadnames->end(); it++) {
 	thisload = findEntry(*it);
@@ -520,6 +517,7 @@ Loads::calcWatts(void)
 #endif
 	}
     }
+#endif
     
     // Adjust for inefficiencies
     watts *= 1.015;
@@ -547,7 +545,9 @@ Loads::calcHoursDaily(load_t *thisload)
     double hours = 0.0;
     
     //      hours = thisload->hours + (thisload->minutes/60);
-    
+#if 1    
+    cerr << "FIXME: unimplemented!" << endl;
+#else
     hours = ((thisload->hours + (thisload->minutes/60)) * thisload->days) / 7;
     
 #if 0
@@ -558,6 +558,8 @@ Loads::calcHoursDaily(load_t *thisload)
 	 << ", days is " << thisload->days
 	 << endl;
 #endif
+#endif
+
     return hours;
 }
 
@@ -577,7 +579,10 @@ Loads::calcHoursDaily(void)
 	cerr << "No Load data in memory" << endl;
 	return 0.0;
     }
-    
+
+#if 1
+    cerr << "FIXME: unimplemented!" << endl;
+#else
     //    namelist[i++] = strdup("Hey Now");
     for (it = loadnames->begin(); it != loadnames->end(); it++) {
 	thisload = findEntry(*it);
@@ -597,6 +602,7 @@ Loads::calcHoursDaily(void)
 #endif
 	}
     }
+#endif
     
     return hours;
 }

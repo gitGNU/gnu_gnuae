@@ -50,19 +50,19 @@ static const char *DBUSER  = "gnuae";
 static const char *DBPASS  = "gnuae";
 static const char *DBHOST  = "localhost";
 
-enum dbtype {NODB, DBDATABASE, DBPGSQL, DBODBC, DBGDBM, DBSTL};
-
 class Database
 {
  public:
+  typedef enum {NODB, DBDATABASE, DBPGSQL, DBODBC, DBGDBM, DBSTL} dbtype_e;
+  typedef enum {DBCLOSED, DBOPENED} dbstate_e;
   Database();
   ~Database();
   
-  bool openDB ();
-  bool openDB (std::string &host, std::string &user, std::string &passwd);
-  bool closeDB ();
-  /* bool queryInsert(const char *query); */
-  /* void *queryResults(const char *query); */
+  bool openDB();
+  bool openDB(std::string &host, std::string &user, std::string &passwd);
+  bool closeDB();
+// bool queryInsert(const char *query);
+  std::vector<std::vector<std::string> > *queryResults(std::string &query);
   char *gettime();
 
   // Accessors
@@ -70,17 +70,22 @@ class Database
   void dbPasswdSet(std::string passwd);
   void dbNameSet(std::string name);
   void dbHostSet(std::string host);
+
+  dbstate_e getState() { return _state; };
+  MYSQL &getMySQL() { return _mysql; };
+
+  void dump();
  private:
-  enum {CLOSED, OPENED} state;
-  dbtype          _dbtype;
-  int             _dbport;
-  std::string     _dbuser;
-  std::string     _dbpasswd;
-  std::string     _dbhost;
-  std::string     _dbname;
-  std::string     _tblname;
-  MYSQL           *_connection;
-  MYSQL           _mysql;
+  dbstate_e     _state;
+  dbtype_e      _dbtype;
+  int           _dbport;
+  std::string   _dbuser;
+  std::string   _dbpasswd;
+  std::string   _dbhost;
+  std::string   _dbname;
+  std::string   _tblname;
+  MYSQL         *_connection;
+  MYSQL         _mysql;
 };
 
 } // end of gnuae namespace

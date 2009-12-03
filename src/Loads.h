@@ -34,11 +34,6 @@ typedef struct load {
   double voltage;
   double wattage;
   double amperage;
-  double hours;
-  double minutes;
-  double days;           // the number of days per week this device is used
-  int    quantity;
-  int    active;
 } load_t;
 
 #ifdef __cplusplus

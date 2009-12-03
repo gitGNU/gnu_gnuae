@@ -51,16 +51,16 @@ const int LINELEN = 80;
 const int QUERYLEN = 10000;
 
 Database::Database()
-    : _dbtype(NODB), _dbport(0)
+    : _dbtype(NODB),
+      _dbport(0),
+      _tblname(DBTABLE),
+      _dbname(DBNAME),
+      _dbuser(DBUSER),
+      _dbpasswd(DBPASS),
+      _dbhost(DBHOST),
+      _connection(0)
 {
-
-    // These values may be replaced on the command line. These are the
-    // default behaviour.
-    _tblname  = DBTABLE;
-    _dbname   = DBNAME;
-    _dbuser   = DBUSER;
-    _dbpasswd = DBPASS;
-    _dbhost   = DBHOST;
+    
 }
 
 Database::~Database()
@@ -118,9 +118,8 @@ Database::openDB (std::string &host, std::string &user, std::string &passwd)
     _connection = mysql_real_connect(&_mysql, host.c_str(), user.c_str(),
         passwd.c_str(), _dbname.c_str(), 0, NULL, flag);
 
-    /* check for a connection error */
+    // check for a connection error
     if(_connection == NULL) {
-        /* print the error message */
       dbglogfile << "MySQL error when connecting: \n" << mysql_error(&_mysql) << endl;
         return false;
     }
@@ -135,6 +134,8 @@ Database::openDB (std::string &host, std::string &user, std::string &passwd)
         exit(1);
     }
 #endif
+    _state = Database::DBOPENED;
+    
     return true;
 }
 
@@ -143,9 +144,69 @@ bool
 Database::closeDB (void)
 {
     mysql_close(&_mysql);
+    _state = Database::DBCLOSED;
 
     // FIXME: do something intelligent here
     return true;
+}
+
+vector<vector<string> > *
+Database::queryResults(string &query)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    
+    MYSQL_RES	*result;
+    MYSQL_ROW	row;
+    //    MYSQL_FIELD *fields;
+    int         nrows;
+    unsigned int i, res;
+    
+    dbglogfile << "Query is: \"" << query.c_str() << "\"" << endl;
+
+    res = mysql_real_query(&_mysql, query.c_str(), query.size());
+    
+    switch (res) {
+      case CR_SERVER_LOST:
+      case CR_COMMANDS_OUT_OF_SYNC:
+      case CR_SERVER_GONE_ERROR:
+          dbglogfile << "MySQL connection error: "
+                     << mysql_error(&_mysql) << endl;
+          // Try to reconnect to the database
+          closeDB();
+          openDB();
+          break;
+      case CR_UNKNOWN_ERROR:
+      default:
+          dbglogfile << "MySQL error on query for:" << mysql_error(&_mysql) << endl;
+          break;
+    }
+    
+    result = mysql_store_result(&_mysql);
+    nrows = mysql_num_rows(result);
+
+    row = mysql_fetch_row(result);
+
+    // vector<vector<string> > *table = new vector<vector<string> >;
+    vector<vector<string> > *table = new vector<vector<string> >;
+    while((row = mysql_fetch_row(result))) {
+        // vector<string> *data = new vector<string>;
+        vector<string> data;
+        // MYSQL_FIELD *fields = mysql_fetch_fields(result);
+        // dbglogfile << fields->name << endl;
+#if 0
+        dbglogfile << "Row is: " << row[0] << ", " << row[1]<< ", " << row[2];
+        dbglogfile << row[3] << ", " << row[4] << ", " << row[5];
+        dbglogfile << row[6] << ", " << row[7] << endl;
+#endif
+        for (int i=0; i<mysql_num_fields(result); i++) {
+            data.push_back(row[i]);
+        }
+        table->push_back(data);
+    }
+
+    mysql_free_result(result);
+
+    return table;
 }
 
 #if 0
@@ -199,65 +260,7 @@ Database::queryInsert(const char *query)
   
   return false;
 }
-
   
-void *
-Database::queryResults(const char *query)
-{
-  DEBUGLOG_REPORT_FUNCTION;
-
-    MYSQL_RES	*result;
-    MYSQL_ROW	row;
-    //    MYSQL_FIELD *fields;
-    int         nrows;
-    unsigned int i, res;
-
-    dbglogfile << "Query is: " << query << endl;
-
-    res = mysql_real_query(&_mysql, query, strlen(query));
-    
-    switch (res)
-    {
-      case CR_SERVER_LOST:
-      case CR_COMMANDS_OUT_OF_SYNC:
-      case CR_SERVER_GONE_ERROR:
-        dbglogfile << "MySQL connection error: "
-             << mysql_error(&_mysql) << endl;
-        // Try to reconnect to the database
-        closeDB();
-        openDB();
-        break;
-      case CR_UNKNOWN_ERROR:
-        dbglogfile << "MySQL error on query for:" << mysql_error(&_mysql) << endl;
-//        ACE_DEBUG((LM_INFO, "Query was: %s\n", query));
-//        return false;
-//      default:
-//        return true;
-    }
-    
-    
-    result = mysql_store_result(&_mysql);
-    nrows = mysql_num_rows(result);
-
-    row = mysql_fetch_row(result);
-    mysql_num_fields(result);      
-
-    while((row = mysql_fetch_row(result)))
-    {
-        for (i=0; i<mysql_num_fields(result); i++)
-        {
-//        fields = mysql_fetch_fields(result);
-//        ACE_DEBUG((LM_INFO, "%s: ", field->name));
-//            ACE_DEBUG((LM_INFO, "Row is: %s\n", row[i]));
-        }
-    }
-
-    mysql_free_result(result);
-
-    // FIXME: return something intelligent here
-    return (void *)0;
-}
-
 bool
 Database::queryInsert(vector<meter_data_t *> data)
 {
@@ -409,6 +412,11 @@ Database::gettime()
  
 //    DBG_MSG(DBG_INFO, "TIMESTAMP is %s\n", tmpbuf);
     return tmpbuf;
+}
+
+void
+Database::dump() {
+
 }
 
 } // end of gnuae namespace

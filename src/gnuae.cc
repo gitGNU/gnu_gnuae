@@ -85,12 +85,12 @@ void
 GnuAE::dump()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    // _loads.dump();
-    // _batteries.dump();
-    // _centers.dump();
-    // _inverters.dump();
-    // _chargers.dump();
-    // _combiners.dump();
+    _loads.dump();
+    _batteries.dump();
+    _centers.dump();
+    _inverters.dump();
+    _chargers.dump();
+    _combiners.dump();
     _pumps.dump();
     _wire.dump();
     _pvpanels.dump();

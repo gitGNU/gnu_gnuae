@@ -163,7 +163,8 @@ main(int argc, char **argv) {
     if (dump) {
 	gdata.dump();
     }
-    
+
+#if 0
     // Search the database for all entries that match the search string
     if (search.size()) {
 	vector<pvpanel_t *>::iterator it;
@@ -174,7 +175,9 @@ main(int argc, char **argv) {
 	    entry = *it;
 	    pv.dump(entry);
 	}
-    }    
+    }
+#endif
+    
 }
 
 static void

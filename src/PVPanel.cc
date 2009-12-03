@@ -29,6 +29,8 @@
 #include <iterator>
 #include <cstdlib>
 
+#include "DataType.h"
+#include "Database.h"
 #include "PVPanel.h"
 #include "log.h"
 #include "gnuae.h"
@@ -62,49 +64,52 @@ PVPanels::~PVPanels(void)
 void
 PVPanels::dump(void)
 {
-    struct pvpanel *pv;
-    std::vector<struct pvpanel *>::iterator it;
-    
-    if (_data.size() == 0) {
-	dbglogfile << "No PV Panel data in memory" << endl;
-	return;
-    }
-    
-    for (it = _data.begin(); it != _data.end(); it++) {
-	pv = *it;
-	dump(pv, _enhanced);
+    // DEBUGLOG_REPORT_FUNCTION;
+    if (!dataSize()) {
+	cerr << "No PVPanel data in memory." << endl;
+    } else {
+	vector<string>::iterator it;
+	vector<string> *loadnames = dataNames();
+	for (it = loadnames->begin(); it != loadnames->end(); ++it) {
+	    dump(findEntry(*it));
+	}
     }
 }
 
 void
 PVPanels::dump(pvpanel_t *pv)
 {
-
     dump(pv, _enhanced);
 }
 
 void
 PVPanels::dump(pvpanel_t *pv, bool enhanced)
 {
-    if (pv->Model != 0)
-	if (*pv->Model != 0)
-	    cerr << "Model is " << pv->Model << endl;
-	else
-	    cerr << "No Model specified" << endl;
+    if (pv->name != 0) {
+	if (*pv->name != 0) {
+	    cerr << "PVPanel name is " << pv->name << endl;
+	} else {
+	    cerr << "No name specified" << endl;
+	}
+    }
     
-    if (pv->Vintage != 0)
-	if (*pv->Vintage != 0)
+    if (pv->Vintage != 0) {
+	if (*pv->Vintage != 0) {
 	    cerr << "Vintage is " << pv->Vintage << endl;
-	else
+	} else {
 	    cerr << "No Vintage specified" << endl;
+	}
+    }
     
     cerr << "Area is " << pv->Area << endl;
     
-    if (pv->Material != 0)
-	if (*pv->Material != 0)
+    if (pv->Material != 0) {
+	if (*pv->Material != 0) {
 	    cerr << "Material is " << pv->Material << endl;
-	else
+	} else {
 	    cerr << "No Material specified" << endl;
+	}
+    }
     
     cerr << "Series Cells is " << pv->Series_Cells << endl;
     cerr << "Parallel_C-S is " << pv->Parallel_C_S << endl;
@@ -145,17 +150,21 @@ PVPanels::dump(pvpanel_t *pv, bool enhanced)
     cerr << "C6 is " << pv->C6 << endl;
     cerr << "C7 is " << pv->C7 << endl;
     
-    if (pv->Picture)
+    if (pv->Picture) {
 	cerr << "Picture is " << pv->Picture << endl;
+    }
     
-    if (pv->Description != 0)
+    if (pv->Description != 0) {
 	cerr << "Description is " << pv->Description << endl;
+    }
     
-    if (pv->Price)
+    if (pv->Price) {
 	cerr << "Price is $" << pv->Price << endl;
+    }
     
-    if (pv->Manufacturer)
+    if (pv->Manufacturer) {
 	cerr << "Manufacturer is " << pv->Manufacturer << endl;
+    }
 }
 
 // This reads a Comma delimited text file that is exported from the
@@ -163,7 +172,7 @@ PVPanels::dump(pvpanel_t *pv, bool enhanced)
 int
 PVPanels::readModuleDataCSV(std::string filespec)
 {
-    struct pvpanel *pv;
+    pvpanel_t *pv;
     char buf[LINELEN];
     char *ptr, *token, *home;
     float val;
@@ -209,11 +218,11 @@ PVPanels::readModuleDataCSV(std::string filespec)
     while (!in.eof()) {
 	lines++;
 	// Get memory to hold the data
-	pv = new struct pvpanel;
+	pv = new pvpanel_t;
 	
 #if 0
 	// Get memory for the strings in the data structure
-	pv->Model = new char[FIELDLEN];
+	pv->name = new char[FIELDLEN];
 	pv->Vintage = new char[FIELDLEN];
 	pv->Material = new char[FIELDLEN];
 	pv->Picture = new char[FIELDLEN];
@@ -227,8 +236,8 @@ PVPanels::readModuleDataCSV(std::string filespec)
 	    // the CSV format. So we drop them to have just the plain string left.
 	    tmpbuf.erase(0, 1);
 	    tmpbuf.erase(tmpbuf.size()-1, 1);
-	    pv->Model = new char[strlen(buf)+1];
-	    strcpy(pv->Model, tmpbuf.c_str());
+	    pv->name = new char[strlen(buf)+1];
+	    strcpy(pv->name, tmpbuf.c_str());
 	}
 	else {
 	    return lines;
@@ -471,19 +480,20 @@ PVPanels::names(void)
     
     for (it = _data.begin(); it != _data.end(); it++) {
 	entry = *it;
-	pvnames->push_back(entry->Model);
+	pvnames->push_back(entry->name);
     }
     
     return pvnames;
 }
 
-vector<struct pvpanel *> *
+#if 0
+vector<pvpanel_t *> *
 PVPanels::search(std::string search)
 {
     std::vector<pvpanel_t *>::iterator it;
-    vector<struct pvpanel *> *pv;
+    vector<pvpanel_t *> *pv;
     pvpanel_t *entry;
-    pv = new vector<struct pvpanel *>;
+    pv = new vector<pvpanel_t *>;
     
     if (_data.size() == 0) {
 	dbglogfile << "No PV Panel data in memory" << endl;
@@ -491,13 +501,80 @@ PVPanels::search(std::string search)
     }
     
     for (it = _data.begin(); it != _data.end(); it++) {
-	if (strstr((*it)->Model, search.c_str())) {
+	if (strstr((*it)->name, search.c_str())) {
 	    entry = *it;
 	    pv->push_back(entry);
 	}
     }
     
     return pv;
+}
+#endif
+
+int
+PVPanels::readSQL(Database &db)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    if (db.getState() == Database::DBOPENED) {
+	string query = "SELECT * from modules";
+	vector<vector<string> > *result = db.queryResults(query);
+	vector<vector<string> >::iterator it;
+	for (it=result->begin(); it!=result->end(); ++it) {
+	    pvpanel_t *thispv = new pvpanel_t;
+	    vector<string> &row = *it;
+	    thispv->name = const_cast<char *>(row[1].c_str());
+	    thispv->Vintage = const_cast<char *>(row[2].c_str());
+	    thispv->Area = strtof(row[3].c_str(), NULL);
+	    thispv->Material = const_cast<char *>(row[4].c_str());
+	    thispv->Series_Cells = strtol(row[5].c_str(), NULL, 0);
+	    thispv->Parallel_C_S = strtol(row[6].c_str(), NULL, 0);
+	    thispv->Isco = strtof(row[7].c_str(), NULL);
+	    thispv->Voco = strtof(row[8].c_str(), NULL);
+	    thispv->Impo = strtof(row[9].c_str(), NULL);
+	    thispv->Vmpo = strtof(row[10].c_str(), NULL);
+	    thispv->aIsc = strtof(row[11].c_str(), NULL);
+	    thispv->aImp = strtof(row[12].c_str(), NULL);
+	    thispv->C0 = strtof(row[13].c_str(), NULL);
+	    thispv->C1 = strtof(row[14].c_str(), NULL);
+	    thispv->BVoco = strtof(row[15].c_str(), NULL);
+	    thispv->mBVoc = strtof(row[16].c_str(), NULL);
+	    thispv->BVmpo = strtof(row[17].c_str(), NULL);
+	    thispv->BVmpo = strtof(row[18].c_str(), NULL);
+	    thispv->n = strtof(row[19].c_str(), NULL);
+	    thispv->C2 = strtof(row[20].c_str(), NULL);
+	    thispv->C3 = strtof(row[21].c_str(), NULL);
+	    thispv->A0 = strtof(row[22].c_str(), NULL);
+	    thispv->A1 = strtof(row[23].c_str(), NULL);
+	    thispv->A2 = strtof(row[24].c_str(), NULL);
+	    thispv->A3 = strtof(row[25].c_str(), NULL);
+	    thispv->A4 = strtof(row[26].c_str(), NULL);
+	    thispv->B0 = strtof(row[27].c_str(), NULL);
+	    thispv->B1 = strtof(row[28].c_str(), NULL);
+	    thispv->B2 = strtof(row[29].c_str(), NULL);
+	    thispv->B3 = strtof(row[30].c_str(), NULL);
+	    thispv->B4 = strtof(row[31].c_str(), NULL);
+	    thispv->B5 = strtof(row[32].c_str(), NULL);
+	    thispv->d_Tc = strtof(row[33].c_str(), NULL);
+	    thispv->fd = strtof(row[34].c_str(), NULL);
+	    thispv->a = strtof(row[35].c_str(), NULL);
+	    thispv->b = strtof(row[36].c_str(), NULL);
+	    thispv->C4 = strtof(row[37].c_str(), NULL);
+	    thispv->C5 = strtof(row[38].c_str(), NULL);
+	    thispv->Ixo = strtof(row[39].c_str(), NULL);
+	    thispv->Ixxo = strtof(row[40].c_str(), NULL);
+	    thispv->C6 = strtof(row[41].c_str(), NULL);
+	    thispv->C7 = strtof(row[42].c_str(), NULL);
+	    thispv->Picture = const_cast<char *>(row[43].c_str());
+	    thispv->Description = const_cast<char *>(row[44].c_str());
+	    thispv->Manufacturer = const_cast<char *>(row[45].c_str());
+
+	    addEntry(thispv);
+	}
+    }
+
+    dbglogfile << "Loaded " << dataSize() << " records from pvpanels table." << endl;
+
+    return dataSize();
 }
 
 void
@@ -547,7 +624,7 @@ PVPanels::writeDatabase(string filespec)
     
     // Write the headers so this can be imported easier into other programs,
     // like spreadsheets.
-    os << "Model,Vintage,Area,Material,Series_Cells,Parallel_C-S,Isco,Voco,Impo,Vmpo,aIsc,aImp,C0,C1,BVoco,mBVoc,BVmpo,mBVmp,n,C2,C3,A0,A1,A2,A3,A4,B0,B1,B2,B3,B4,B5,d(Tc),fd,a,b,C4,C5,Ixo,Ixxo,C6,C7,Picture,Description";
+    os << "name,Vintage,Area,Material,Series_Cells,Parallel_C-S,Isco,Voco,Impo,Vmpo,aIsc,aImp,C0,C1,BVoco,mBVoc,BVmpo,mBVmp,n,C2,C3,A0,A1,A2,A3,A4,B0,B1,B2,B3,B4,B5,d(Tc),fd,a,b,C4,C5,Ixo,Ixxo,C6,C7,Picture,Description";
     
     if (_enhanced) {
 	os << ",Price,Manufacturer";
@@ -557,12 +634,12 @@ PVPanels::writeDatabase(string filespec)
     
     for (it = _data.begin(); it != _data.end(); it++) {
 	pv = *it;
-	if (pv->Model == 0) {
+	if (pv->name == 0) {
 	    break;
 	}
 	
-	if (pv->Model)
-	    os << "\"" << pv->Model << "\",";
+	if (pv->name)
+	    os << "\"" << pv->name << "\",";
 	else
 	    os << "\"\",";
 	if (pv->Vintage)
@@ -761,14 +838,14 @@ PVPanels::crystalCompensation(pvpanel_t *pv, float temp)
   return nvolts;
 }
 
-std::vector<struct pvpanel *>
+std::vector<pvpanel_t *>
 PVPanels::getPVPanels(void)
 {
   return _data;
 }
 
 void
-PVPanels::setPVPanels(std::vector<struct pvpanel *> ptr)
+PVPanels::setPVPanels(std::vector<pvpanel_t *> ptr)
 {
   _data = ptr;
 }

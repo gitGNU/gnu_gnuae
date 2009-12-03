@@ -29,13 +29,20 @@
 #include <cmath>
 
 #include "Centers.h"
+#include "log.h"
+#include "gnuae.h"
+#include "Database.h"
 
 using namespace std;
 
 namespace gnuae {
 
+static LogFile& dbglogfile = LogFile::getDefaultInstance();
+static GnuAE& gdata = GnuAE::getDefaultInstance();
+
+#if 0
 extern "C" {
-  
+
   center_t centers[] = {
     { "None",                      "None",       0.0, 0 },
     { "Trace SW4024/S",            "Xantrax", 4995.0, 24 },
@@ -54,6 +61,7 @@ extern "C" {
     {                0,                    0,      0,  0 }
   };
 };
+#endif
 
 Centers::Centers() {
 
@@ -63,12 +71,58 @@ Centers::~Centers() {
 
 };
 
+int
+Centers::readCSV(std::string)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+}
+
+int
+Centers::readSQL(Database &db)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    if (db.getState() == Database::DBOPENED) {
+    	string query = "SELECT * from centers";
+    	vector<vector<string> > *result = db.queryResults(query);
+    	vector<vector<string> >::iterator it;
+    	for (it=result->begin(); it!=result->end(); ++it) {
+    	    center_t *thiscent = new center_t;
+    	    vector<string> &row = *it;
+    	    thiscent->name = const_cast<char *>(row[1].c_str());
+    	    thiscent->manufacturer = const_cast<char *>(row[2].c_str());
+    	    // thiscent->price = strtof(row[3].c_str(), NULL);
+    	    thiscent->voltage = strtol(row[4].c_str(), NULL, 0);
+    	    addEntry(thiscent);
+    	}
+    }
+
+    dbglogfile << "Loaded " << dataSize() << " records from centers table." << endl;
+
+    return dataSize();
+}
+
 void
 Centers::dump()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    cerr << "No Load Centers data in memory." << endl;
-    
+    if (!dataSize()) {
+    	cerr << "No Control Center data in memory." << endl;
+    } else {
+    	vector<string>::iterator it;
+    	vector<string> *loadnames = dataNames();
+    	for (it = loadnames->begin(); it != loadnames->end(); ++it) {
+    	    dump(findEntry(*it));
+    	}
+    }
+}
+
+void
+Centers::dump(center_t *cent)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    cerr << "Control Center name is: " << cent->name;
+    cerr << ", Manufacturer is: " << cent->manufacturer;
+    cerr << ", Voltage is: " << cent->voltage << endl;
 }
 
 } // end of gnuae namespace

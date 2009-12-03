@@ -69,6 +69,8 @@ GnuAE::loadData()
         _loads.readLoadsSQL(*this);
         _inverters.readSQL(*this);
         _batteries.readSQL(*this);
+        _pvpanels.readSQL(*this);
+        _centers.readSQL(*this);
     }
 
 }
@@ -77,11 +79,11 @@ void
 GnuAE::dump()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    _loads.dump();
-    _batteries.dump();
+    // _loads.dump();
+    // _batteries.dump();
     _pvpanels.dump();
     _centers.dump();
-    _inverters.dump();
+    // _inverters.dump();
     _chargers.dump();
     _combiners.dump();
     _pumps.dump();

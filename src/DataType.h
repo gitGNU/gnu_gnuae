@@ -28,11 +28,9 @@
 #include <iterator>
 #include <string>
 
-#include "Loads.h"
-
 namespace gnuae {
 
-template <class datatype>
+template <typename datatype>
 class DataTypeMethods
 {
 public:
@@ -66,12 +64,11 @@ public:
         datatype *entry;
         entrynames = new std::vector<std::string>;  
         
-        if (_data.size() == 0) {
+        if (!_data.size()) {
             std::cerr << "No Load data in memory!" << std::endl;
             return entrynames;
         }
-        
-        std::map<std::string, load_t *>::const_iterator it;
+	typename std::map<std::string, datatype *>::const_iterator it;
         for (it = _data.begin(); it != _data.end(); it++) {
             entry = static_cast<datatype *>(it->second);
             entrynames->push_back(entry->name);
@@ -83,8 +80,7 @@ public:
 #if 0
         int i;
         
-        for (i=0; loads[i].name!=0; i++)
-            {
+        for (i=0; loads[i].name!=0; i++) {
                 _data.insert( make_pair( loads[i].name, (load_t *)&loads[i]) );
                 //      _data.push_back(&loads[i]);
             }

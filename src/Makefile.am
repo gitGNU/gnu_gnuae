@@ -54,7 +54,8 @@ SRC = PVPanel.cc PVPanel.h \
 	log.h log.cc \
 	err.h err.cc \
 	DataType.cc DataType.h \
-	gnuae.h gnuae.cc
+	gnuae.h gnuae.cc \
+	gui.cc gui.h
 
 bin_PROGRAMS =  gnuae # neccalc
 

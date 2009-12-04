@@ -394,11 +394,14 @@ PHP_FUNCTION(gui_list_names)
     const char **names = 0;
     if (len && str) {
 	names = gui_list_names(str);
-	int i = 0;
-	while (names[i] != 0) {
-	    php_printf("FIXME: %s\n", names[i]);
-	    add_next_index_string(result, names[i], 1);
-	    names++;
+	if (names) {
+	    int i = 0;
+	    while (names[i] != 0) {
+		add_next_index_string(result, names[i], 1);
+		names++;
+	    }
+	// } else {
+	//     php_printf("ERROR: didn't get anything back from gui_list_names!\n");
 	}
     } else {
 	php_printf("Invalid paramater for name!");

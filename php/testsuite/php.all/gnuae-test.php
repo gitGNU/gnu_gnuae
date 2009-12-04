@@ -176,12 +176,76 @@ if (bccomp($foo, '16') == 0) {
  }
 
 // Get the list of names from the Loads table
-$foo = gui_list_names("load");
+$foo = gui_list_names("loads");
 $size=count($foo);
 if ($size) {
   pass("gui_list_names(load) returns $size entries");  
 } else {
   fail("gui_list_names(load) fails to return any entries");  
+}
+
+$foo = gui_list_names("centers");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(center) returns $size entries");  
+} else {
+  fail("gui_list_names(center) fails to return any entries");  
+}
+
+$foo = gui_list_names("inverter");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(inverter) returns $size entries");  
+} else {
+  fail("gui_list_names(inverter) fails to return any entries");  
+}
+
+$foo = gui_list_names("combiners");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(combiners) returns $size entries");  
+} else {
+  fail("gui_list_names(combiners) fails to return any entries");  
+}
+
+$foo = gui_list_names("pvpanels");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(pvpanels) returns $size entries");  
+} else {
+  fail("gui_list_names(pvpanels) fails to return any entries");  
+}
+
+$foo = gui_list_names("pumps");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(pumps) returns $size entries");  
+} else {
+  fail("gui_list_names(pumps) fails to return any entries");  
+}
+
+$foo = gui_list_names("charger");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(charger) returns $size entries");  
+} else {
+  fail("gui_list_names(charger) fails to return any entries");  
+}
+
+$foo = gui_list_names("batteries");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(batteries) returns $size entries");
+} else {
+  fail("gui_list_names(batteries) fails to return any entries");
+}
+
+$foo = gui_list_names("wire");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(wire) returns $size entries");  
+} else {
+  fail("gui_list_names(wire) fails to return any entries");  
 }
 
 // Dump the totals

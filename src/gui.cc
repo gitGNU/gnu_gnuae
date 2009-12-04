@@ -33,7 +33,7 @@ static GnuAE& gdata = GnuAE::getDefaultInstance();
 extern "C" {
     const char **gui_list_names(const char *name)
     {
-        DEBUGLOG_REPORT_FUNCTION;
+        // DEBUGLOG_REPORT_FUNCTION;
         const char **ret = gdata.list_names(name);
 
         return ret;
@@ -41,7 +41,7 @@ extern "C" {
     
     void gui_init()
     {
-        DEBUGLOG_REPORT_FUNCTION;
+        // DEBUGLOG_REPORT_FUNCTION;
         dbglogfile.set_verbosity();
         gdata.openDB();
         gdata.loadData();

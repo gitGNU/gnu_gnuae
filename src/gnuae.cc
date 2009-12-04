@@ -86,12 +86,8 @@ GnuAE::loadData()
 const char **
 GnuAE::list_names(const char *table)
 {
-    DEBUGLOG_REPORT_FUNCTION;
-    
-    typedef enum { BATTERY, CENTER, CHARGER, COMBINER, INVERTER,
-		   LOAD, PVPANEL, PUMP, WIRE} table_e;
-
-    vector<string> *data;
+    // DEBUGLOG_REPORT_FUNCTION;    
+    vector<string> *data = 0;
     
     if (strncmp(table, "load", 2) == 0) {
         data = _loads.dataNames();
@@ -109,20 +105,23 @@ GnuAE::list_names(const char *table)
         data = _wire.dataNames();
     } else if (strncmp(table, "pvpanel", 2) == 0) {
         data = _pvpanels.dataNames();
-    } else if (strncmp(table, "bettery", 2) == 0) {
+    } else if (strncmp(table, "battery", 2) == 0) {
         data = _batteries.dataNames();
     }
-    
-    const char **result = new const char *[data->size()+1];
-    vector<string>::iterator it;
-    int i = 0;
-    for (it = data->begin(); it != data->end(); ++it) {
-        result[i++] = (*it).c_str();
-    }
-    // Terminate the array, since we're not using std::vector
-    result[i] = 0;
 
-    return result;
+    if (data) {
+        const char **result = new const char *[data->size()+1];
+        vector<string>::iterator it;
+        int i = 0;
+        for (it = data->begin(); it != data->end(); ++it) {
+            result[i++] = (*it).c_str();
+        }
+        // Terminate the array, since we're not using std::vector
+        result[i] = 0;
+        return result;
+    }
+
+    return 0;
 }
 
 void

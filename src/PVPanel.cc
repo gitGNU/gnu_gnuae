@@ -514,7 +514,7 @@ PVPanels::search(std::string search)
 int
 PVPanels::readSQL(Database &db)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
 	string query = "SELECT * from modules";
 	vector<vector<string> > *result = db.queryResults(query);

@@ -122,7 +122,7 @@ Chargers::readCSV(std::string)
 int
 Chargers::readSQL(Database &db)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
     	string query = "SELECT * from chargers";
     	vector<vector<string> > *result = db.queryResults(query);
@@ -147,7 +147,7 @@ Chargers::readSQL(Database &db)
     	}
     }
 
-    dbglogfile << "Loaded " << dataSize() << " records from centers table." << endl;
+    // dbglogfile << "Loaded " << dataSize() << " records from centers table." << endl;
 
     return dataSize();
 }

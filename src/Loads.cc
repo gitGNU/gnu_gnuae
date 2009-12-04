@@ -391,7 +391,7 @@ Loads::readLoadsCSV(std::string filespec)
 int
 Loads::readLoadsSQL(Database &db)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
 	string query = "SELECT * from loads";
 	vector<vector<string> > *result = db.queryResults(query);

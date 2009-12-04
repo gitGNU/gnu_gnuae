@@ -65,22 +65,24 @@ extern "C" {
 };
 #endif
 
-Inverters::Inverters() {
+Inverters::Inverters()
+{
 }
 
-Inverters::~Inverters() {
+Inverters::~Inverters()
+{
 }
 
 int
 Inverters::readCSV(std::string)
 {
-
+    DEBUGLOG_REPORT_FUNCTION;
 }
 
 int
 Inverters::readSQL(Database &db)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
 	string query = "SELECT * from inverters";
 	vector<vector<string> > *result = db.queryResults(query);

@@ -1392,121 +1392,126 @@ NEC::wireAmpacity(int awg, int temp, int conductors, bool conduit,
 gnuae::NEC _nec;
 
 extern "C" {
-  /* The C API goes here */
-  void nec_toggle_debug(int val)
-  {
-    _nec.toggleDebug(val);
-  }
-
-  float nec_volt_drop(int awg, int distance, float volts, float amps, float temp,
-                      int conductors)
-  {
-    return _nec.voltDrop(awg, distance, volts, amps, temp, conductors);
-  }
-  
-  float nec_volt_loss(int distance, int awg, double amps, double temperature,
-                      int conductors)
-  {
-    return _nec.voltLoss(distance, awg, amps, temperature, conductors);
-  }
-
-  float nec_watts(float volts, float amps)
-  {
-    return _nec.watts(volts, amps);
-  }
-  
-  float nec_amps(float watts, float volts)
-  {
-    return _nec.amps(watts, volts);
-  }
-  
-  float nec_volts(float watts, float amps)
-  {
-    return _nec.volts(watts, amps);
-  }
-  
-  float nec_resistance(int awg, float temperature)
-  {
-    return _nec.resistance(awg, temperature);
-  }
-
-  float nec_wire_derate(int awg, float temperature)
-  {
-    //    return _nec.wireDerate(awg, temperature);
-  }
-  
-  float nec_over_current(int strings, float isc)
-  {
-    return _nec.overCurrent(strings, isc);
-  }
-
-  int nec_find_gauge(int distance, float volts, float amps, float temp,
-                     int conductors)
-  {
-    return _nec.findGauge(distance, volts, amps, temp, conductors);
-  }
-  int nec_find_ground(float volts, float amps) 
-  {
-    return _nec.findGround(volts, amps);
-  }
-  
-  float nec_crystal_comp(float temp)
-  {
-    return _nec.crystalCompensation(temp);
-  }
-  
-  int nec_awg_pv2pv(int distance, float volts, float amps, float temp,
-                    int conductors)
-  {
-    return _nec.awgPV2PV(distance, volts, amps, temp, conductors);
-  }
-  
-  int nec_awg_pv2combiner(int distance, float volts, float amps, float temp,
-                          int conductors)
-  {
-    return _nec.awgPV2Combiner(distance, volts, amps, temp, conductors);
-  }
-  
-  int nec_awg_combiner2charger(int distance, float volts, float amps, float temp,
-                               int conductors)
-  {
-    return _nec.awgCombiner2Charger(distance, volts, amps, temp, conductors);
-  }
-  
-  int nec_awg_wind2charger(int distance, float volts, float amps, float temp,
-                           int conductors)
-  {
-    return _nec.awgWind2Charger(distance, volts, amps, temp, conductors);
-  }
-  
-  int nec_awg_charger2battery(int distance, float volts, float amps, float temp,
-                              int conductors)
-  {
-    return _nec.awgCharger2Battery(distance, volts, amps, temp, conductors);
-  }
-  
-  
-  int nec_awg_battery2inverter(int distance, float volts, float amps, float temp,
-                               int conductors)
-  {
-    return _nec.awgBattery2Inverter(distance, volts, amps, temp, conductors);
-  }
-
-  float nec_wire_ampacity(int awg, int temp, int conductors, int conduit,
-                          wiretype_t type)
-  {
-    return _nec.wireAmpacity(awg, temp, conductors, conduit, type);
-  }
-
-  float nec_ampacity(float amps)
-  {
-    return _nec.ampacity(amps);
-  }
-
-  float nec_find_conduit(int awg, int conductors, wiretype_t wire, conduit_type_t conduit)
-  {
-    return _nec.findConduit(awg, conductors, wire, conduit);
-  }
+    /* The C API goes here */
+    void nec_toggle_debug(int val)
+    {
+	_nec.toggleDebug(val);
+    }
+    
+    float nec_volt_drop(int awg, int distance, float volts, float amps, float temp,
+			int conductors)
+    {
+	return _nec.voltDrop(awg, distance, volts, amps, temp, conductors);
+    }
+    
+    float nec_volt_loss(int distance, int awg, double amps, double temperature,
+			int conductors)
+    {
+	return _nec.voltLoss(distance, awg, amps, temperature, conductors);
+    }
+    
+    float nec_watts(float volts, float amps)
+    {
+	return _nec.watts(volts, amps);
+    }
+    
+    float nec_amps(float watts, float volts)
+    {
+	return _nec.amps(watts, volts);
+    }
+    
+    float nec_volts(float watts, float amps)
+    {
+	return _nec.volts(watts, amps);
+    }
+    
+    float nec_resistance(int awg, float temperature)
+    {
+	return _nec.resistance(awg, temperature);
+    }
+    
+    float nec_wire_derate(int awg, float temperature)
+    {
+	//    return _nec.wireDerate(awg, temperature);
+    }
+    
+    float nec_over_current(int strings, float isc)
+    {
+	return _nec.overCurrent(strings, isc);
+    }
+    
+    int nec_find_gauge(int distance, float volts, float amps, float temp,
+		       int conductors)
+    {
+	return _nec.findGauge(distance, volts, amps, temp, conductors);
+    }
+    int nec_find_ground(float volts, float amps) 
+    {
+	return _nec.findGround(volts, amps);
+    }
+    
+    float nec_crystal_comp(float temp)
+    {
+	return _nec.crystalCompensation(temp);
+    }
+    
+    int nec_awg_pv2pv(int distance, float volts, float amps, float temp,
+		      int conductors)
+    {
+	return _nec.awgPV2PV(distance, volts, amps, temp, conductors);
+    }
+    
+    int nec_awg_pv2combiner(int distance, float volts, float amps, float temp,
+			    int conductors)
+    {
+	return _nec.awgPV2Combiner(distance, volts, amps, temp, conductors);
+    }
+    
+    int nec_awg_combiner2charger(int distance, float volts, float amps, float temp,
+				 int conductors)
+    {
+	return _nec.awgCombiner2Charger(distance, volts, amps, temp, conductors);
+    }
+    
+    int nec_awg_wind2charger(int distance, float volts, float amps, float temp,
+			     int conductors)
+    {
+	return _nec.awgWind2Charger(distance, volts, amps, temp, conductors);
+    }
+    
+    int nec_awg_charger2battery(int distance, float volts, float amps, float temp,
+				int conductors)
+    {
+	return _nec.awgCharger2Battery(distance, volts, amps, temp, conductors);
+    }
+    
+    
+    int nec_awg_battery2inverter(int distance, float volts, float amps, float temp,
+				 int conductors)
+    {
+	return _nec.awgBattery2Inverter(distance, volts, amps, temp, conductors);
+    }
+    
+    float nec_wire_ampacity(int awg, int temp, int conductors, int conduit,
+			    wiretype_t type)
+    {
+	return _nec.wireAmpacity(awg, temp, conductors, conduit, type);
+    }
+    
+    float nec_ampacity(float amps)
+    {
+	return _nec.ampacity(amps);
+    }
+    
+    float nec_find_conduit(int awg, int conductors, wiretype_t wire, conduit_type_t conduit)
+    {
+	return _nec.findConduit(awg, conductors, wire, conduit);
+    }
+    
+    int list_names(char *str)
+    {
+	
+    }
 }
 
 // local Variables:

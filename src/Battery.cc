@@ -106,7 +106,7 @@ Battery::readCSV(std::string)
 int
 Battery::readSQL(Database &db)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
 	string query = "SELECT * from batteries";
 	vector<vector<string> > *result = db.queryResults(query);

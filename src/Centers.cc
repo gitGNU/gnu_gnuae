@@ -80,7 +80,7 @@ Centers::readCSV(std::string)
 int
 Centers::readSQL(Database &db)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
     	string query = "SELECT * from centers";
     	vector<vector<string> > *result = db.queryResults(query);

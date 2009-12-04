@@ -81,6 +81,24 @@ GnuAE::loadData()
 
 }
 
+// As this function is to support the GUIs, which are usually only C
+// based, we return a C array instead of an std::vector of strings.
+const char **
+GnuAE::list_names(const char *table)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    
+    typedef enum { BATTERY, CENTER, CHARGER, COMBINER, INVERTER,
+		   LOAD, PVPANEL, PUMP, WIRE} table_e;
+
+    vector<string> *data;
+    
+    if (strncmp(table, "load", 2) == 0) {
+        data = _loads.dataNames();
+        cerr << "FOO" << data->size() << endl;
+    }
+}
+
 void
 GnuAE::dump()
 {

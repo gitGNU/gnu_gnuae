@@ -59,7 +59,7 @@ Pumps::readCSV(std::string)
 int
 Pumps::readSQL(Database &db)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     if (db.getState() == Database::DBOPENED) {
     	string query = "SELECT * from pumps";
     	vector<vector<string> > *result = db.queryResults(query);

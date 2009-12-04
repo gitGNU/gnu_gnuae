@@ -34,6 +34,8 @@ namespace gnuae {
 class GnuAE : public Database {
 public:
     static GnuAE& getDefaultInstance();
+    typedef enum { BATTERY, CENTER, CHARGER, COMBINER, INVERTER,
+		   LOAD, PVPANEL, PUMP, WIRE} table_e; 
     GnuAE();
     ~GnuAE();
     
@@ -47,6 +49,8 @@ public:
     std::string &getDataDir() { return _datadir; };
 
     bool loadData();
+
+    const char **list_names(const char *table);
     
     void dump();
 private:

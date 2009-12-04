@@ -162,7 +162,7 @@ Database::queryResults(string &query)
     int         nrows;
     unsigned int i, res;
     
-    dbglogfile << "Query is: \"" << query.c_str() << "\"" << endl;
+    // dbglogfile << "Query is: \"" << query.c_str() << "\"" << endl;
 
     res = mysql_real_query(&_mysql, query.c_str(), query.size());
 
@@ -187,7 +187,7 @@ Database::queryResults(string &query)
     
     result = mysql_store_result(&_mysql);
     nrows = mysql_num_rows(result);
-    dbglogfile << nrows << " rows found for query." << endl;
+    // dbglogfile << nrows << " rows found for query." << endl;
 
     // vector<vector<string> > *table = new vector<vector<string> >;
     vector<vector<string> > *table = new vector<vector<string> >;

@@ -175,6 +175,15 @@ if (bccomp($foo, '16') == 0) {
   fail("nec_awg_battery2inverter(7, 48.3, 45.6, 18.9, 2) == $foo");
  }
 
+// Get the list of names from the Loads table
+$foo = gui_list_names("load");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(load) returns $size entries");  
+} else {
+  fail("gui_list_names(load) fails to return any entries");  
+}
+
 // Dump the totals
 totals();
 

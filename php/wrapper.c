@@ -384,30 +384,28 @@ PHP_FUNCTION(gui_list_names)
 {
     char *str;
     int len;
-    zval *result;
+    zval *result = malloc(sizeof(zval));
     
     if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
 	WRONG_PARAM_COUNT;
     }
 
-    // REGISTER_LONG_CONSTANT("AXIS2", 1, CONST_CS | CONST_PERSISTENT); 
-
+    array_init(result);
     const char **names = 0;
     if (len && str) {
 	names = gui_list_names(str);
 	int i = 0;
 	while (names[i] != 0) {
-	    php_printf("FIXME: %s\n", names[i++]);
+	    php_printf("FIXME: %s\n", names[i]);
+	    add_next_index_string(result, names[i], 1);
+	    names++;
 	}
     } else {
 	php_printf("Invalid paramater for name!");
     }
-    
-    ALLOC_INIT_ZVAL(result);
-    Z_TYPE_P(result) = IS_STRING;
-    Z_LVAL_P(result) = 1234;
-    
-    RETURN_LONG(1);
+
+    // 2nd field, 0 is no copy, 3rd field is destruct before returning
+    RETURN_ZVAL(result, 0, 1);
 }
 
 // local Variables:

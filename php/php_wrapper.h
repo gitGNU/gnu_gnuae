@@ -1,3 +1,21 @@
+/* 
+ *   Copyright (C) 2009 Free Software Foundation, Inc.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 #ifndef PHP_GNUAE_H
 #define PHP_GNUAE_H 1
 
@@ -5,16 +23,22 @@
 #include "TSRM.h"
 #endif
 
+#if 1
 ZEND_BEGIN_MODULE_GLOBALS(gnuae)
-    long counter;
-    zend_bool direction;
+     long counter;
+     zend_bool direction;
 ZEND_END_MODULE_GLOBALS(gnuae)
+#else
+ZEND_DECLARE_MODULE_GLOBALS(gnuae)
+#endif
 
 #ifdef ZTS
 #define GNUAE_G(v) TSRMG(gnuae_globals_id, zend_gnuae_globals *, v)
 #else
 #define GNUAE_G(v) (gnuae_globals.v)
 #endif
+
+int list_names(char *);
      
 #define PHP_GNUAE_WORLD_VERSION "1.0"
 #define PHP_GNUAE_WORLD_EXTNAME "gnuae"
@@ -48,9 +72,17 @@ PHP_FUNCTION(nec_awg_wind2charger);
 PHP_FUNCTION(nec_awg_charger2battery);
 PHP_FUNCTION(nec_awg_battery2inverter);
 
+// These functions are all relwated to GUI support
+PHP_FUNCTION(gui_init);
+// List the names of the various items so we can create a menu
+PHP_FUNCTION(gui_list_names);
 
 extern zend_module_entry gnuae_module_entry;
 #define phpext_gnuae_ptr &gnuae_module_entry
 
 #endif
 
+// local Variables:
+// mode: C++
+// indent-tabs-mode: t
+// End:

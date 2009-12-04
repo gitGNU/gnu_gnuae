@@ -1,3 +1,21 @@
+/* 
+ *   Copyright (C) 2009 Free Software Foundation, Inc.
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -5,6 +23,7 @@
 #include "php.h"
 #include "php_wrapper.h"
 #include "NEC.h"
+#include "gui.h"
 #include "PVPanel.h"
 
 static function_entry gnuae_functions[] = {
@@ -28,6 +47,8 @@ static function_entry gnuae_functions[] = {
     PHP_FE(nec_awg_wind2charger, NULL)
     PHP_FE(nec_awg_charger2battery, NULL)
     PHP_FE(nec_awg_battery2inverter, NULL)
+    PHP_FE(gui_list_names, NULL)
+    PHP_FE(gui_init, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -55,30 +76,25 @@ ZEND_GET_MODULE(gnuae)
 PHP_MINIT_FUNCTION(gnuae)
 {
 
-  // REGISTER_INI_ENTRIES();
-  // php_error(E_WARNING, __LINE__);
-  
-  return SUCCESS;
+    // REGISTER_INI_ENTRIES();
+    // php_error(E_WARNING, __LINE__);
+    
+    return SUCCESS;
 }
 
 PHP_MSHUTDOWN_FUNCTION(gnuae)
 {
-
-  // UNREGISTER_INI_ENTRIES();
-
-  return SUCCESS;
+    
+    // UNREGISTER_INI_ENTRIES();
+    
+    return SUCCESS;
 }
 
 PHP_RINIT_FUNCTION(gnuae)
 {
-  char *prevname;
-  int i, pvnames;
-  pvpanel_t *pvp;
-
-  //pvnames = read_module_data_csv("");
-  //  php_printf("Hey Now! from gnuae_rinit function<p>");
-
-  return SUCCESS;
+    gui_init();
+    
+    return SUCCESS;
 }
 
 
@@ -358,3 +374,32 @@ PHP_FUNCTION(nec_find_ground)
   RETURN_DOUBLE(-1.1);
 }
 
+PHP_FUNCTION(gui_init)
+{
+    gui_init();
+}
+
+// GUI support callbacks
+PHP_FUNCTION(gui_list_names)
+{
+    char *str;
+    int len;
+    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
+	WRONG_PARAM_COUNT;
+    }
+
+    // REGISTER_LONG_CONSTANT("AXIS2", 1, CONST_CS | CONST_PERSISTENT); 
+
+    if (len && str) {
+	gui_list_names(str);
+    } else {
+	php_printf("Invalid paramater for name!");
+    }
+    
+    RETURN_LONG(1);
+}
+
+// local Variables:
+// mode: C++
+// indent-tabs-mode: t
+// End:

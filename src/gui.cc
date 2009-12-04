@@ -31,12 +31,12 @@ static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
 extern "C" {
-    int gui_list_names(const char *name)
+    const char **gui_list_names(const char *name)
     {
-        cerr << "Gui::load_names Unimplemented! " << name << endl;
-
         DEBUGLOG_REPORT_FUNCTION;
-        gdata.list_names(name);
+        const char **ret = gdata.list_names(name);
+
+        return ret;
     }
     
     void gui_init()

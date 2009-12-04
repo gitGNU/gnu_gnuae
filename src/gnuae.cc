@@ -95,8 +95,34 @@ GnuAE::list_names(const char *table)
     
     if (strncmp(table, "load", 2) == 0) {
         data = _loads.dataNames();
-        cerr << "FOO" << data->size() << endl;
+    } else if (strncmp(table, "center", 2) == 0) {
+        data = _centers.dataNames();
+    } else if (strncmp(table, "charger", 2) == 0) {
+        data = _chargers.dataNames();
+    } else if (strncmp(table, "combiner", 2) == 0) {
+        data = _combiners.dataNames();
+    } else if (strncmp(table, "inverter", 2) == 0) {
+        data = _inverters.dataNames();
+    } else if (strncmp(table, "pump", 2) == 0) {
+        data = _pumps.dataNames();
+    } else if (strncmp(table, "wire", 2) == 0) {
+        data = _wire.dataNames();
+    } else if (strncmp(table, "pvpanel", 2) == 0) {
+        data = _pvpanels.dataNames();
+    } else if (strncmp(table, "bettery", 2) == 0) {
+        data = _batteries.dataNames();
     }
+    
+    const char **result = new const char *[data->size()+1];
+    vector<string>::iterator it;
+    int i = 0;
+    for (it = data->begin(); it != data->end(); ++it) {
+        result[i++] = (*it).c_str();
+    }
+    // Terminate the array, since we're not using std::vector
+    result[i] = 0;
+
+    return result;
 }
 
 void

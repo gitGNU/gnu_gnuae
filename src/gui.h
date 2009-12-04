@@ -43,7 +43,7 @@
 extern "C" {
 #else
 // C API goes here
-    int gui_list_names(const char *name);
+    const char **gui_list_names(const char *name);
     void gui_init();
 #endif
     

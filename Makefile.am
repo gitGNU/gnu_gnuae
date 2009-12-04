@@ -25,6 +25,9 @@ SUBDIRS = src php # gpv
 FULLVERSION = 0.4.0
 VERSION = 0.4
 
+install-php: # install
+	$(MAKE) $(MAKEFLAGS) -C php install-php
+
 # Set ourselves up to build a RedHat package. The "dist" target used by
 # Automake isn't sufficient tp dop more than build a tarball
 tarball: 

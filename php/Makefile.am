@@ -39,7 +39,7 @@ install: gnuae.la
 	@echo "directory which requires root priviledges, you must use"
 	@echo "sudo install-php insted"
 
-install-php: $(plugin_LTLIBRARIES)
+install-php: $(php_LTLIBRARIES)
 	@test -d "$(DESTDIR)$(pphpdir)" || $(mkinstalldirs) "$(DESTDIR)$(phpdir)"
 	@echo "Installing PHP GnuAE extension to $(DESTDIR)$(phpdir)"
 	@if test -d .libs; then \

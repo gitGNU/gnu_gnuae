@@ -118,14 +118,14 @@ Wire::dump(wire_t *wire)
 
     cerr << "\tArea mm: " << wire->area_mm;		// Area in mm
     cerr << ", Area mils: " << wire->area_mils;		// Area in circular mils
-    cerr << ", Strands: " << wire->strand_qty << endl;		// conductors
+    cerr << ", Strands: " << wire->strand_qty << endl;	// conductors
     // Conductors
     cerr << "\tStranding mm: " << wire->strand_mm;
     cerr << ", inches: " << wire->strans_in << endl;
     cerr << "\tDiameter mm: " << wire->dia_mm;
     cerr << ", inches: " << wire->dia_in << endl;
-    cerr << "\tStranding Area mm: " << wire->sarea_mm;		// Stranding in mm
-    cerr << ", in: " << wire->sarea_in << endl;		// Stranding in in
+    cerr << "\tStranding Area mm: " << wire->sarea_mm; // Stranding in mm
+    cerr << ", in: " << wire->sarea_in << endl;	       // Stranding in in
     // Direct-Current Resistance at 75°C (167°F)
     // UnCoated Copper wire
     cerr << "\tUncoated Copper km: " << wire->uncoated_km;

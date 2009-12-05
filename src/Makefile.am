@@ -59,7 +59,7 @@ SRC = PVPanel.cc PVPanel.h \
 
 bin_PROGRAMS =  gnuae # neccalc
 
-gnuae_SOURCES = Main.cc  $(SRC) 
+gnuae_SOURCES = $(SRC) Main.cc
 gnuae_LDADD = $(MYSQL_LIBS) # libgnuae.la 
 # gnuae_DEPENDENCIES = libgnuae.la
 

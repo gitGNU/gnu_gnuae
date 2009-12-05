@@ -18,7 +18,8 @@
 #include <iostream>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <cstdlib> 
+#include <cstdlib>
+#include <vector>
 #include "gnuae.h"
 #include "log.h"
 
@@ -49,6 +50,15 @@ GnuAE::GnuAE()
     } else {
         _datadir = "/etc/gnuae/";
     }
+
+    _project.name = "none";
+    _project.description = "none";
+    _project.sunhours = 0;
+    _project.windhours = 0;
+    _project.windspeed = 0;
+    _project.location = "none";
+    _project.latitude = 0.0;
+    _project.longitude = 0.0;
 }
 
 GnuAE::~GnuAE()
@@ -124,6 +134,41 @@ GnuAE::list_names(const char *table)
     return 0;
 }
 
+void *
+GnuAE::getLoadData(const char *item)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    return _loads.findEntry(item);
+}
+
+// Create or redefine the overall project settings
+void
+GnuAE::newProject(std::string &name, std::string &description, int sunhours,
+                  int windhours, int windspeed, std::string &location,
+                  double latitude, double longitude)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+}
+
+// Add an item to the array
+void
+GnuAE::addItem(string &item, string &description, GnuAE::table_e type,
+              int id, int days, int hours, int minutes)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    item_t *nitem = new item_t;
+    
+    nitem->item = item.c_str();
+    nitem->description = description.c_str();
+    // nitem->type = type;
+    nitem->id = id;
+    nitem->days = days;
+    nitem->hours = hours;
+    nitem->minutes = minutes;
+    
+    _chosen_items.push_back(nitem);
+}
+
 void
 GnuAE::dump()
 {
@@ -149,7 +194,25 @@ GnuAE::dump()
     } else {
         cerr << "Using SQL Queries to load memory" << endl;
     }
+    cerr << "Project name: " << _project.name << endl;
+    cerr << "Description:" << _project.description << endl;
+    cerr << "Hours of sun per day: " << _project.sunhours;
+    cerr << ", Hours of wind per day: " << _project.windhours;
+    cerr << ", Average wind speed: " << _project.windspeed << endl;
+    cerr << "Latitude: " << _project.latitude;
+    cerr << ", Longitude: " << _project.longitude;
+    cerr << ", Location: " << _project.location << endl;
+
+    std::vector<item_t *>::iterator it;
+    for (it = _chosen_items.begin(); it != _chosen_items.end(); ++it) {
+        item_t *item = *it;
+        cerr << "Chosen Item is: " << item->item;
+        cerr << "Description" << item->description << endl;
+        // cerr << "itemID: " << item->id;
+        cerr << "Time: " << item->days << ":" << item->hours << ":" << item->minutes << endl;
+    }
 }
+
 
 } // end of gnuae namespace
 

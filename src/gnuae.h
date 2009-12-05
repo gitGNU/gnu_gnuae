@@ -18,6 +18,31 @@
 #ifndef __GNUAE_H__
 #define __GNUAE_H__ 1
 
+typedef struct {
+    const char *name;
+    const char *description;
+    int sunhours;
+    int windhours;
+    int windspeed;
+    const char *location;
+    double latitude;
+    double longitude;
+} project_t;
+
+typedef struct {
+    const char *item;     // the item name which is used as an index
+			  // into all the data tables. 
+    const char *description; // the description of this item, often
+			  // a location of other custom data.
+    // GnuAE::table_e type;  // the type of the item.
+    int id;		  // a numerical ID, currently unused.
+    int days;		  // the days per week this load item is used.
+    int hours;		  // the days per week this load item is used.
+    int minutes;	  // the days per week this load item is used.
+} item_t;
+
+#ifdef __cplusplus
+
 #include "Database.h"
 #include "Battery.h"
 #include "Centers.h"
@@ -44,14 +69,26 @@ public:
 
     void useCSV(bool x) { _usecsv = x; };
     bool useCSV() { return _usecsv; };
-    
+
+    /// Set and get the default directory for data files.
     void setDataDir(std::string &x) { _datadir = x; };
     std::string &getDataDir() { return _datadir; };
 
+    /// Load all the data from either disk based files or an SQL
+    /// database.
     bool loadData();
 
     const char **list_names(const char *table);
-    
+    void *getLoadData(const char *item);
+
+    // Create or redefine the overall project settings
+    void newProject(std::string &name, std::string &description, int sunhours,
+		    int windhours, int windspeed, std::string &location,
+		    double latitude, double longitude);
+    // Add an item to the array
+    void addItem(std::string &item, std::string &description, table_e type,
+		 int id, int days, int hours, int minutes);
+    void addItem(item_t *item) { _chosen_items.push_back(item); };
     void dump();
 private:
     Battery	_batteries;
@@ -66,9 +103,14 @@ private:
     bool	_usesql;
     bool	_usecsv;
     std::string _datadir;
+    // these are all the project related data variables
+    project_t   _project;
+    std::vector<item_t *> _chosen_items;
 };
-    
+
 } // end of gnuae namespace
+
+#endif	// __cplusplus
 
 #endif  // end of __GNUAE_H__
 

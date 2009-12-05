@@ -23,14 +23,6 @@
 #include "config.h"
 #endif
 
-#include <iostream> 
-#include <string>
-#include <list>
-#include <iomanip> 
-#include <vector>
-
-//#include "database.h"
-
 #ifdef HAVE_MYSQL
 #include <mysql/errmsg.h>
 #include <mysql/mysql.h>
@@ -41,14 +33,19 @@
 // This shuts up warnings about these constants not being used.
 #pragma GCC system_header
 
-namespace gnuae 
-{
-
 static const char *DBTABLE = "gnuae";
 static const char *DBNAME  = "gnuae";
 static const char *DBUSER  = "gnuae";
 static const char *DBPASS  = "gnuae";
 static const char *DBHOST  = "localhost";
+
+#ifdef __cplusplus
+
+#include <string>
+#include <vector>
+
+namespace gnuae 
+{
 
 class Database
 {
@@ -89,6 +86,7 @@ class Database
 };
 
 } // end of gnuae namespace
+#endif  // end of __cplusplus
 
 // __DATABASE_H__
 #endif

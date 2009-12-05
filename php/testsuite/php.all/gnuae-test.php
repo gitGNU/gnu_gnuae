@@ -248,6 +248,8 @@ if ($size) {
   fail("gui_list_names(wire) fails to return any entries");  
 }
 
+$foo = gui_add_item("TV", "TV sucks", 0, 0, 0);
+
 // Dump the totals
 totals();
 

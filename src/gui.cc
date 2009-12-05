@@ -31,7 +31,8 @@ using namespace gnuae;
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
-const char **gui_list_names(const char *name)
+const char **
+gui_list_names(const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
     const char **ret = gdata.list_names(name);
@@ -39,7 +40,8 @@ const char **gui_list_names(const char *name)
     return ret;
 }
 
-void gui_init()
+void
+gui_init()
 {
     // DEBUGLOG_REPORT_FUNCTION;
     dbglogfile.set_verbosity();
@@ -47,11 +49,29 @@ void gui_init()
     gdata.loadData();
 }
 
-void gui_add_item(item_t *item)
+void
+gui_add_item(item_t *item)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    
     gdata.addItem(item);
+}
+
+item_t **
+gui_list_items()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    std::vector<item_t *> items = gdata.listItems();
+    item_t **result = new item_t *[items.size()+1];    
+    std::vector<item_t *>::iterator it;
+    int i = 0;
+    for (it=items.begin(); it != items.end(); ++it) {
+	item_t *ti = *it;
+	result[i++] = ti;
+    }
+
+    // Terminate the array, since we're not using std::vector
+    result[i] = 0;
+    return result;
 }
 
 // local Variables:

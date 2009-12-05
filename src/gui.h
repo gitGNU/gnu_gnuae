@@ -42,6 +42,7 @@ extern "C" {
     const char **gui_list_names(const char *name);
     void gui_init();
     void gui_add_item(item_t *item);
+    item_t **gui_list_items();
 }
 #endif	// end of __cplusplus
   

@@ -208,28 +208,28 @@ if ($size) {
   fail("gui_list_names(combiners) fails to return any entries");  
 }
 
-$foo = gui_list_names("pvpanels");
-$size=count($foo);
-if ($size) {
-  pass("gui_list_names(pvpanels) returns $size entries");  
-} else {
-  fail("gui_list_names(pvpanels) fails to return any entries");  
-}
+/* $foo = gui_list_names("pvpanels"); */
+/* $size=count($foo); */
+/* if ($size) { */
+/*   pass("gui_list_names(pvpanels) returns $size entries");   */
+/* } else { */
+/*   fail("gui_list_names(pvpanels) fails to return any entries");   */
+/* } */
 
 $foo = gui_list_names("pumps");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(pumps) returns $size entries");  
+  pass("gui_list_names(pumps) returns $size entries");
 } else {
-  fail("gui_list_names(pumps) fails to return any entries");  
+  fail("gui_list_names(pumps) fails to return any entries");
 }
 
 $foo = gui_list_names("charger");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(charger) returns $size entries");  
+  pass("gui_list_names(charger) returns $size entries");
 } else {
-  fail("gui_list_names(charger) fails to return any entries");  
+  fail("gui_list_names(charger) fails to return any entries");
 }
 
 $foo = gui_list_names("batteries");
@@ -243,12 +243,27 @@ if ($size) {
 $foo = gui_list_names("wire");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(wire) returns $size entries");  
+  pass("gui_list_names(wire) returns $size entries");
 } else {
-  fail("gui_list_names(wire) fails to return any entries");  
+  fail("gui_list_names(wire) fails to return any entries");
 }
 
-$foo = gui_add_item("TV", "TV sucks", 0, 0, 0);
+xdebug_start_trace("foo");
+gui_add_item("TV", 1, 2, 3, 4);
+gui_add_item("Stereo", 5, 6, 7, 8);
+/* gui_add_item("TV", "TV sucks", 1, 2, 3); */
+/* gui_add_item("Stereo", "is great", 0, 0, 0); */
+/* gui_add_item("TV", "TV sucks", 0, 0, 0); */
+$foo = gui_list_items();
+var_dump($foo);
+
+echo "FOO: " . count($foo);
+/* $bar = $foo[0]; */
+/* echo " " . $bar[4]; */
+
+/* var_dump($bar); */
+
+xdebug_stop_trace();
 
 // Dump the totals
 totals();

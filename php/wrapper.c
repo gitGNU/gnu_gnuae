@@ -50,6 +50,7 @@ static function_entry gnuae_functions[] = {
     PHP_FE(gui_list_names, NULL)
     PHP_FE(gui_init, NULL)
     PHP_FE(gui_add_item, NULL)
+    PHP_FE(gui_list_items, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -414,23 +415,85 @@ PHP_FUNCTION(gui_list_names)
 
 PHP_FUNCTION(gui_add_item)
 {
-    char *item, *description;
+    char *item = 0, *description = 0;
     // table_e type;
-    long type, id;
-    long days, hours, minutes;
+    long type = 0, id = 0;
+    long days = 0, hours = 0, minutes = 0;
     item_t *nitem = (item_t *)malloc(sizeof(item_t));
-    
-    if (zend_parse_parameters(5 TSRMLS_CC, "ss|lll", &item, &description, &days, &hours, &minutes) == FAILURE) {
+
+#if 1
+    if (zend_parse_parameters(4 TSRMLS_CC, "slll", &item, &id, &days, &hours, &minutes) == FAILURE) {
      	WRONG_PARAM_COUNT;
     }
-    nitem->item = item;
-    nitem->description = description;
+#else
+    if (zend_parse_parameters(5 TSRMLS_CC, "s|slll", &item, &description, &days, &hours, &minutes) == FAILURE) {
+     	WRONG_PARAM_COUNT;
+    }
+#endif
+    if (item) {
+	nitem->item = strdup(item);
+    } else {
+	nitem->item = "none";
+    }
+    
+    if (description) {
+	nitem->description = strdup(description);
+    } else {
+	nitem->description = "none";
+    }
+    
     // nitem->type = type;
     nitem->id = id;
     nitem->days = days;
     nitem->hours = hours;
     nitem->minutes = minutes;
+
     gui_add_item(nitem);
+}
+
+// GUI support callbacks
+PHP_FUNCTION(gui_list_items)
+{
+    zval *result = malloc(sizeof(zval));    
+    array_init(result);
+
+    item_t **items = gui_list_items();    
+    if (items) {
+	int i = 0;
+	while (items[i] != 0) {
+	    zval *item = malloc(sizeof(zval));
+	    array_init(item);
+	    item_t *it = items[i++];
+	    if (it->item) {
+		add_next_index_string(item, it->item, strlen(it->item));
+	    } else {
+		add_next_index_string(item, "na", 4);
+	    }
+	    if (it->description) {
+		add_next_index_string(item, it->description, strlen(it->description));
+	    } else {
+		add_next_index_string(item, "n/a", 4);
+	    }
+
+#if 1
+	    add_next_index_long(item, it->id);
+	    add_next_index_long(item, it->days);
+	    add_next_index_long(item, it->hours);
+	    add_next_index_long(item, it->minutes);
+#else
+	    add_next_index_long(item, 1);
+	    add_next_index_long(item, 2);
+	    add_next_index_long(item, 3);
+	    add_next_index_long(item, 4);
+#endif
+	    add_next_index_zval(result, item);
+	}
+    }
+    
+    // add_next_index_string(result, "foo", 3);
+    
+    // 2nd field, 0 is no copy, 3rd field is destruct before returning
+    RETURN_ZVAL(result, 0, 1);
 }
 
 // local Variables:

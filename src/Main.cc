@@ -40,6 +40,8 @@
 #include "tcpip.h"
 #include "gnuae.h"
 
+#include "gui.h"
+
 using namespace std;
 using namespace gnuae;
 
@@ -164,6 +166,25 @@ main(int argc, char **argv) {
 	gdata.dump();
     }
 
+    item_t item1;
+    memset(&item1, 0, sizeof(item_t));
+    item1.item = "TV";
+    item1.description = "sucks";
+    gdata.addItem(&item1);
+    item_t item2;
+    memset(&item2, 0, sizeof(item_t));
+    item2.item = "Stereo";
+    item2.description = "is great";
+    gdata.addItem(&item2);
+    
+    int i = 0;
+    item_t **names = gui_list_items();
+    while (names[i] != 0) {
+	cerr << names[i]->item << ": ";
+	cerr << names[i]->description << endl;
+	i++;
+    }
+    
 #if 0
     // Search the database for all entries that match the search string
     if (search.size()) {
@@ -177,7 +198,6 @@ main(int argc, char **argv) {
 	}
     }
 #endif
-    
 }
 
 static void

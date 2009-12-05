@@ -21,9 +21,9 @@
 typedef struct {
     const char *name;
     const char *description;
-    int sunhours;
-    int windhours;
-    int windspeed;
+    long sunhours;
+    long windhours;
+    long windspeed;
     const char *location;
     double latitude;
     double longitude;
@@ -89,6 +89,7 @@ public:
     void addItem(std::string &item, std::string &description, table_e type,
 		 int id, int days, int hours, int minutes);
     void addItem(item_t *item) { _chosen_items.push_back(item); };
+    std::vector<item_t *> &listItems() { return _chosen_items; };
     void dump();
 private:
     Battery	_batteries;

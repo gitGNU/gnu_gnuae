@@ -49,6 +49,7 @@ static function_entry gnuae_functions[] = {
     PHP_FE(nec_awg_battery2inverter, NULL)
     PHP_FE(gui_list_names, NULL)
     PHP_FE(gui_init, NULL)
+    PHP_FE(gui_add_item, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -406,9 +407,30 @@ PHP_FUNCTION(gui_list_names)
     } else {
 	php_printf("Invalid paramater for name!");
     }
-
+    
     // 2nd field, 0 is no copy, 3rd field is destruct before returning
     RETURN_ZVAL(result, 0, 1);
+}
+
+PHP_FUNCTION(gui_add_item)
+{
+    char *item, *description;
+    // table_e type;
+    long type, id;
+    long days, hours, minutes;
+    item_t *nitem = (item_t *)malloc(sizeof(item_t));
+    
+    if (zend_parse_parameters(5 TSRMLS_CC, "ss|lll", &item, &description, &days, &hours, &minutes) == FAILURE) {
+     	WRONG_PARAM_COUNT;
+    }
+    nitem->item = item;
+    nitem->description = description;
+    // nitem->type = type;
+    nitem->id = id;
+    nitem->days = days;
+    nitem->hours = hours;
+    nitem->minutes = minutes;
+    gui_add_item(nitem);
 }
 
 // local Variables:

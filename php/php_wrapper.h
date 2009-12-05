@@ -72,10 +72,11 @@ PHP_FUNCTION(nec_awg_wind2charger);
 PHP_FUNCTION(nec_awg_charger2battery);
 PHP_FUNCTION(nec_awg_battery2inverter);
 
-// These functions are all relwated to GUI support
+// These functions are all related to GUI support
 PHP_FUNCTION(gui_init);
 // List the names of the various items so we can create a menu
 PHP_FUNCTION(gui_list_names);
+PHP_FUNCTION(gui_add_item);
 
 extern zend_module_entry gnuae_module_entry;
 #define phpext_gnuae_ptr &gnuae_module_entry

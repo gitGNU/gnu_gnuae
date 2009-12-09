@@ -166,6 +166,8 @@ main(int argc, char **argv) {
 	gdata.dump();
     }
 
+#if 0
+    // Debug crap for the C "gui" API used by the PHP extension
     item_t item1;
     memset(&item1, 0, sizeof(item_t));
     item1.item = "TV";
@@ -184,7 +186,9 @@ main(int argc, char **argv) {
 	cerr << names[i]->description << endl;
 	i++;
     }
-    
+    load_t *lod = (load_t *)gui_get_load_data("TV");
+#endif
+
 #if 0
     // Search the database for all entries that match the search string
     if (search.size()) {

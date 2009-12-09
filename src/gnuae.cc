@@ -138,7 +138,8 @@ void *
 GnuAE::getLoadData(const char *item)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    return _loads.findEntry(item);
+    load_t *load = _loads.findEntry(item);
+    return (void *)load;
 }
 
 // Create or redefine the overall project settings

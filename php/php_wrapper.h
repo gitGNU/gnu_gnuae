@@ -78,6 +78,7 @@ PHP_FUNCTION(gui_init);
 PHP_FUNCTION(gui_list_names);
 PHP_FUNCTION(gui_add_item);
 PHP_FUNCTION(gui_list_items);
+PHP_FUNCTION(gui_get_load_data);
 
 extern zend_module_entry gnuae_module_entry;
 #define phpext_gnuae_ptr &gnuae_module_entry

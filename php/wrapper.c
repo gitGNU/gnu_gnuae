@@ -25,6 +25,7 @@
 #include "NEC.h"
 #include "gui.h"
 #include "PVPanel.h"
+#include "Loads.h"
 
 static function_entry gnuae_functions[] = {
     PHP_FE(nec_watts, NULL)
@@ -51,6 +52,7 @@ static function_entry gnuae_functions[] = {
     PHP_FE(gui_init, NULL)
     PHP_FE(gui_add_item, NULL)
     PHP_FE(gui_list_items, NULL)
+    PHP_FE(gui_get_load_data, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -395,7 +397,7 @@ PHP_FUNCTION(gui_list_names)
     array_init(result);
     const char **names = 0;
     if (len && str) {
-	names = gui_list_names(str);
+	names = (const char **)gui_list_names(str);
 	if (names) {
 	    int i = 0;
 	    while (names[i] != 0) {
@@ -429,13 +431,13 @@ PHP_FUNCTION(gui_add_item)
     }
 
     if (item) {
-	nitem->item = strdup(item);
+	nitem->item = strndup(item, item_len);
     } else {
 	nitem->item = "none";
     }
     
     if (description) {
-	nitem->description = strdup(description);
+	nitem->description = strndup(description, des_len);
     } else {
 	nitem->description = "none";
     }
@@ -452,10 +454,10 @@ PHP_FUNCTION(gui_add_item)
 // GUI support callbacks
 PHP_FUNCTION(gui_list_items)
 {
-    zval *result = malloc(sizeof(zval));    
+    item_t **items = (item_t **)gui_list_items();
+    zval *result = malloc(sizeof(zval));
     array_init(result);
-
-    item_t **items = gui_list_items();    
+    
     if (items) {
 	int i = 0;
 	while (items[i] != 0) {
@@ -465,7 +467,7 @@ PHP_FUNCTION(gui_list_items)
 	    if (it->item) {
 		add_next_index_string(item, it->item, strlen(it->item));
 	    } else {
-		add_next_index_string(item, "na", 4);
+		add_next_index_string(item, "n/a", 4);
 	    }
 	    if (it->description) {
 		add_next_index_string(item, it->description, strlen(it->description));
@@ -482,6 +484,36 @@ PHP_FUNCTION(gui_list_items)
     }
     
     // add_next_index_string(result, "foo", 3);
+    
+    // 2nd field, 0 is no copy, 3rd field is destruct before returning
+    RETURN_ZVAL(result, 0, 1);
+}
+
+PHP_FUNCTION(gui_get_load_data)
+{
+    char *str;
+    int len;
+    zval *result = malloc(sizeof(zval));
+    
+    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
+	WRONG_PARAM_COUNT;
+    }
+
+    array_init(result);
+    if (len && str) {
+	load_t *load = (load_t *)gui_get_load_data(str);
+	if (load) {
+	    add_next_index_string(result, load->name, strlen(load->name));
+	    add_next_index_string(result, load->description, strlen(load->description));
+	    add_next_index_long(result, load->type);
+	    add_next_index_long(result, load->group);
+	    add_next_index_double(result, load->voltage);
+	    add_next_index_double(result, load->wattage);
+	    add_next_index_double(result, load->amperage);
+	}
+    } else {
+	php_printf("Invalid paramater for name!");
+    }
     
     // 2nd field, 0 is no copy, 3rd field is destruct before returning
     RETURN_ZVAL(result, 0, 1);

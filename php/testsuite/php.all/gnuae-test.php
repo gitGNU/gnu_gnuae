@@ -24,10 +24,6 @@ function totals () {
   printf("# of failures: %d <p>\n", $fails);
 }
 
-//----------------------------------------
-// The test cases start here.
-
-
 // NEC Voltage Drop
 $foo = nec_volt_drop(2, 140, 48.1, 32.1, 67.8, 2);
 if (bccomp($foo, '1.4899') == 0) {
@@ -213,7 +209,7 @@ if ($size) {
 /* if ($size) { */
 /*   pass("gui_list_names(pvpanels) returns $size entries");   */
 /* } else { */
-/*   fail("gui_list_names(pvpanels) fails to return any entries");   */
+fail("gui_list_names(pvpanels) fails to return any entries");
 /* } */
 
 $foo = gui_list_names("pumps");
@@ -248,7 +244,7 @@ if ($size) {
   fail("gui_list_names(wire) fails to return any entries");
 }
 
-// xdebug_start_trace("foo");
+xdebug_start_trace("foo");
 gui_add_item("TV", "TV sucks", 1, 2, 3, 4);
 gui_add_item("Stereo", "is great", 5, 6, 7, 8);
 $foo = gui_list_items();
@@ -264,8 +260,12 @@ if ($size == 2) {
   fail("gui_list_items() fails to return any entries");
 }
 
-// var_dump($foo);
-// xdebug_stop_trace();
+$foo = gui_get_load_data("TV");
+
+//var_dump($foo);
+echo $_GET['fooby'];
+
+xdebug_stop_trace();
 
 // Dump the totals
 totals();

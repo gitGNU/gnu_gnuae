@@ -401,8 +401,8 @@ Loads::readLoadsSQL(Database &db)
 	    vector<string> &row = *it;
 	    thisload->name = const_cast<char *>(row[1].c_str());
 	    thisload->description = const_cast<char *>(row[2].c_str());
-	    thisload->type = static_cast<loadtype>(strtol(row[3].c_str(), NULL, 0));
-	    thisload->group = static_cast<loadgroup>(strtol(row[4].c_str(), NULL, 0));
+	    thisload->type = static_cast<loadtype_e>(strtol(row[3].c_str(), NULL, 0));
+	    thisload->group = static_cast<loadgroup_e>(strtol(row[4].c_str(), NULL, 0));
 	    thisload->voltage = strtof(row[5].c_str(), NULL);
 	    thisload->wattage = strtof(row[6].c_str(), NULL);
 	    thisload->amperage = strtof(row[7].c_str(), NULL);

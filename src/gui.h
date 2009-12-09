@@ -43,6 +43,7 @@ extern "C" {
     void gui_init();
     void gui_add_item(item_t *item);
     item_t **gui_list_items();
+    void *gui_get_load_data(const char *name);
 }
 #endif	// end of __cplusplus
   

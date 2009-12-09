@@ -74,6 +74,14 @@ gui_list_items()
     return result;
 }
 
+void *
+gui_get_load_data(const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+
+    return gdata.getLoadData(name);
+}
+
 // local Variables:
 // mode: C++
 // indent-tabs-mode: t

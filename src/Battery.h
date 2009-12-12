@@ -35,6 +35,7 @@ typedef struct
 #ifdef __cplusplus
 
 #include <map>
+#include "gnuae.h"
 #include "DataType.h"
 #include "Database.h"
 

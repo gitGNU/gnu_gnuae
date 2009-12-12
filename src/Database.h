@@ -49,40 +49,42 @@ namespace gnuae
 
 class Database
 {
- public:
-  typedef enum {NODB, DBDATABASE, DBPGSQL, DBODBC, DBGDBM, DBSTL} dbtype_e;
-  typedef enum {DBCLOSED, DBOPENED} dbstate_e;
-  Database();
-  ~Database();
-  
-  bool openDB();
-  bool openDB(std::string &host, std::string &user, std::string &passwd);
-  bool closeDB();
-// bool queryInsert(const char *query);
-  std::vector<std::vector<std::string> > *queryResults(std::string &query);
-  char *gettime();
-
-  // Accessors
-  void dbUserSet(std::string user);
-  void dbPasswdSet(std::string passwd);
-  void dbNameSet(std::string name);
-  void dbHostSet(std::string host);
-
-  dbstate_e getState() { return _state; };
-  MYSQL &getMySQL() { return _mysql; };
-
-  void dump();
- private:
-  dbstate_e     _state;
-  dbtype_e      _dbtype;
-  int           _dbport;
-  std::string   _dbuser;
-  std::string   _dbpasswd;
-  std::string   _dbhost;
-  std::string   _dbname;
-  std::string   _tblname;
-  MYSQL         *_connection;
-  MYSQL         _mysql;
+public:
+    typedef enum {NODB, DBDATABASE, DBPGSQL, DBODBC, DBGDBM, DBSTL} dbtype_e;
+    typedef enum {DBCLOSED, DBOPENED} dbstate_e;
+    Database();
+    ~Database();
+    
+    bool openDB();
+    bool openDB(std::string &host, std::string &user, std::string &passwd);
+    bool closeDB();
+    bool queryInsert(const char *query);
+    // bool queryInsert(std::vector<item_t *> data);
+    // bool queryInsert(item_t *data);
+    std::vector<std::vector<std::string> > *queryResults(std::string &query);
+    char *gettime();
+    
+    // Accessors
+    void dbUserSet(std::string user);
+    void dbPasswdSet(std::string passwd);
+    void dbNameSet(std::string name);
+    void dbHostSet(std::string host);
+    
+    dbstate_e getState() { return _state; };
+    MYSQL &getMySQL() { return _mysql; };
+    
+    void dump();
+private:
+    dbstate_e     _state;
+    dbtype_e      _dbtype;
+    int           _dbport;
+    std::string   _dbuser;
+    std::string   _dbpasswd;
+    std::string   _dbhost;
+    std::string   _dbname;
+    std::string   _tblname;
+    MYSQL         *_connection;
+    MYSQL         _mysql;
 };
 
 } // end of gnuae namespace

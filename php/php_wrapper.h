@@ -23,10 +23,12 @@
 #include "TSRM.h"
 #endif
 
+#include "gnuae.h"
+
 #if 1
 ZEND_BEGIN_MODULE_GLOBALS(gnuae)
-     long counter;
-     zend_bool direction;
+item_t **items;
+long count;
 ZEND_END_MODULE_GLOBALS(gnuae)
 #else
 ZEND_DECLARE_MODULE_GLOBALS(gnuae)

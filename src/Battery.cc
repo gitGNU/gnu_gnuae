@@ -25,9 +25,9 @@
 #include <cstdlib>
 #include <cmath>
 
-#include "Battery.h"
 #include "log.h"
 #include "gnuae.h"
+#include "Battery.h"
 
 using namespace std;
 

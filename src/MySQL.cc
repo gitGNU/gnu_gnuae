@@ -37,6 +37,7 @@ using namespace std;
 
 #include "Database.h"
 #include "log.h"
+#include "gnuae.h"
 
 #ifdef HAVE_MYSQL
 #include <mysql/errmsg.h>
@@ -207,192 +208,56 @@ Database::queryResults(string &query)
     return table;
 }
 
-#if 0
 bool
 Database::queryInsert(const char *query)
 {
-  DEBUGLOG_REPORT_FUNCTION;
-
-  int retries, result;
-  
-  retries = 2;
-  
-  dbglogfile << "Query is: " << query << endl;
-  
-#if 0
-  string str = query;
-  // FIXME: We shouldn't ever get this condition
-  if (str.find("INSERT", 10) != string::npos) {        
-    dbglogfile << "Extra INSERT in query!\n", query << endl;
-  }
-#endif
-  
-  while (retries--) {
-    result = mysql_real_query(&_mysql, query, strlen(query));
+    DEBUGLOG_REPORT_FUNCTION;
     
-    switch (result) {
+    int retries, result;
+    
+    retries = 2;
+    
+    dbglogfile << "Query is: " << query << endl;
+    
+#if 0
+    string str = query;
+    // FIXME: We shouldn't ever get this condition
+    if (str.find("INSERT", 10) != string::npos) {        
+	dbglogfile << "Extra INSERT in query!\n", query << endl;
+    }
+#endif
+    
+  while (retries--) {
+      result = mysql_real_query(&_mysql, query, strlen(query));
+      
+      switch (result) {
     case CR_SERVER_LOST:
-    case CR_COMMANDS_OUT_OF_SYNC:
-    case CR_SERVER_GONE_ERROR:
-      dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
-      // Try to reconnect to the database
-      closeDB();
-      openDB();
-      continue;
-      break;
-    case -1:
-    case CR_UNKNOWN_ERROR:
-      dbglogfile << "MySQL error on query for:\n\t " <<
-        mysql_error(&_mysql) << endl;
-      dbglogfile << "Query was: " << query << endl;
+	case CR_COMMANDS_OUT_OF_SYNC:
+	case CR_SERVER_GONE_ERROR:
+	    dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
+	    // Try to reconnect to the database
+	    closeDB();
+	    openDB();
+	    continue;
+	    break;
+	case -1:
+	case CR_UNKNOWN_ERROR:
+	    dbglogfile << "MySQL error on query for:\n\t " <<
+		mysql_error(&_mysql) << endl;
+	    dbglogfile << "Query was: " << query << endl;
             return false;
             break;            
-    default:
-      return true;
-    }
-    
-    dbglogfile << "Lost connection to the database server, shutting down..." << endl;
-    
-    return false;
+	default:
+	    return true;
+      }
+      
+      dbglogfile << "Lost connection to the database server, shutting down..." << endl;
+      
+      return false;
   }
   
   return false;
 }
-  
-bool
-Database::queryInsert(vector<meter_data_t *> data)
-{
-  DEBUGLOG_REPORT_FUNCTION;
-
-  struct tm      *ttm;
-  struct timeval tp;
-  unsigned int   i;
-  //char           query[QUERYLEN];
-  //char           *ptr;
-#ifdef __STDC_HOSTED__
-  ostringstream  query;
-#else
-  ostrstream     query;
-#endif
-
-  if (data.size() == 0) {
-    dbglogfile << "No data to insert." << endl;
-    return false;
-  }
-  
-  gettimeofday(&tp, 0);
-  ttm = localtime (&tp.tv_sec);
-  ttm->tm_year+= 1900;          // years since 1900
-  ttm->tm_mon+=1;               // months since January
-
-  query << "INSERT INTO inverter () VALUES ";
-
-  for (i=0; i< data.size(); i++) {
-    queryInsert(data[i]);
-  }
-  
-  return true;  
-}
-  
-bool
-Database::queryInsert(meter_data_t *data)
-{
-  DEBUGLOG_REPORT_FUNCTION;
-
-  struct tm             *ttm;
-  struct timeval        tp;
-  //char                  query[QUERYLEN];
-  char                  *type = "MX";
-#ifdef __STDC_HOSTED__
-  std::ostringstream    query;
-#else
-  std::ostrstream       query;
-#endif
-
-  query.str("");
-  //  memset (query, 0, QUERYLEN);
-  
-  // EtaMsg em;
-  // em.dump(*data);
-  
-  gettimeofday(&tp, 0);
-  ttm = localtime (&tp.tv_sec);
-  ttm->tm_year+= 1900;          // years since 1900
-  ttm->tm_mon+=1;               // months since January
-
-#if 0  
-  // FIXME: For now source is the facility
-  // Build the query string to insert the data
-  sprintf(query, "INSERT INTO meters () VALUES ( \
-        '%d',                   // Unit address (int)\
-        '%s',                   // Device Type enum)\
-        '%d-%d-%d %d:%d:%d',    // timestamp\
-        '%d',                   // Charger Amps (int)\
-        '%d',                   // AC Load Amps (int)\
-        '%f',                   // Battery Volts (float)\
-        '%f',                   // AC Volts Out (float)\
-        '%f',                   // AC1 Volts In (float)\
-        '%f',                   // AC2 Volts In (float)\
-        '%d',                   // PV Amps In (int)\
-        '%f',                   // PV Volts In (float)\
-        '%f',                   // Buy Amps (int)\
-        '%f',                   // Sell Amps (int)\
-        '%f',                   // Dail Kwh (float)\
-        '%d',                   // Frequency in Hertz (int)\
-        '%f'                    // Battery Temperature Compenation (float)\
-        )",
-          //  sprintf(query, "INSERT INTO meters () VALUES ('%d','%s','%0.4d-%0.2d-%d %0.2d:%0.2d:%0.2d','%d','%d','%f','%f','%f','%f','%d','%f','%f','%f','%d','%f','%f')",
-          data->unit,
-          type,
-          ttm->tm_year,ttm->tm_mon,ttm->tm_mday,ttm->tm_hour,ttm->tm_min,ttm->tm_sec,
-          data->charge_amps,
-          data->ac_load_amps,
-          data->battery_volts,
-          data->ac_volts_out,
-          data->ac1_volts_in,
-          data->ac2_volts_in,
-          data->pv_amps_in,
-          data->pv_volts_in,
-          data->buy_amps,
-          data->sell_amps,
-          data->daily_kwh,
-          data->hertz,
-          data->tempcomp_volts
-          );
-#else
-  query << "INSERT INTO meters () VALUES (";
-  query << data->unit << ",";
-  query << "\'" << type << "\',";
-  query << "\'" << ttm->tm_year << "-" << ttm->tm_mon << "-" << ttm->tm_mday << " ";
-  query << ttm->tm_hour << ":" << ttm->tm_min << ":" << ttm->tm_sec << "\',";
-  query << data->charge_amps << ",";
-  query << data->ac_load_amps << ",";
-  query << data->battery_volts << ",";
-  query << data->ac_volts_out << ",";
-  query << data->ac1_volts_in << ",";
-  query << data->ac2_volts_in << ",";
-  query << data->pv_amps_in << ",";
-  query << data->pv_volts_in << ",";
-  query << data->buy_amps << ",";
-  query << data->sell_amps << ",";
-  query << data->daily_kwh << ",";
-  query << data->hertz << ",";
-  query << data->tempcomp_volts << ")";
-  query << ends;
-#endif
-
-#ifdef __STDC_HOSTED__
-  string str = query.str().c_str();
-#else
-  string str = query.str();
-#endif
-  
-  // Execute the query
-  queryInsert(str.c_str());
-  
-  return true;
-}
-#endif
 
 char *
 Database::gettime()

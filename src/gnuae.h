@@ -20,6 +20,7 @@
 
 typedef struct {
     const char *name;
+    long id;
     const char *description;
     long sunhours;
     long windhours;
@@ -46,7 +47,7 @@ typedef struct {
 #include "Database.h"
 #include "Battery.h"
 #include "Centers.h"
-#include "Chargers.h"
+// #include "Chargers.h"
 #include "Combiners.h"
 #include "Inverters.h"
 #include "Loads.h"
@@ -55,6 +56,8 @@ typedef struct {
 #include "Wire.h"
 
 namespace gnuae {
+
+class Chargers;
 
 class GnuAE : public Database {
 public:
@@ -86,10 +89,14 @@ public:
 		    int windhours, int windspeed, std::string &location,
 		    double latitude, double longitude);
     // Add an item to the array
-    void addItem(std::string &item, std::string &description, table_e type,
+    void addItem(const char *item, const char *description, table_e type,
 		 int id, int days, int hours, int minutes);
-    void addItem(item_t *item) { _chosen_items.push_back(item); };
+    void addItem(item_t *item);
     std::vector<item_t *> &listItems() { return _chosen_items; };
+
+    bool queryInsert(std::vector<item_t *> data);
+    bool queryInsert(item_t * data);
+
     void dump();
 private:
     Battery	_batteries;

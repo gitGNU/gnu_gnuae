@@ -23,6 +23,12 @@
 #include "gnuae.h"
 #include "log.h"
 
+#ifdef __STDC_HOSTED__
+#include <sstream>
+#else
+#include <strstream>
+#endif
+
 using namespace std;
 
 namespace gnuae {
@@ -153,21 +159,90 @@ GnuAE::newProject(std::string &name, std::string &description, int sunhours,
 
 // Add an item to the array
 void
-GnuAE::addItem(string &item, string &description, GnuAE::table_e type,
+GnuAE::addItem(item_t *nitem)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    _chosen_items.push_back(nitem);
+
+    queryInsert(nitem);
+}
+
+void
+GnuAE::addItem(const char *item, const char *description, GnuAE::table_e type,
               int id, int days, int hours, int minutes)
 {
     // DEBUGLOG_REPORT_FUNCTION;
     item_t *nitem = new item_t;
-    
-    nitem->item = item.c_str();
-    nitem->description = description.c_str();
+    nitem->item = item;
+    nitem->description = description;
     // nitem->type = type;
     nitem->id = id;
     nitem->days = days;
     nitem->hours = hours;
     nitem->minutes = minutes;
     
-    _chosen_items.push_back(nitem);
+    addItem(nitem);
+}
+
+bool
+GnuAE::queryInsert(vector<item_t *> data)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    
+    size_t	i;
+    //char           query[QUERYLEN];
+    //char           *ptr;
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+    
+    if (data.size() == 0) {
+	dbglogfile << "No data to insert." << endl;
+	return false;
+    }
+    
+    for (i=0; i< data.size(); i++) {
+	queryInsert(data[i]);
+    }
+    
+    return true;  
+}
+
+bool
+GnuAE::queryInsert(item_t *data)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    
+#ifdef __STDC_HOSTED__
+    std::ostringstream    query;
+#else
+    std::ostrstream       query;
+#endif
+    
+    query.str("");
+    query << "INSERT INTO projects () VALUES (";
+    query << _project.id << ",";
+    query << data->id << ",";
+    query << "'" << data->item << "',";
+    query << "'" << data->description << "',";
+    query << 0 << ",";		// FIXME: should be quantity
+    query << data->hours << ",";
+    query << data->minutes << ",";
+    query << data->days << ")";
+    query << ends;
+    
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    
+    // Execute the query
+    Database::queryInsert(str.c_str());
+    
+    return true;
 }
 
 void

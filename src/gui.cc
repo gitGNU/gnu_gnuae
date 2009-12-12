@@ -21,9 +21,10 @@
 
 #include <iostream>
 
+#include "gnuae.h"
 #include "log.h"
 #include "gui.h"
-#include "gnuae.h"
+#include "Database.h"
 
 using namespace std;
 using namespace gnuae;

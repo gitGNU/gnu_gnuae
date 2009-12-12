@@ -27,6 +27,8 @@
 #include "PVPanel.h"
 #include "Loads.h"
 
+ZEND_DECLARE_MODULE_GLOBALS(gnuae)
+
 static function_entry gnuae_functions[] = {
     PHP_FE(nec_watts, NULL)
     PHP_FE(nec_volt_drop, NULL)
@@ -97,6 +99,9 @@ PHP_MSHUTDOWN_FUNCTION(gnuae)
 PHP_RINIT_FUNCTION(gnuae)
 {
     gui_init();
+
+    GNUAE_G(items) = malloc(sizeof(item_t) * 10);
+    GNUAE_G(count) = 0;
     
     return SUCCESS;
 }
@@ -441,6 +446,8 @@ PHP_FUNCTION(gui_add_item)
     } else {
 	nitem->description = "none";
     }
+    GNUAE_G(items[GNUAE_G(count)]) = nitem;
+    GNUAE_G(count)++;
     
     // nitem->type = type;
     nitem->id = id;
@@ -457,6 +464,7 @@ PHP_FUNCTION(gui_list_items)
     item_t **items = (item_t **)gui_list_items();
     zval *result = malloc(sizeof(zval));
     array_init(result);
+//    GNUAE_G(items[GNUAE_G(count)]) = nitem;
     
     if (items) {
 	int i = 0;

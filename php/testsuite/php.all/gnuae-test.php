@@ -263,7 +263,7 @@ if ($size == 2) {
 $foo = gui_get_load_data("TV");
 
 //var_dump($foo);
-echo $_GET['fooby'];
+//echo $_GET['fooby'];
 
 xdebug_stop_trace();
 

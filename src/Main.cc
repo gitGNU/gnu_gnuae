@@ -26,7 +26,7 @@
 #include <getopt.h>
 #include <iostream>
 
-#include "Database.h"
+#include "gnuae.h"
 #include "Battery.h"
 #include "Centers.h"
 #include "Chargers.h"
@@ -38,7 +38,7 @@
 #include "Wire.h"
 #include "log.h"
 #include "tcpip.h"
-#include "gnuae.h"
+#include "Database.h"
 
 #include "gui.h"
 
@@ -166,7 +166,9 @@ main(int argc, char **argv) {
 	gdata.dump();
     }
 
-#if 0
+    // gdata.addItem("all TV", "sucks", GnuAE::LOAD, 0, 1, 2, 3);
+    // gdata.addItem("My Stereo", "is great", GnuAE::LOAD, 0, 1, 2, 3);
+#if 1
     // Debug crap for the C "gui" API used by the PHP extension
     item_t item1;
     memset(&item1, 0, sizeof(item_t));
@@ -179,6 +181,7 @@ main(int argc, char **argv) {
     item2.description = "is great";
     gdata.addItem(&item2);
     
+#endif
     int i = 0;
     item_t **names = gui_list_items();
     while (names[i] != 0) {
@@ -187,7 +190,6 @@ main(int argc, char **argv) {
 	i++;
     }
     load_t *lod = (load_t *)gui_get_load_data("TV");
-#endif
 
 #if 0
     // Search the database for all entries that match the search string

@@ -168,7 +168,9 @@ main(int argc, char **argv) {
 
     // gdata.addItem("all TV", "sucks", GnuAE::LOAD, 0, 1, 2, 3);
     // gdata.addItem("My Stereo", "is great", GnuAE::LOAD, 0, 1, 2, 3);
-#if 1
+
+    gdata.newProject("My Project", "all mine", 1.2, 2.3, 3.4, "none", 0.0, 0.0);
+#if 0
     // Debug crap for the C "gui" API used by the PHP extension
     item_t item1;
     memset(&item1, 0, sizeof(item_t));

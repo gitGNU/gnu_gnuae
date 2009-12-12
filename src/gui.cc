@@ -83,6 +83,27 @@ gui_get_load_data(const char *name)
     return gdata.getLoadData(name);
 }
 
+long
+gui_new_project(project_t *proj)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+
+    int id = gdata.newProject(proj->name, proj->description, proj->sunhours,
+			      proj->windhours, proj->windspeed, "none",
+			      proj->latitude, proj->longitude);
+
+    proj->id = id;
+    
+    return id;
+}
+
+project_t *
+gui_get_project(long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+
+}
+
 // local Variables:
 // mode: C++
 // indent-tabs-mode: t

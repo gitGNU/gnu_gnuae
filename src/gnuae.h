@@ -85,8 +85,9 @@ public:
     void *getLoadData(const char *item);
 
     // Create or redefine the overall project settings
-    void newProject(std::string &name, std::string &description, int sunhours,
-		    int windhours, int windspeed, std::string &location,
+    long newProject(const char *name, const char *description,
+		    double sunhours, double windhours, double windspeed,
+		    const char *location,
 		    double latitude, double longitude);
     // Add an item to the array
     void addItem(const char *item, const char *description, table_e type,
@@ -95,7 +96,8 @@ public:
     std::vector<item_t *> &listItems() { return _chosen_items; };
 
     bool queryInsert(std::vector<item_t *> data);
-    bool queryInsert(item_t * data);
+    bool queryInsert(item_t *data);
+    bool queryInsert(project_t *data);
 
     void dump();
 private:

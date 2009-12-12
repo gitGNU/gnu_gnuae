@@ -59,9 +59,9 @@ GnuAE::GnuAE()
 
     _project.name = "none";
     _project.description = "none";
-    _project.sunhours = 0;
-    _project.windhours = 0;
-    _project.windspeed = 0;
+    _project.sunhours = 0.0;
+    _project.windhours = 0.0;
+    _project.windspeed = 0.0;
     _project.location = "none";
     _project.latitude = 0.0;
     _project.longitude = 0.0;
@@ -149,12 +149,35 @@ GnuAE::getLoadData(const char *item)
 }
 
 // Create or redefine the overall project settings
-void
-GnuAE::newProject(std::string &name, std::string &description, int sunhours,
-                  int windhours, int windspeed, std::string &location,
+long
+GnuAE::newProject(const char *name, const char *description, double sunhours,
+                  double windhours, double windspeed, const char *location,
                   double latitude, double longitude)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    project_t *project = new project_t;
+    
+    project->name = name;
+    project->description = description;
+    project->sunhours = sunhours;
+    project->windhours = windhours;
+    project->windspeed = windspeed;
+    project->location = location;
+    project->latitude = latitude;
+    project->longitude = longitude;
+
+    string query = "select count(*) from projects;";
+
+    // Get the count of how many current projects there are
+    vector<vector<string> > *result = Database::queryResults(query);
+    vector<vector<string> >::iterator it = result->begin();
+    vector<string> &row = *it;
+    project->id = strtol(row[0].c_str(), NULL, 0) + 1;
+
+    // Add ourselves to the database
+    queryInsert(project);
+    
+    return project->id;
 }
 
 // Add an item to the array
@@ -222,7 +245,7 @@ GnuAE::queryInsert(item_t *data)
 #endif
     
     query.str("");
-    query << "INSERT INTO projects () VALUES (";
+    query << "INSERT INTO profiles () VALUES (";
     query << _project.id << ",";
     query << data->id << ",";
     query << "'" << data->item << "',";
@@ -231,6 +254,41 @@ GnuAE::queryInsert(item_t *data)
     query << data->hours << ",";
     query << data->minutes << ",";
     query << data->days << ")";
+    query << ends;
+    
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    
+    // Execute the query
+    Database::queryInsert(str.c_str());
+    
+    return true;
+}
+
+bool
+GnuAE::queryInsert(project_t *data)
+{
+    DEBUGLOG_REPORT_FUNCTION;
+    
+#ifdef __STDC_HOSTED__
+    std::ostringstream    query;
+#else
+    std::ostrstream       query;
+#endif
+    
+    query.str("");
+    query << "INSERT INTO projects () VALUES (";
+    query << data->id << ",";
+    query << "'" << data->name << "',";
+    query << "'" << data->description << "',";
+    query << data->sunhours  << ",";
+    query << data->windhours << ",";
+    query << data->windspeed << ",";
+    query << data->latitude  << ",";
+    query << data->longitude << ")";
     query << ends;
     
 #ifdef __STDC_HOSTED__

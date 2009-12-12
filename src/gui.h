@@ -39,6 +39,11 @@
 
 // C API goes here
 extern "C" {
+    // Project functions go here
+    long gui_new_project(project_t *proj);
+    project_t *gui_get_project(long id, const char *name);
+    
+    //
     const char **gui_list_names(const char *name);
     void gui_init();
     void gui_add_item(item_t *item);

@@ -144,6 +144,7 @@ Database::openDB (std::string &host, std::string &user, std::string &passwd)
 bool
 Database::closeDB (void)
 {
+    // DEBUGLOG_REPORT_FUNCTION;
     mysql_close(&_mysql);
     _state = Database::DBCLOSED;
 
@@ -163,7 +164,7 @@ Database::queryResults(string &query)
     int         nrows;
     unsigned int i, res;
     
-    // dbglogfile << "Query is: \"" << query.c_str() << "\"" << endl;
+    dbglogfile << "Result Query is: " << query.c_str() << endl;
 
     res = mysql_real_query(&_mysql, query.c_str(), query.size());
 
@@ -211,13 +212,13 @@ Database::queryResults(string &query)
 bool
 Database::queryInsert(const char *query)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     
     int retries, result;
     
     retries = 2;
     
-    dbglogfile << "Query is: " << query << endl;
+    dbglogfile << "Insert Query is: " << query << endl;
     
 #if 0
     string str = query;
@@ -262,6 +263,7 @@ Database::queryInsert(const char *query)
 char *
 Database::gettime()
 {
+    // DEBUGLOG_REPORT_FUNCTION;
     struct timeval tp;
     struct tm *tm, result;
     static char tmpbuf[30];
@@ -278,8 +280,9 @@ Database::gettime()
 }
 
 void
-Database::dump() {
-
+Database::dump()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
 }
 
 } // end of gnuae namespace

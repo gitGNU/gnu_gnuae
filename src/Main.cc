@@ -166,32 +166,6 @@ main(int argc, char **argv) {
 	gdata.dump();
     }
 
-    // gdata.addItem("all TV", "sucks", GnuAE::LOAD, 0, 1, 2, 3);
-    // gdata.addItem("My Stereo", "is great", GnuAE::LOAD, 0, 1, 2, 3);
-    // gdata.newProject("My Project", "all mine", 1.2, 2.3, 3.4, "none", 0.0, 0.0);
-#if 0
-    // Debug crap for the C "gui" API used by the PHP extension
-    item_t item1;
-    memset(&item1, 0, sizeof(item_t));
-    item1.item = "TV";
-    item1.description = "sucks";
-    gdata.addItem(&item1);
-    item_t item2;
-    memset(&item2, 0, sizeof(item_t));
-    item2.item = "Stereo";
-    item2.description = "is great";
-    gdata.addItem(&item2);
-    
-#endif
-    int i = 0;
-    item_t **names = gui_list_items();
-    while (names[i] != 0) {
-	cerr << names[i]->item << ": ";
-	cerr << names[i]->description << endl;
-	i++;
-    }
-    load_t *lod = (load_t *)gui_get_load_data("TV");
-
 #if 0
     // Search the database for all entries that match the search string
     if (search.size()) {

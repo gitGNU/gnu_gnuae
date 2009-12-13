@@ -89,7 +89,7 @@ gui_new_project(project_t *proj)
     // DEBUGLOG_REPORT_FUNCTION;
 
     int id = gdata.newProject(proj->name, proj->description, proj->sunhours,
-			      proj->windhours, proj->windspeed, "none",
+			      proj->windhours, proj->windspeed, proj->location,
 			      proj->latitude, proj->longitude);
 
     proj->id = id;
@@ -102,6 +102,9 @@ gui_get_project(long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
 
+    project_t *project = new project_t;
+
+    return project;
 }
 
 // local Variables:

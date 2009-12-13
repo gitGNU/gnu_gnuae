@@ -210,7 +210,7 @@ GnuAE::addItem(const char *item, const char *description, GnuAE::table_e type,
 bool
 GnuAE::queryInsert(vector<item_t *> data)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     
     size_t	i;
     //char           query[QUERYLEN];
@@ -236,7 +236,7 @@ GnuAE::queryInsert(vector<item_t *> data)
 bool
 GnuAE::queryInsert(item_t *data)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     
 #ifdef __STDC_HOSTED__
     std::ostringstream    query;
@@ -271,7 +271,7 @@ GnuAE::queryInsert(item_t *data)
 bool
 GnuAE::queryInsert(project_t *data)
 {
-    DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     
 #ifdef __STDC_HOSTED__
     std::ostringstream    query;
@@ -301,6 +301,52 @@ GnuAE::queryInsert(project_t *data)
     Database::queryInsert(str.c_str());
     
     return true;
+}
+
+// Look up an existing project by name or ID or both.
+project_t *
+GnuAE::getProject(long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+    project_t *proj = 0;
+    
+    query << "select * from projects where ";
+    if (id != 0 && name != 0) {
+	query << "id = " << id;
+	query << " and name = \'" << name << "\'";
+    } else if (id == 0 && name != 0) {
+	query << " name = \'" << name << "\'";
+    } else if (id != 0 && name == 0) {
+	query << " id = " << id;
+    }
+
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    vector<vector<string> > *result = Database::queryResults(str);
+    vector<vector<string> >::iterator it = result->begin();
+    if (result->size()) {
+	proj = new project_t;
+	vector<string> &row = *it;
+	proj->id = strtol(row[0].c_str(), NULL, 0) + 1;
+	proj->name =             row[1].c_str();
+	proj->description =      row[2].c_str();
+	proj->sunhours  = strtof(row[3].c_str(), NULL);
+	proj->windhours = strtof(row[4].c_str(), NULL);
+	proj->windspeed = strtof(row[5].c_str(), NULL);
+	// proj->location  = strtof(row[6].c_str(), NULL);
+	proj->latitude  = strtof(row[6].c_str(), NULL);
+	proj->longitude = strtof(row[7].c_str(), NULL);
+    }
+
+    return proj;
 }
 
 void

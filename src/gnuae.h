@@ -22,9 +22,9 @@ typedef struct {
     const char *name;
     long id;
     const char *description;
-    long sunhours;
-    long windhours;
-    long windspeed;
+    double sunhours;
+    double windhours;
+    double windspeed;
     const char *location;
     double latitude;
     double longitude;
@@ -85,10 +85,15 @@ public:
     void *getLoadData(const char *item);
 
     // Create or redefine the overall project settings
+
+    // Create a new project, returning the new project ID
     long newProject(const char *name, const char *description,
 		    double sunhours, double windhours, double windspeed,
 		    const char *location,
 		    double latitude, double longitude);
+    // Look up an existing project by name or ID or both.
+    project_t *getProject(long id, const char *name);
+    
     // Add an item to the array
     void addItem(const char *item, const char *description, table_e type,
 		 int id, int days, int hours, int minutes);

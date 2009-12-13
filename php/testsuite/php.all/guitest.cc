@@ -38,6 +38,7 @@
 #include "log.h"
 #include "tcpip.h"
 #include "Database.h"
+#include "dejagnu.h"
 
 #include "gui.h"
 
@@ -48,6 +49,8 @@ static void usage (const char *);
 
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
+
+TestState runtest;
 
 int
 main(int argc, char **argv) {
@@ -137,10 +140,47 @@ main(int argc, char **argv) {
 	gdata.dump();
     }
 
-    // gdata.addItem("all TV", "sucks", GnuAE::LOAD, 0, 1, 2, 3);
-    // gdata.addItem("My Stereo", "is great", GnuAE::LOAD, 0, 1, 2, 3);
-    gdata.newProject("My Project", "all mine", 1.2, 2.3, 3.4, "none", 0.0, 0.0);
-#if 1
+    string projname = "My Project";
+    string projdes = "all mine";
+    long projid = 0;
+    double projlat = 40.0;
+    double projlon = 105.0;
+    
+    long id = gdata.newProject(projname.c_str(), projdes.c_str(),
+                                         1.2, 2.3, 3.4, "none", 0.0, 0.0);
+    project_t *myproj = gdata.getProject(id, "My Project");
+    if (myproj) {
+        if ((myproj->name == projname)
+            && (myproj->description == projdes)
+            && (myproj->sunhours == 1.2)
+            && (myproj->windhours == 2.3)
+            && (myproj->windspeed == 3.4)) {
+            runtest.pass("GnuAE::getProject()");
+        } else {
+            runtest.pass("GnuAE::getProject()");
+        }
+    } else {
+        runtest.unresolved("GnuAE::getProject()");
+    }
+    
+    gdata.addItem("all TV", "sucks", GnuAE::LOAD, 0, 1, 2, 3);
+    gdata.addItem("My Stereo", "is great", GnuAE::LOAD, 0, 1, 2, 3);
+    item_t **names = gui_list_items();
+    if (names) {
+        if ((names[0]->item == "all TV")
+            && (names[1]->item == "My Stereo")
+            && (names[0]->description == "sucks")
+            && (names[1]->description == "is great")
+            ) {
+            runtest.pass("GnuAE::gui_list_items()");
+        } else {
+            runtest.fail("GnuAE::gui_list_items()");
+        }
+    } else {
+        runtest.unresolved("GnuAE::gui_list_items()");
+    }
+    
+#if 0
     // Debug crap for the C "gui" API used by the PHP extension
     item_t item1;
     memset(&item1, 0, sizeof(item_t));
@@ -153,7 +193,6 @@ main(int argc, char **argv) {
     item2.description = "is great";
     gdata.addItem(&item2);
     
-#endif
     int i = 0;
     item_t **names = gui_list_items();
     while (names[i] != 0) {
@@ -162,6 +201,7 @@ main(int argc, char **argv) {
 	i++;
     }
     load_t *lod = (load_t *)gui_get_load_data("TV");
+#endif
 
 }
 

@@ -95,6 +95,8 @@ dnl esac])
 
 AC_OUTPUT(Makefile
 src/Makefile
-php/Makefile
 src/testsuite/Makefile
+php/Makefile
+php/testsuite/Makefile
+php/testsuite/php.all/Makefile
 )

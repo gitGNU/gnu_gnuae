@@ -140,18 +140,18 @@ main(int argc, char **argv) {
 	gdata.dump();
     }
 
-    string projname = "My Project";
-    string projdes = "all mine";
+    const char *projname = "My Project";
+    const char *projdes = "all mine";
     long projid = 0;
     double projlat = 40.0;
     double projlon = 105.0;
     
-    long id = gdata.newProject(projname.c_str(), projdes.c_str(),
+    long id = gdata.newProject(projname, projdes,
                                          1.2, 2.3, 3.4, "none", 0.0, 0.0);
     project_t *myproj = gdata.getProject(id, "My Project");
     if (myproj) {
-        if ((myproj->name == projname)
-            && (myproj->description == projdes)
+        if ((strcmp(myproj->name, projname) == 0)
+            && (strcmp(myproj->description, projdes) == 0)
             && (myproj->sunhours == 1.2)
             && (myproj->windhours == 2.3)
             && (myproj->windspeed == 3.4)) {

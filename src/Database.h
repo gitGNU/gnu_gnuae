@@ -58,6 +58,7 @@ public:
     bool openDB();
     bool openDB(std::string &host, std::string &user, std::string &passwd);
     bool closeDB();
+    bool queryUpdate(const char *query) { return queryInsert(query); };
     bool queryInsert(const char *query);
     std::vector<std::vector<std::string> > *queryResults(std::string &query);
     char *gettime();

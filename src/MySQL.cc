@@ -218,46 +218,38 @@ Database::queryInsert(const char *query)
     
     retries = 2;
     
-    dbglogfile << "Insert Query is: " << query << endl;
+    dbglogfile << "Query is: " << query << endl;
     
-#if 0
-    string str = query;
-    // FIXME: We shouldn't ever get this condition
-    if (str.find("INSERT", 10) != string::npos) {        
-	dbglogfile << "Extra INSERT in query!\n", query << endl;
+    while (retries--) {
+	result = mysql_real_query(&_mysql, query, strlen(query));
+	
+	switch (result) {
+	  case CR_SERVER_LOST:
+	  case CR_COMMANDS_OUT_OF_SYNC:
+	  case CR_SERVER_GONE_ERROR:
+	      dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
+	      // Try to reconnect to the database
+	      closeDB();
+	      openDB();
+	      continue;
+	      break;
+	  case -1:
+	  case CR_UNKNOWN_ERROR:
+	      dbglogfile << "MySQL error on query for:\n\t " <<
+		  mysql_error(&_mysql) << endl;
+	      dbglogfile << "Query was: " << query << endl;
+	      return false;
+	      break;            
+	  default:
+	      return true;
+	}
+	
+	dbglogfile << "Lost connection to the database server, shutting down..." << endl;
+	
+	return false;
     }
-#endif
     
-  while (retries--) {
-      result = mysql_real_query(&_mysql, query, strlen(query));
-      
-      switch (result) {
-    case CR_SERVER_LOST:
-	case CR_COMMANDS_OUT_OF_SYNC:
-	case CR_SERVER_GONE_ERROR:
-	    dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
-	    // Try to reconnect to the database
-	    closeDB();
-	    openDB();
-	    continue;
-	    break;
-	case -1:
-	case CR_UNKNOWN_ERROR:
-	    dbglogfile << "MySQL error on query for:\n\t " <<
-		mysql_error(&_mysql) << endl;
-	    dbglogfile << "Query was: " << query << endl;
-            return false;
-            break;            
-	default:
-	    return true;
-      }
-      
-      dbglogfile << "Lost connection to the database server, shutting down..." << endl;
-      
-      return false;
-  }
-  
-  return false;
+    return false;
 }
 
 char *

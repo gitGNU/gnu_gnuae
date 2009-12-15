@@ -131,8 +131,13 @@ main(int argc, char **argv) {
 	mod_filespec = "/home/rob/projects/gnu/gnuae/data/Modules.csv";
     }
 #endif
+
+    gdata.dbNameSet("gnuaetest");
+    if (gdata.openDB() == false) {
+	runtest.untested("Couldn't open the database!");
+	exit(1);
+    }
     
-    gdata.openDB();
     gdata.loadData();
     
     // Dump the data in the data base

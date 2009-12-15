@@ -145,24 +145,49 @@ main(int argc, char **argv) {
     long projid = 0;
     double projlat = 40.0;
     double projlon = 105.0;
-    
+
+    // Project tests
     long id = gdata.newProject(projname, projdes,
-                                         1.2, 2.3, 3.4, "none", 0.0, 0.0);
+                              1.2, 2.3, 3.4, "none", 0.0, 0.0);
+    if (id) {
+	runtest.pass("GnuAE::newProject()");
+    } else {
+	runtest.fail("GnuAE::newProject()");
+    }
+
     project_t *myproj = gdata.getProject(id, "My Project");
     if (myproj) {
         if ((strcmp(myproj->name, projname) == 0)
             && (strcmp(myproj->description, projdes) == 0)
-            && (myproj->sunhours == 1.2)
-            && (myproj->windhours == 2.3)
-            && (myproj->windspeed == 3.4)) {
+            && ((myproj->sunhours > 1.1) && (myproj->sunhours < 1.3))
+	    && ((myproj->windhours > 2.2) && (myproj->windhours < 2.4))
+	    && ((myproj->windspeed > 3.3) && (myproj->windspeed < 3.5))) {
             runtest.pass("GnuAE::getProject()");
         } else {
-            runtest.pass("GnuAE::getProject()");
+            runtest.fail("GnuAE::getProject()");
         }
     } else {
         runtest.unresolved("GnuAE::getProject()");
     }
     
+    myproj->sunhours = myproj->sunhours * 2;
+    myproj->windhours = myproj->windhours * 2;
+    gdata.updateProject(id, myproj);
+    project_t *myproj2 = gdata.getProject(id, "My Project");
+    if ((myproj2->sunhours == myproj->sunhours)
+	&& (myproj2->sunhours == myproj->sunhours)) {
+	runtest.pass("GnuAE::updateProject()");
+    } else {
+	runtest.fail("GnuAE::updateProject()");
+    }
+    gdata.eraseProject(id, projname);
+    if (gdata.getProject(id, "My Project")) {
+	runtest.fail("GnuAE::eraseProject()");
+    } else {
+	runtest.pass("GnuAE::eraseProject()");
+    }
+
+    // Load Item tests
     gdata.addItem("all TV", "sucks", GnuAE::LOAD, 0, 1, 2, 3);
     gdata.addItem("My Stereo", "is great", GnuAE::LOAD, 0, 1, 2, 3);
     item_t **names = gui_list_items();

@@ -166,7 +166,7 @@ GnuAE::newProject(const char *name, const char *description, double sunhours,
     project->latitude = latitude;
     project->longitude = longitude;
 
-    string query = "SELECT count(*) FROM projects;";
+    string query = "SELECT MAX(id) FROM projects;";
 
     // Get the count of how many current projects there are
     vector<vector<string> > *result = Database::queryResults(query);

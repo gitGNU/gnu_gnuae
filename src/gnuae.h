@@ -19,8 +19,8 @@
 #define __GNUAE_H__ 1
 
 typedef struct {
-    const char *name;
     long id;
+    const char *name;
     const char *description;
     double sunhours;
     double windhours;
@@ -91,8 +91,15 @@ public:
 		    double sunhours, double windhours, double windspeed,
 		    const char *location,
 		    double latitude, double longitude);
+
     // Look up an existing project by name or ID or both.
     project_t *getProject(long id, const char *name);
+    
+    // Update an existing project    
+    bool updateProject(long id, project_t *proj);
+    
+    // delete a project from the database
+    bool eraseProject(long id, const char *name);
     
     // Add an item to the array
     void addItem(const char *item, const char *description, table_e type,

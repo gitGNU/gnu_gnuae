@@ -1,6 +1,5 @@
 // 
-//   Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008,
-//              2009 Free Software Foundation, Inc.
+//   Copyright (C) 2009 Free Software Foundation, Inc.
 // 
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,16 +38,34 @@
 
 // C API goes here
 extern "C" {
-    // Project functions go here
-    long gui_new_project(project_t *proj);
-    project_t *gui_get_project(long id, const char *name);
-    
-    //
-    const char **gui_list_names(const char *name);
+    // Initialize the gui, which loads the data
     void gui_init();
+
+    // get a list of names for a table.
+    const char **gui_list_names(const char *name);
+
+    // Project functions go here
+
+    // Add a new project to the database
+    long gui_new_project(project_t *proj);
+    // Update an existing project
+    bool gui_update_project(long id, project_t *proj);
+    // get the project data
+    project_t *gui_get_project(long id, const char *name);
+    // delete a project from the database
+    bool gui_erase_project(long id, const char *name);
+    
+    // List of loads stuff goes here.
+    
+    // Add a load to the list of loads.
     void gui_add_item(item_t *item);
+    // Get a list of the chosen loads
     item_t **gui_list_items();
+    // Get the data for a specific load
     void *gui_get_load_data(const char *name);
+    // delete a load from the database
+    void gui_erase_item(long id, const char *name);
+    
 }
 #endif	// end of __cplusplus
   

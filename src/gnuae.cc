@@ -166,7 +166,7 @@ GnuAE::newProject(const char *name, const char *description, double sunhours,
     project->latitude = latitude;
     project->longitude = longitude;
 
-    string query = "select count(*) from projects;";
+    string query = "SELECT count(*) FROM projects;";
 
     // Get the count of how many current projects there are
     vector<vector<string> > *result = Database::queryResults(query);
@@ -178,6 +178,83 @@ GnuAE::newProject(const char *name, const char *description, double sunhours,
     queryInsert(project);
     
     return project->id;
+}
+
+// Update an existing project    
+bool
+GnuAE::updateProject(long id, project_t *proj)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+
+    query.str("");
+    query << "UPDATE projects SET ";
+    if (proj->name) {
+	query << "name = \'"        << proj->name << "\'";
+    }
+    if (proj->description) {
+	query << ", description = \'" << proj->description << "\'";
+    }
+    query << ", sunhours = "    << proj->sunhours;
+    query << ", windhours = "   << proj->windhours;
+    query << ", windspeed = "   << proj->windspeed;
+    if (proj->location) {
+	query << ", location = \'"    << proj->location << "\'";
+    }
+    query << ", latitude = "    << proj->latitude;
+    query << ", longitude = "   << proj->longitude;
+    query << " WHERE";
+    query << " id = " << id;
+    query << ends;
+    
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    
+    // Execute the query
+    Database::queryInsert(str.c_str());
+}
+
+// delete a project from the database
+bool
+GnuAE::eraseProject(long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    // DELETE from projects where id=id and name = name;
+#ifdef __STDC_HOSTED__
+    std::ostringstream    query;
+#else
+    std::ostrstream       query;
+#endif
+    
+    query.str("");
+    query << "DELETE FROM projects WHERE ";
+    if (id != 0 && name != 0) {
+	query << "id = " << id;
+	query << " and name = \'" << name << "\'";
+    } else if (id == 0 && name != 0) {
+	query << " name = \'" << name << "\'";
+    } else if (id != 0 && name == 0) {
+	query << " id = " << id;
+    }
+    query << ends;
+    
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    
+    // Execute the query
+    Database::queryInsert(str.c_str());
+    
+    return true;
 }
 
 // Add an item to the array
@@ -315,7 +392,8 @@ GnuAE::getProject(long id, const char *name)
 #endif
     project_t *proj = 0;
     
-    query << "select * from projects where ";
+    query.str("");
+    query << "SELECT * FROM projects WHERE ";
     if (id != 0 && name != 0) {
 	query << "id = " << id;
 	query << " and name = \'" << name << "\'";
@@ -324,6 +402,7 @@ GnuAE::getProject(long id, const char *name)
     } else if (id != 0 && name == 0) {
 	query << " id = " << id;
     }
+    query << ends;
 
 #ifdef __STDC_HOSTED__
     string str = query.str().c_str();

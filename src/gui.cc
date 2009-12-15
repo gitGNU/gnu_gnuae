@@ -1,6 +1,5 @@
 // 
-//   Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008,
-//              2009 Free Software Foundation, Inc.
+//   Copyright (C) 2009 Free Software Foundation, Inc.
 // 
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -57,6 +56,14 @@ gui_add_item(item_t *item)
     gdata.addItem(item);
 }
 
+// delete a load from the database
+void
+gui_erase_item(long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+
+}
+
 item_t **
 gui_list_items()
 {
@@ -76,7 +83,7 @@ gui_list_items()
 }
 
 void *
-gui_get_load_data(const char *name)
+gui_get_load_data(long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
 
@@ -105,6 +112,22 @@ gui_get_project(long id, const char *name)
     project_t *project = new project_t;
 
     return project;
+}
+
+// Update an existing project
+bool
+gui_update_project(long id, project_t *proj)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    return gdata.updateProject(id, proj);
+}
+
+// delete a project from the database
+bool
+gui_erase_project(long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    return gdata.eraseProject(id, name);
 }
 
 // local Variables:

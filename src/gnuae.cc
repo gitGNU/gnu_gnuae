@@ -155,6 +155,8 @@ GnuAE::newProject(const char *name, const char *description, double sunhours,
                   double latitude, double longitude)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    long id;
+    
     project_t *project = new project_t;
     
     project->name = name;
@@ -166,14 +168,26 @@ GnuAE::newProject(const char *name, const char *description, double sunhours,
     project->latitude = latitude;
     project->longitude = longitude;
 
-    string query = "SELECT MAX(id) FROM projects;";
+    string query = "SELECT COUNT(id) FROM projects;";
 
     // Get the count of how many current projects there are
     vector<vector<string> > *result = Database::queryResults(query);
     vector<vector<string> >::iterator it = result->begin();
     vector<string> &row = *it;
-    project->id = strtol(row[0].c_str(), NULL, 0) + 1;
+    id = strtol(row[0].c_str(), NULL, 0) + 1;
 
+    if (id > 1) {
+	query = "SELECT MAX(id) FROM projects;";
+	
+	// Get the count of how many current projects there are
+	vector<vector<string> > *result = Database::queryResults(query);
+	vector<vector<string> >::iterator it = result->begin();
+	vector<string> &row = *it;
+	project->id = strtol(row[0].c_str(), NULL, 0) + 1;
+    } else {
+	project->id = id;
+    }
+    
     // Add ourselves to the database
     queryInsert(project);
     

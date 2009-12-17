@@ -27,9 +27,24 @@
 #include "gui.h"
 
 static void usage (const char *);
+static void project_tests();
+static void item_tests();
 
 int
 main(int argc, char **argv)
+{
+    // Initialize GnuAE, but use the test database
+    gui_init_db("gnuaetest");
+
+    project_tests();
+    item_tests();
+
+    // We're all done
+    totals();
+}
+
+void
+project_tests()
 {
     long id = 0;
     const char *name = "Guitest run";
@@ -37,10 +52,7 @@ main(int argc, char **argv)
     const char *des2 = "this run is done";
     project_t proj1;
     project_t *proj2 = 0;
-
-    // Initialixe GnuAE, but use the test database
-    gui_init_db("gnuaetest");
-
+	
     // First test the C API for manipulating project data
     proj1.name = name;
     proj1.description = des1;
@@ -96,13 +108,22 @@ main(int argc, char **argv)
     } else {
 	pass("gui_erase_project()");
     }
+}
 
-    // Then test the C API for manipulating loads
+void
+item_tests()
+{
+    // Test listing the names of entries in a table
+    const char **names = gui_list_names("loads");
     
-    gui_list_names("loads");
-
-    // We're all done
-    totals();
+    // Then test the C API for manipulating loads
+#if 0
+    gui_add_item();
+    gui_list_items();
+    gui_get_load_data();
+    gui_erase_item(long id, const char *name);
+#endif
+    
 }
 
 static void

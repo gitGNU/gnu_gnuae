@@ -18,23 +18,14 @@
 
 ## Process this file with automake to generate Makefile.in
 
-AUTOMAKE_OPTIONS = # dejagnu
-
-FULLVERSION = $(VERSION).3
+AUTOMAKE_OPTIONS = dejagnu
 
 SUBDIRS = # testsuite
 
 INCLUDES = -I$(srcdir) \
 	$(MYSQL_CFLAGS)
 
-# We don't need libdl cause we're not loading any shared modules directly
-DL_LIB = # @DL_LIB@
-LIBLTDL = # @LIBLTDL@
-INCLTDL = # @INCLTDL@
-# ABELLIB = ../../abelmon/libabel
-ABELLIB =
-
-# lib_LTLIBRARIES = libgnuae.la
+lib_LTLIBRARIES = libgnuae.la
 
 SRC = PVPanel.cc PVPanel.h \
 	NEC.cc NEC.h nec_tables.h \
@@ -57,12 +48,13 @@ SRC = PVPanel.cc PVPanel.h \
 	gnuae.h gnuae.cc \
 	gui.cc gui.h
 
-bin_PROGRAMS =  gnuae # neccalc
+libgnuae_la_SOURCES = $(SRC)
 
-gnuae_SOURCES = $(SRC) Main.cc
-gnuae_LDADD = $(MYSQL_LIBS) # libgnuae.la 
-# gnuae_DEPENDENCIES = libgnuae.la
+bin_PROGRAMS =  gnuae neccalc
 
-# neccalc_SOURCES = NECcalc.cc
-# neccalc_LDADD =  $(MYSQL_LIBS) libgnuae.la 
+gnuae_SOURCES = Main.cc
+gnuae_LDADD = $(MYSQL_LIBS) libgnuae.la 
+
+neccalc_SOURCES = NECcalc.cc
+neccalc_LDADD =  $(MYSQL_LIBS) libgnuae.la 
 

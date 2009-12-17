@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstddef>
 #include <cstring>
+#include <unistd.h>
 
 #include "err.h"
 #include "NEC.h"
@@ -121,5 +122,4 @@ usage (void)
     cerr << "-h\tHelp" << endl;
     cerr << "-d\tdump table 8" << endl;
     cerr << "-v\tverbose" << endl;
-    exit (-1);
 }

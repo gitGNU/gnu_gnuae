@@ -36,7 +36,16 @@ main(int argc, char **argv)
     // Initialize GnuAE, but use the test database
     gui_init_db("gnuaetest");
 
+    // Test listing the names of entries in a table
+    const char **names = gui_list_names("loads");
+    if (names) {
+	pass("gui_list_names(loads)");
+    } else {
+	fail("gui_list_names(loads)");
+    }
+    
     project_tests();
+
     item_tests();
 
     // We're all done
@@ -113,16 +122,26 @@ project_tests()
 void
 item_tests()
 {
-    // Test listing the names of entries in a table
-    const char **names = gui_list_names("loads");
+    const char *name = "guittest item";
+    const char *des1 = "ignore this item";
+    const char *des2 = "this item is done";
+    long id = 50050;
+    item_t item1;
+    item_t *item2 = 0;
+
+    item1.item = name;
+    item1.description = des1;
+    item1.id = id;
+    item1.days = 1;
+    item1.hours = 2;
+    item1.minutes = 3;
     
     // Then test the C API for manipulating loads
-#if 0
-    gui_add_item();
+    gui_add_item(&item1);
+    
     gui_list_items();
-    gui_get_load_data();
-    gui_erase_item(long id, const char *name);
-#endif
+    gui_get_item(id, name);
+    gui_erase_item(id, name);
     
 }
 

@@ -82,10 +82,10 @@ public:
     bool loadData();
 
     const char **list_names(const char *table);
-    void *getLoadData(const char *item);
+    void *getLoadData(long id, const char *item);
 
-    // Create or redefine the overall project settings
-
+    // Project functions
+    
     // Create a new project, returning the new project ID
     long newProject(const char *name, const char *description,
 		    double sunhours, double windhours, double windspeed,
@@ -100,13 +100,24 @@ public:
     
     // delete a project from the database
     bool eraseProject(long id, const char *name);
+
+    // Profile functions
     
-    // Add an item to the array
-    void addItem(const char *item, const char *description, table_e type,
+    // Add an item to the profile
+    long addItem(const char *item, const char *description, table_e type,
 		 int id, int days, int hours, int minutes);
-    void addItem(item_t *item);
+    long addItem(item_t *item);
+
+    // Update an existing item in the profile
+    bool updateItem(long id, item_t *item);
+
+    // Erase an item from the profile
+    bool eraseItem(long id, const char *name);
+
+    // Get a list of all the items in the profile along with their data.
     std::vector<item_t *> &listItems() { return _chosen_items; };
 
+    // Query the database to add or update data
     bool queryInsert(std::vector<item_t *> data);
     bool queryInsert(item_t *data);
     bool queryInsert(project_t *data);

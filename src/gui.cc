@@ -58,19 +58,34 @@ gui_init_db(const char *dbname)
     gui_init();
 }
 
-void
+long
 gui_add_item(item_t *item)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    gdata.addItem(item);
+    return gdata.addItem(item);
 }
 
-// delete a load from the database
-void
-gui_erase_item(long id, const char *name)
+// Update the data for an existing item in the profile
+bool
+gui_update_item(long id, item_t *item)
+{
+    return gdata.updateItem(id, item);
+}
+
+item_t *
+gui_get_item(long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
 
+//    return gdata.getLoadData(id, name);
+}
+
+// delete a load from the database
+bool
+gui_erase_item(long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    return gdata.eraseItem(id, name);
 }
 
 item_t **
@@ -89,14 +104,6 @@ gui_list_items()
     // Terminate the array, since we're not using std::vector
     result[i] = 0;
     return result;
-}
-
-void *
-gui_get_load_data(long id, const char *name)
-{
-    // DEBUGLOG_REPORT_FUNCTION;
-
-    return gdata.getLoadData(name);
 }
 
 long

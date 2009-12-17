@@ -141,7 +141,7 @@ GnuAE::list_names(const char *table)
 }
 
 void *
-GnuAE::getLoadData(const char *item)
+GnuAE::getLoadData(long id, const char *item)
 {
     // DEBUGLOG_REPORT_FUNCTION;
     load_t *load = _loads.findEntry(item);
@@ -274,7 +274,7 @@ GnuAE::eraseProject(long id, const char *name)
 }
 
 // Add an item to the array
-void
+long
 GnuAE::addItem(item_t *nitem)
 {
     // DEBUGLOG_REPORT_FUNCTION;
@@ -283,7 +283,7 @@ GnuAE::addItem(item_t *nitem)
     queryInsert(nitem);
 }
 
-void
+long
 GnuAE::addItem(const char *item, const char *description, GnuAE::table_e type,
               int id, int days, int hours, int minutes)
 {
@@ -298,6 +298,20 @@ GnuAE::addItem(const char *item, const char *description, GnuAE::table_e type,
     nitem->minutes = minutes;
     
     addItem(nitem);
+}
+
+// Update an existing item in the profile
+bool
+GnuAE::updateItem(long id, item_t *item)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+}
+
+// Erase an item fromn the profile
+bool
+GnuAE::eraseItem(long id, const char *name)
+{
+        // DEBUGLOG_REPORT_FUNCTION;
 }
 
 bool

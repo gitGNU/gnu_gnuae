@@ -18,6 +18,9 @@
 #ifndef __GNUAE_H__
 #define __GNUAE_H__ 1
 
+typedef enum { BATTERY, CENTER, CHARGER, COMBINER, INVERTER,
+	       LOAD, PVPANEL, PUMP, WIRE} table_e; 
+
 typedef struct {
     long id;
     const char *name;
@@ -35,7 +38,7 @@ typedef struct {
 			  // into all the data tables. 
     const char *description; // the description of this item, often
 			  // a location of other custom data.
-    // GnuAE::table_e type;  // the type of the item.
+    table_e type;	  // the type of the item.
     int id;		  // a numerical ID, currently unused.
     int days;		  // the days per week this load item is used.
     int hours;		  // the days per week this load item is used.
@@ -62,8 +65,6 @@ class Chargers;
 class GnuAE : public Database {
 public:
     static GnuAE& getDefaultInstance();
-    typedef enum { BATTERY, CENTER, CHARGER, COMBINER, INVERTER,
-		   LOAD, PVPANEL, PUMP, WIRE} table_e; 
     GnuAE();
     ~GnuAE();
     
@@ -104,22 +105,26 @@ public:
     // Profile functions
     
     // Add an item to the profile
-    long addItem(const char *item, const char *description, table_e type,
-		 int id, int days, int hours, int minutes);
-    long addItem(item_t *item);
+    long addItem(long projid, const char *item, const char *description,
+		 table_e type, int id, int days, int hours, int minutes);
+    long addItem(long id, item_t *item);
+
+    // Get an item and it's data from the profiles database
+    item_t *getItem(long projid, long id, const char *name);
 
     // Update an existing item in the profile
-    bool updateItem(long id, item_t *item);
+    bool updateItem(long projid, item_t *item);
 
     // Erase an item from the profile
-    bool eraseItem(long id, const char *name);
+    bool eraseItem(long projid, long id, const char *name);
 
     // Get a list of all the items in the profile along with their data.
     std::vector<item_t *> &listItems() { return _chosen_items; };
 
     // Query the database to add or update data
-    bool queryInsert(std::vector<item_t *> data);
-    bool queryInsert(item_t *data);
+    bool queryInsert(long projid, std::vector<item_t *> data);
+    bool queryInsert(long projid, item_t *data);
+
     bool queryInsert(project_t *data);
 
     void dump();

@@ -59,33 +59,33 @@ gui_init_db(const char *dbname)
 }
 
 long
-gui_add_item(item_t *item)
+gui_add_item(long projid, item_t *item)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    return gdata.addItem(item);
+    return gdata.addItem(projid, item);
 }
 
 // Update the data for an existing item in the profile
 bool
-gui_update_item(long id, item_t *item)
+gui_update_item(long projid, item_t *item)
 {
-    return gdata.updateItem(id, item);
+    return gdata.updateItem(projid, item);
 }
 
 item_t *
-gui_get_item(long id, const char *name)
+gui_get_item(long projid, long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
 
-//    return gdata.getLoadData(id, name);
+    return gdata.getItem(projid, id, name);
 }
 
 // delete a load from the database
 bool
-gui_erase_item(long id, const char *name)
+gui_erase_item(long projid, long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    return gdata.eraseItem(id, name);
+    return gdata.eraseItem(projid, id, name);
 }
 
 item_t **

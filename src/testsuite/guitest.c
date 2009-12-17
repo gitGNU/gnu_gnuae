@@ -30,6 +30,9 @@ static void usage (const char *);
 static void project_tests();
 static void item_tests();
 
+// The project ID
+long id = 0;
+
 int
 main(int argc, char **argv)
 {
@@ -55,7 +58,6 @@ main(int argc, char **argv)
 void
 project_tests()
 {
-    long id = 0;
     const char *name = "Guitest run";
     const char *des1 = "ignore this run";
     const char *des2 = "this run is done";
@@ -125,23 +127,62 @@ item_tests()
     const char *name = "guittest item";
     const char *des1 = "ignore this item";
     const char *des2 = "this item is done";
-    long id = 50050;
+    long count = 0;
     item_t item1;
     item_t *item2 = 0;
 
     item1.item = name;
     item1.description = des1;
-    item1.id = id;
+    item1.id = 50050;
+    item1.type = LOAD;
     item1.days = 1;
     item1.hours = 2;
     item1.minutes = 3;
     
     // Then test the C API for manipulating loads
-    gui_add_item(&item1);
+    count = gui_add_item(id, &item1);
+    if (count) {
+        pass("gui_add_item()");
+    } else {
+        pass("gui_add_item()");
+    }
     
+    item2 = gui_get_item(id, 50050, name);
+    if (item2) {
+        if (item2->type == LOAD) {
+            pass("gui_get_item()");
+        } else {
+            fail("gui_get_item()");
+        }
+    } else {
+            unresolved("gui_get_item()");        
+    }
+
+    item1.description = des2;
+    item1.days = item1.days * 2;
+    item1.hours = item1.hours * 2;
+    item1.minutes = item1.minutes * 2;
+    gui_update_item(id, &item1);
+    item2 = gui_get_item(id, 50050, name);
+    if (item2) {
+        if (item2->days == item1.days *2) {
+            pass("gui_update_item()");
+        } else {
+            fail("gui_update_item()");
+        }
+    } else {
+        unresolved("gui_update_item()");        
+    }
+    
+    gui_erase_item(id, 50050, name);
+    item2 = gui_get_item(id, 50050, name);
+    if (item2) {
+	fail("gui_erase_item()");
+    } else {
+	pass("gui_erase_item()");
+    }
+
     gui_list_items();
-    gui_get_item(id, name);
-    gui_erase_item(id, name);
     
 }
 
@@ -154,6 +195,6 @@ usage (const char *prog)
 }
 
 // local Variables:
-// mode: C
+// mode: C++
 // indent-tabs-mode: t
 // End:

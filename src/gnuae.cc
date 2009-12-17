@@ -33,6 +33,18 @@ using namespace std;
 
 namespace gnuae {
 
+static const char *types[] = {
+    "Battery",
+    "Center",
+    "Charger",
+    "Combiner",
+    "Inverter",
+    "Load",
+    "PVPanel",
+    "Pump",
+    "Wire"
+};
+
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 
 GnuAE&
@@ -150,9 +162,9 @@ GnuAE::getLoadData(long id, const char *item)
 
 // Create or redefine the overall project settings
 long
-GnuAE::newProject(const char *name, const char *description, double sunhours,
-                  double windhours, double windspeed, const char *location,
-                  double latitude, double longitude)
+GnuAE::newProject(const char *name, const char *description,
+		  double sunhours, double windhours, double windspeed,
+		  const char *location, double latitude, double longitude)
 {
     // DEBUGLOG_REPORT_FUNCTION;
     long id;
@@ -237,6 +249,54 @@ GnuAE::updateProject(long id, project_t *proj)
     Database::queryInsert(str.c_str());
 }
 
+// Look up an existing project by name or ID or both.
+project_t *
+GnuAE::getProject(long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+    project_t *proj = 0;
+    
+    query.str("");
+    query << "SELECT * FROM projects WHERE ";
+    if (id != 0 && name != 0) {
+	query << "id = " << id;
+	query << " and name = \'" << name << "\'";
+    } else if (id == 0 && name != 0) {
+	query << " name = \'" << name << "\'";
+    } else if (id != 0 && name == 0) {
+	query << " id = " << id;
+    }
+    query << ends;
+
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    vector<vector<string> > *result = Database::queryResults(str);
+    vector<vector<string> >::iterator it = result->begin();
+    if (result->size()) {
+	proj = new project_t;
+	vector<string> &row = *it;
+	proj->id = strtol(row[0].c_str(), NULL, 0) + 1;
+	proj->name =             row[1].c_str();
+	proj->description =      row[2].c_str();
+	proj->sunhours  = strtof(row[3].c_str(), NULL);
+	proj->windhours = strtof(row[4].c_str(), NULL);
+	proj->windspeed = strtof(row[5].c_str(), NULL);
+	// proj->location  = strtof(row[6].c_str(), NULL);
+	proj->latitude  = strtof(row[6].c_str(), NULL);
+	proj->longitude = strtof(row[7].c_str(), NULL);
+    }
+
+    return proj;
+}
+
 // delete a project from the database
 bool
 GnuAE::eraseProject(long id, const char *name)
@@ -268,54 +328,186 @@ GnuAE::eraseProject(long id, const char *name)
 #endif
     
     // Execute the query
-    Database::queryInsert(str.c_str());
-    
-    return true;
+    return Database::queryInsert(str.c_str());
 }
 
 // Add an item to the array
 long
-GnuAE::addItem(item_t *nitem)
+GnuAE::addItem(long projid, item_t *nitem)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    _chosen_items.push_back(nitem);
+//    _chosen_items.push_back(nitem);
 
-    queryInsert(nitem);
+    string query = "SELECT COUNT() FROM profiles;";
+    
+    queryInsert(projid, nitem);
 }
 
 long
-GnuAE::addItem(const char *item, const char *description, GnuAE::table_e type,
-              int id, int days, int hours, int minutes)
+GnuAE::addItem(long projid, const char *item, const char *description,
+	       table_e type, int id, int days, int hours, int minutes)
 {
     // DEBUGLOG_REPORT_FUNCTION;
     item_t *nitem = new item_t;
     nitem->item = item;
     nitem->description = description;
-    // nitem->type = type;
+    nitem->type = type;
     nitem->id = id;
     nitem->days = days;
     nitem->hours = hours;
     nitem->minutes = minutes;
     
-    addItem(nitem);
+    addItem(projid, nitem);
 }
 
 // Update an existing item in the profile
 bool
-GnuAE::updateItem(long id, item_t *item)
+GnuAE::updateItem(long projid, item_t *item)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+
+    query.str("");
+    query << "UPDATE profiles SET ";
+#if 0
+    // FIXME: don't allow name changes for now
+    if (proj->name) {
+	query << "name = \'"        << item->item << "\'";
+    }
+#endif
+    if (item->description) {
+	query << " description = \'" << item->description << "\'";
+    }
+    query << ", type = \'" << types[item->type] << "\'";
+//    query << ", quantity = "    << 0;
+    query << ", hours = "    << item->hours;
+    query << ", days = "    << item->days;
+    query << ", minutes = "    << item->minutes;
+    query << " WHERE";
+    query << " projectID = " << projid;
+    query << " and itemID = " << item->id;
+    query << " and name = \'" << item->item << "\'";
+    query << ends;
+    
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    
+    // Execute the query
+    return Database::queryInsert(str.c_str());
+}
+
+// Look up an existing project by name or ID or both.
+item_t *
+GnuAE::getItem(long projid, long id, const char *name)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+    item_t *item = 0;
+    
+    query.str("");
+    query << "SELECT * FROM profiles WHERE ";
+    query << "projectID = " << projid;
+    if (id != 0 && name != 0) {
+	query << " and itemID = " << id;
+	query << " and name = \'" << name << "\'";
+    } else if (id == 0 && name != 0) {
+	query << " name = \'" << name << "\'";
+    } else if (id != 0 && name == 0) {
+	query << " id = " << id;
+    }
+    query << ends;
+
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    vector<vector<string> > *result = Database::queryResults(str);
+    vector<vector<string> >::iterator it = result->begin();
+    if (result->size()) {
+	item = new item_t;
+	vector<string> &row = *it;
+	// ignore row[0], as it's just our project ID
+	item->id = strtol(row[1].c_str(), NULL, 0);
+	item->item = row[2].c_str();
+	item->description = row[3].c_str();
+	if (row[4] == "Battery") {
+	    item->type = BATTERY;
+	} else if (row[4] == "Center") {
+	    item->type = CENTER;
+	} else if (row[4] == "Charger") {
+	    item->type = CHARGER;
+	} else if (row[4] == "Combiner") {
+	    item->type = COMBINER;
+	} else if (row[4] == "Inverter") {
+	    item->type = INVERTER;
+	} else if (row[4] == "Load") {
+	    item->type = LOAD;
+	} else if (row[4] == "PVPanel") {
+	    item->type = PVPANEL;
+	} else if (row[4] == "Pump") {
+	    item->type = PUMP;
+	} else if (row[4] == "Wire") {
+	    item->type = WIRE;
+	}
+//	item->quantity = strtol(row[5].c_str(), NULL, 0);
+	item->days = strtol(row[6].c_str(), NULL, 0);
+	item->hours = strtol(row[7].c_str(), NULL, 0);
+	item->minutes = strtol(row[8].c_str(), NULL, 0);
+    }
+
+    return item;
 }
 
 // Erase an item fromn the profile
 bool
-GnuAE::eraseItem(long id, const char *name)
+GnuAE::eraseItem(long projid, long id, const char *name)
 {
         // DEBUGLOG_REPORT_FUNCTION;
+    // DELETE from projects where id=id and name = name;
+#ifdef __STDC_HOSTED__
+    std::ostringstream    query;
+#else
+    std::ostrstream       query;
+#endif
+    
+    query.str("");
+    query << "DELETE FROM profiles WHERE ";
+    query << "projectID = " << projid << " and ";
+    if (id != 0 && name != 0) {
+	query << " itemID = " << id;
+	query << " and name = \'" << name << "\'";
+    } else if (id == 0 && name != 0) {
+	query << " name = \'" << name << "\'";
+    } else if (id != 0 && name == 0) {
+	query << " itemID = " << id;
+    }
+    query << ends;
+    
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    
+    // Execute the query
+    return Database::queryInsert(str.c_str());
 }
 
 bool
-GnuAE::queryInsert(vector<item_t *> data)
+GnuAE::queryInsert(long projid, vector<item_t *> data)
 {
     // DEBUGLOG_REPORT_FUNCTION;
     
@@ -334,16 +526,22 @@ GnuAE::queryInsert(vector<item_t *> data)
     }
     
     for (i=0; i< data.size(); i++) {
-	queryInsert(data[i]);
+	queryInsert(projid, data[i]);
     }
     
     return true;  
 }
 
 bool
-GnuAE::queryInsert(item_t *data)
+GnuAE::queryInsert(long projid, item_t *data)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    // Can't insert data if their is no data
+    if (!data) {
+	dbglogfile << "ERROR: no data to INSERT for project "
+		   << projid << "!" << endl;
+	return false;
+    }
     
 #ifdef __STDC_HOSTED__
     std::ostringstream    query;
@@ -353,14 +551,15 @@ GnuAE::queryInsert(item_t *data)
     
     query.str("");
     query << "INSERT INTO profiles () VALUES (";
-    query << _project.id << ",";
+    query << projid << ",";
     query << data->id << ",";
     query << "'" << data->item << "',";
     query << "'" << data->description << "',";
+    query << "'" << types[data->type] << "',";
     query << 0 << ",";		// FIXME: should be quantity
     query << data->hours << ",";
     query << data->minutes << ",";
-    query << data->days << ")";
+    query << data->days  << ")";
     query << ends;
     
 #ifdef __STDC_HOSTED__
@@ -408,54 +607,6 @@ GnuAE::queryInsert(project_t *data)
     Database::queryInsert(str.c_str());
     
     return true;
-}
-
-// Look up an existing project by name or ID or both.
-project_t *
-GnuAE::getProject(long id, const char *name)
-{
-    // DEBUGLOG_REPORT_FUNCTION;
-#ifdef __STDC_HOSTED__
-    ostringstream  query;
-#else
-    ostrstream     query;
-#endif
-    project_t *proj = 0;
-    
-    query.str("");
-    query << "SELECT * FROM projects WHERE ";
-    if (id != 0 && name != 0) {
-	query << "id = " << id;
-	query << " and name = \'" << name << "\'";
-    } else if (id == 0 && name != 0) {
-	query << " name = \'" << name << "\'";
-    } else if (id != 0 && name == 0) {
-	query << " id = " << id;
-    }
-    query << ends;
-
-#ifdef __STDC_HOSTED__
-    string str = query.str().c_str();
-#else
-    string str = query.str();
-#endif
-    vector<vector<string> > *result = Database::queryResults(str);
-    vector<vector<string> >::iterator it = result->begin();
-    if (result->size()) {
-	proj = new project_t;
-	vector<string> &row = *it;
-	proj->id = strtol(row[0].c_str(), NULL, 0) + 1;
-	proj->name =             row[1].c_str();
-	proj->description =      row[2].c_str();
-	proj->sunhours  = strtof(row[3].c_str(), NULL);
-	proj->windhours = strtof(row[4].c_str(), NULL);
-	proj->windspeed = strtof(row[5].c_str(), NULL);
-	// proj->location  = strtof(row[6].c_str(), NULL);
-	proj->latitude  = strtof(row[6].c_str(), NULL);
-	proj->longitude = strtof(row[7].c_str(), NULL);
-    }
-
-    return proj;
 }
 
 void

@@ -199,6 +199,7 @@ Database::queryResults(string &query)
         // MYSQL_FIELD *fields = mysql_fetch_fields(result);
         // dbglogfile << fields->name << endl;
         for (int i=0; i<mysql_num_fields(result); i++) {
+	    // dbglogfile << row[i] << endl;
             data.push_back(row[i]);
         }
         table->push_back(data);

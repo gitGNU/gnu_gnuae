@@ -193,8 +193,8 @@ main(int argc, char **argv) {
     }
 
     // Load Item tests
-    gdata.addItem("all TV", "sucks", GnuAE::LOAD, 0, 1, 2, 3);
-    gdata.addItem("My Stereo", "is great", GnuAE::LOAD, 0, 1, 2, 3);
+    gdata.addItem(id, "all TV", "sucks", LOAD, 0, 1, 2, 3);
+    gdata.addItem(id, "My Stereo", "is great", LOAD, 0, 1, 2, 3);
     item_t **names = gui_list_items();
     if (names) {
         if ((names[0]->item == "all TV")

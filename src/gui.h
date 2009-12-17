@@ -61,13 +61,13 @@ extern "C" {
     // Profile functions go here
     
     // Add to the list of items in the profile.
-    long gui_add_item(item_t *item);
+    long gui_add_item(long projid, item_t *item);
     // Update the data for an existing item in the profile
-    bool gui_update_item(long id, item_t *item);
+    bool gui_update_item(long projid, item_t *item);
     // Get the data for a specific item in the profile
-    item_t *gui_get_item(long id, const char *name);
+    item_t *gui_get_item(long projid, long id, const char *name);
     // delete a load from the profile database
-    bool gui_erase_item(long id, const char *name);
+    bool gui_erase_item(long projid, long id, const char *name);
     // Get a list of the chosen items in the profile
     item_t **gui_list_items();
     

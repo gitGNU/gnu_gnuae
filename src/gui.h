@@ -40,6 +40,8 @@
 extern "C" {
     // Initialize the gui, which loads the data
     void gui_init();
+    // This is only used to change the default password for testing
+    void gui_init_db(const char *dbname);
 
     // get a list of names for a table.
     const char **gui_list_names(const char *name);

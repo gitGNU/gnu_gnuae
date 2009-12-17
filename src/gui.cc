@@ -49,6 +49,15 @@ gui_init()
     gdata.loadData();
 }
 
+// This is only used to change the default password for testing
+void
+gui_init_db(const char *dbname)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    gdata.dbNameSet(dbname);
+    gui_init();
+}
+
 void
 gui_add_item(item_t *item)
 {
@@ -109,9 +118,7 @@ gui_get_project(long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
 
-    project_t *project = new project_t;
-
-    return project;
+    return gdata.getProject(id, name);
 }
 
 // Update an existing project

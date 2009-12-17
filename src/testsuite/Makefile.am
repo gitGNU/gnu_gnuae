@@ -4,32 +4,21 @@ AUTOMAKE_OPTIONS = dejagnu
 
 # RUNTESTDEFAULTFLAGS = --tool gnuae
 
-RUNTEST = `if test -x $(top_srcdir)/../dejagnu/runtest; then \
-              echo $(top_srcdir)/../dejagnu/runtest; \
-           else \
-              echo runtest; \
-           fi`
+GNUAELIB = ../libgnuae.la
 
-# ABELPATH = @ABELPATH@
-# ABELPATH = ../../../abelmon/libabel
-ABELPATH = /usr/local/lib/powerguru/
-#DL_LIB = @DL_LIB@ # @LIBADD_DL@
-#LIBLTDL = @LIBLTDL@
-#INCLTDL = @INCLTDL@
-
-GNUAELIB = ../../src/libgnuaec.la
-
-INCLUDES = -I/usr/local/include/powerguru/ -I$(top_srcdir)/src # $(INCLTDL)
+INCLUDES = -I$(top_srcdir)/src 
 
 CLEANFILES = *.log *.sum site.bak
 
-bin_PROGRAMS = tnec
+bin_PROGRAMS = tnec gdata guitest
 
 tnec_SOURCES = tnec.cc
-tnec_DEPENDENCIES = $(ABELPATH)/libpguru.la $(GNUAELIB) #$(LIBLTDL)
-# tnec_LDFLAGS = -module -avoid-version -no-undefined # "-dlopen" self
-tnec_LDFLAGS = 
-tnec_LDADD = $(ABELPATH)/libpguru.la  $(GNUAELIB) # $(LIBLTDL) $(DL_LIB)
+tnec_LDADD = $(MYSQL_LIBS) $(GNUAELIB)
 
 # tnec_DEPENDENCIES = libabel.la
- 
+
+gdata_SOURCES = gdata.cc
+gdata_LDADD = $(MYSQL_LIBS) $(GNUAELIB)
+
+guitest_SOURCES = guitest.c
+guitest_LDADD = $(MYSQL_LIBS) $(GNUAELIB) 

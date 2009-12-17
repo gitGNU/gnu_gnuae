@@ -47,7 +47,7 @@ typedef struct {
 #include "Database.h"
 #include "Battery.h"
 #include "Centers.h"
-// #include "Chargers.h"
+#include "Chargers.h"
 #include "Combiners.h"
 #include "Inverters.h"
 #include "Loads.h"

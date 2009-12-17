@@ -92,17 +92,21 @@ item_t **
 gui_list_items()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    std::vector<item_t *> items = gdata.listItems();
-    item_t **result = new item_t *[items.size()+1];    
-    std::vector<item_t *>::iterator it;
+    vector<item_t *> *items = gdata.listItems();
+    item_t **result = new item_t *[items->size()+1];    
+    vector<item_t *>::iterator it;
     int i = 0;
-    for (it=items.begin(); it != items.end(); ++it) {
+    for (it=items->begin(); it != items->end(); ++it) {
 	item_t *ti = *it;
 	result[i++] = ti;
     }
 
     // Terminate the array, since we're not using std::vector
     result[i] = 0;
+
+    // We don't need this anymore
+    delete items;
+    
     return result;
 }
 

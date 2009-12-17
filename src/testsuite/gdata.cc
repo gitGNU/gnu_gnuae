@@ -195,19 +195,22 @@ main(int argc, char **argv) {
     // Load Item tests
     gdata.addItem(id, "all TV", "sucks", LOAD, 0, 1, 2, 3);
     gdata.addItem(id, "My Stereo", "is great", LOAD, 0, 1, 2, 3);
-    item_t **names = gui_list_items();
+    vector<item_t *> *names = gdata.listItems(id);
     if (names) {
-        if ((names[0]->item == "all TV")
-            && (names[1]->item == "My Stereo")
-            && (names[0]->description == "sucks")
-            && (names[1]->description == "is great")
-            ) {
-            runtest.pass("GnuAE::gui_list_items()");
-        } else {
-            runtest.fail("GnuAE::gui_list_items()");
-        }
+	// There wilkl be only two entries in the profiles table
+	item_t *node0 = names->at(0);
+	item_t *node1 = names->at(1);
+	if ((strcmp(node0->item, "all TV") == 0) 
+	    && (strcmp(node1->item, "My Stereo") == 0)
+	    && (strcmp(node0->description, "sucks") == 0)
+	    && (strcmp(node1->description, "is great") == 0)
+	    ) {
+	    runtest.pass("GnuAE::listItems()");
+	} else {
+	    runtest.fail("GnuAE::listItems()");
+	}
     } else {
-        runtest.unresolved("GnuAE::gui_list_items()");
+        runtest.unresolved("GnuAE::listItems()");
     }
     
 #if 0

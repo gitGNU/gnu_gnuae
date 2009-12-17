@@ -328,6 +328,21 @@ GnuAE::eraseProject(long id, const char *name)
 #endif
     
     // Execute the query
+    Database::queryInsert(str.c_str());
+
+    // Delete all the entries for this project from the
+    // profiles table.
+    query.str("");
+    query << "DELETE FROM profiles WHERE ";
+    query << " projectID = " << id;
+    query << ends;
+
+#ifdef __STDC_HOSTED__
+    str = query.str().c_str();
+#else
+    str = query.str();
+#endif
+    
     return Database::queryInsert(str.c_str());
 }
 
@@ -471,11 +486,67 @@ GnuAE::getItem(long projid, long id, const char *name)
     return item;
 }
 
+// Get a list of all the items in the profile along with their data.
+vector<item_t *> *
+GnuAE::listItems()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    return listItems(0);
+}
+
+vector<item_t *> *
+GnuAE::listItems(long projid)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+    vector<item_t *> *items = new vector<item_t *>;
+
+    query.str("");
+    query << "SELECT * FROM profiles";
+    if (projid) {
+	query << " WHERE projectID = " << projid;
+    }
+    query << " ORDER BY name";
+    query << ends;
+    
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+
+    vector<vector<string> > *result = Database::queryResults(str);
+    vector<vector<string> >::iterator it;
+    if (result->size()) {
+	for (it = result->begin(); it != result->end(); ++it) {
+	    item_t *item = new item_t;
+	    vector<string> &row = *it;
+	    // ignore row[0], as it's just our project ID
+	    item->id = strtol(row[1].c_str(), NULL, 0);
+	    item->item = row[2].c_str();
+	    item->description = row[3].c_str();
+	    item->days = strtol(row[6].c_str(), NULL, 0);
+	    item->hours = strtol(row[7].c_str(), NULL, 0);
+	    item->minutes = strtol(row[8].c_str(), NULL, 0);
+	    items->push_back(item);
+	}
+    } else {
+	delete items;
+	return 0;
+    }
+
+    return items;
+}
+
 // Erase an item fromn the profile
 bool
 GnuAE::eraseItem(long projid, long id, const char *name)
 {
-        // DEBUGLOG_REPORT_FUNCTION;
+    // DEBUGLOG_REPORT_FUNCTION;
     // DELETE from projects where id=id and name = name;
 #ifdef __STDC_HOSTED__
     std::ostringstream    query;
@@ -644,6 +715,7 @@ GnuAE::dump()
     cerr << ", Location: " << _project.location << endl;
 
     std::vector<item_t *>::iterator it;
+#if 0
     for (it = _chosen_items.begin(); it != _chosen_items.end(); ++it) {
         item_t *item = *it;
         cerr << "Chosen Item is: " << item->item;
@@ -651,6 +723,7 @@ GnuAE::dump()
         // cerr << "itemID: " << item->id;
         cerr << "Time: " << item->days << ":" << item->hours << ":" << item->minutes << endl;
     }
+#endif
 }
 
 

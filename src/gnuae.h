@@ -119,7 +119,9 @@ public:
     bool eraseItem(long projid, long id, const char *name);
 
     // Get a list of all the items in the profile along with their data.
-    std::vector<item_t *> &listItems() { return _chosen_items; };
+    // std::vector<item_t *> &listItems() { return _chosen_items; };
+    std::vector<item_t *> *listItems();
+    std::vector<item_t *> *listItems(long projid);
 
     // Query the database to add or update data
     bool queryInsert(long projid, std::vector<item_t *> data);
@@ -143,7 +145,7 @@ private:
     std::string _datadir;
     // these are all the project related data variables
     project_t   _project;
-    std::vector<item_t *> _chosen_items;
+//    std::vector<item_t *> _chosen_items;
 };
 
 } // end of gnuae namespace

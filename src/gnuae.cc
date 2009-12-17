@@ -216,9 +216,11 @@ GnuAE::updateProject(long id, project_t *proj)
     query << ", sunhours = "    << proj->sunhours;
     query << ", windhours = "   << proj->windhours;
     query << ", windspeed = "   << proj->windspeed;
+#if 0
     if (proj->location) {
 	query << ", location = \'"    << proj->location << "\'";
     }
+#endif
     query << ", latitude = "    << proj->latitude;
     query << ", longitude = "   << proj->longitude;
     query << " WHERE";

@@ -24,7 +24,6 @@
 #include "php_wrapper.h"
 #include "NEC.h"
 #include "gui.h"
-#include "PVPanel.h"
 #include "Loads.h"
 
 ZEND_DECLARE_MODULE_GLOBALS(gnuae)
@@ -59,25 +58,19 @@ static function_entry gnuae_functions[] = {
 };
 
 zend_module_entry gnuae_module_entry = {
-#if ZEND_MODULE_API_NO >= 20010901
     STANDARD_MODULE_HEADER,
-#endif
-    PHP_GNUAE_WORLD_EXTNAME,
+    "gnuae",
     gnuae_functions,
     PHP_MINIT(gnuae),
     PHP_MSHUTDOWN(gnuae),
     PHP_RINIT(gnuae),
     NULL,
     NULL,
-#if ZEND_MODULE_API_NO >= 20010901
-    PHP_GNUAE_WORLD_VERSION,
-#endif
+    "1.0",
     STANDARD_MODULE_PROPERTIES
 };
 
-#ifdef COMPILE_DL_GNUAE
 ZEND_GET_MODULE(gnuae)
-#endif
 
 PHP_MINIT_FUNCTION(gnuae)
 {
@@ -98,14 +91,13 @@ PHP_MSHUTDOWN_FUNCTION(gnuae)
 
 PHP_RINIT_FUNCTION(gnuae)
 {
-    gui_init();
+    //gui_init();
 
-    GNUAE_G(items) = malloc(sizeof(item_t) * 10);
-    GNUAE_G(count) = 0;
+    // GNUAE_G(items) = malloc(sizeof(item_t) * 10);
+    // GNUAE_G(count) = 0;
     
     return SUCCESS;
 }
-
 
 PHP_FUNCTION(nec_volt_loss)
 {
@@ -446,7 +438,8 @@ PHP_FUNCTION(gui_add_item)
     } else {
 	nitem->description = "none";
     }
-    GNUAE_G(items[GNUAE_G(count)]) = nitem;
+    
+    //GNUAE_G(items[GNUAE_G(count)]) = nitem;
     GNUAE_G(count)++;
     
     // nitem->type = type;
@@ -508,6 +501,7 @@ PHP_FUNCTION(gui_get_load_data)
     }
 
     array_init(result);
+#if 0
     if (len && str) {
 	load_t *load = (load_t *)gui_get_load_data(str);
 	if (load) {
@@ -522,7 +516,7 @@ PHP_FUNCTION(gui_get_load_data)
     } else {
 	php_printf("Invalid paramater for name!");
     }
-    
+#endif
     // 2nd field, 0 is no copy, 3rd field is destruct before returning
     RETURN_ZVAL(result, 0, 1);
 }

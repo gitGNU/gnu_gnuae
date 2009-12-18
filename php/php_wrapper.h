@@ -23,11 +23,10 @@
 #include "TSRM.h"
 #endif
 
-#include "gnuae.h"
+// #include "gnuae.h"
 
 #if 1
 ZEND_BEGIN_MODULE_GLOBALS(gnuae)
-item_t **items;
 long count;
 ZEND_END_MODULE_GLOBALS(gnuae)
 #else
@@ -40,10 +39,9 @@ ZEND_DECLARE_MODULE_GLOBALS(gnuae)
 #define GNUAE_G(v) (gnuae_globals.v)
 #endif
 
-int list_names(char *);
-     
-#define PHP_GNUAE_WORLD_VERSION "1.0"
-#define PHP_GNUAE_WORLD_EXTNAME "gnuae"
+//int list_names(char *);
+
+extern zend_module_entry gnuae_module_entry;
 
 PHP_MINIT_FUNCTION(gnuae);
 PHP_MSHUTDOWN_FUNCTION(gnuae);
@@ -85,7 +83,7 @@ PHP_FUNCTION(gui_get_load_data);
 extern zend_module_entry gnuae_module_entry;
 #define phpext_gnuae_ptr &gnuae_module_entry
 
-#endif
+#endif	// end of PHP_GNUAE_H
 
 // local Variables:
 // mode: C++

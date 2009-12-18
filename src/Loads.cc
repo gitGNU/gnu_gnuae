@@ -611,29 +611,6 @@ Loads::calcHoursDaily(void)
     return hours;
 }
 
-#if 0
-vector<string> *
-Loads::names(void)
-{
-    map<string, load_t *>::const_iterator it;;
-    vector<string> *loadnames;
-    load_t *entry;
-    loadnames = new vector<string>;  
-    
-    if (_data.size() == 0) {
-	cerr << "No Load data in memory!" << endl;
-	return loadnames;
-    }
-    
-    for (it = _data.begin(); it != _data.end(); it++) {
-	entry = it->second;
-	loadnames->push_back(entry->name);
-    }
-    
-    return loadnames;
-}
-#endif
-
 static Loads _sl;
 
 extern "C" {

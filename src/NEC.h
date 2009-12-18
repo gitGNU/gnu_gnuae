@@ -23,14 +23,14 @@
 
 #include "nec_tables.h"
 
-const float ACCEPTABLE_DROP = 3.0;
+const double ACCEPTABLE_DROP = 3.0;
 
-const float BATTERY_RESISTANCE_12 = 0.0015;
-const float BATTERY_RESISTANCE_24 = 0.0030;
-const float BATTERY_RESISTANCE_48 = 0.0060;
-const float BATTERY_CONTACTS      = 0.0016;
-const float INVERTER_CONTACTS     = 0.0004;
-const float CIRCUIT_BREAKER       = 0.0020;
+const double BATTERY_RESISTANCE_12 = 0.0015;
+const double BATTERY_RESISTANCE_24 = 0.0030;
+const double BATTERY_RESISTANCE_48 = 0.0060;
+const double BATTERY_CONTACTS      = 0.0016;
+const double INVERTER_CONTACTS     = 0.0004;
+const double CIRCUIT_BREAKER       = 0.0020;
 
 
 #ifdef __cplusplus
@@ -46,38 +46,38 @@ namespace gnuae
     public:
       NEC(void);
       ~NEC(void);
-      float fuseSize(float amperage);
-      float breakerSize(float amperage);
+      double fuseSize(double amperage);
+      double breakerSize(double amperage);
 
-      float ampacity(void);
-      float ampacity(float amperage);
+      double ampacity(void);
+      double ampacity(double amperage);
 
-      float maxCurrent(void);
-      float maxCurrent(float amps);
+      double maxCurrent(void);
+      double maxCurrent(double amps);
 
-      float overCurrent(float amperage);
-      float overCurrent(int strings, float isc);
+      double overCurrent(double amperage);
+      double overCurrent(int strings, double isc);
 
       // Adjust the volatge based on the temperature
-      float crystalCompensation(float temp);
-      float crystalCompensation(float voltage, float temp);
+      double crystalCompensation(double temp);
+      double crystalCompensation(double voltage, double temp);
       
-      float wireDerate(int awg, float temp);
+      double wireDerate(int awg, double temp);
       
-      float calcK(int awg, float temp);
-      float calcK(int awg, float temp, bool exact);
-      float calcK(int awg, float temp, wiretype_t type);
-      float calcK(int awg, float temp, wiretype_t type, bool exact);
-      float resistance(int awg);
-      float resistance(int awg, float temperature);
-      float resistance(int awg, float temperature, bool exact);
-      float resistance(int awg, float temperature, wiremetal_t type);
-      float resistance(int awg, float temperature, wiremetal_t type, bool exact);
-      float voltDrop(int awg, int distance, float volts, float amps);
-      float voltDrop(int awg, int distance, float volts, float amps, int conductors);
-      float voltDrop(int awg, int distance, float volts, float amps, float temp,
+      double calcK(int awg, double temp);
+      double calcK(int awg, double temp, bool exact);
+      double calcK(int awg, double temp, wiretype_t type);
+      double calcK(int awg, double temp, wiretype_t type, bool exact);
+      double resistance(int awg);
+      double resistance(int awg, double temperature);
+      double resistance(int awg, double temperature, bool exact);
+      double resistance(int awg, double temperature, wiremetal_t type);
+      double resistance(int awg, double temperature, wiremetal_t type, bool exact);
+      double voltDrop(int awg, int distance, double volts, double amps);
+      double voltDrop(int awg, int distance, double volts, double amps, int conductors);
+      double voltDrop(int awg, int distance, double volts, double amps, double temp,
                      int conductors);
-      float voltDrop(int awg, int distance, float volts, float amps, float temp,
+      double voltDrop(int awg, int distance, double volts, double amps, double temp,
                      int conductors, wiremetal_t type);
       
       double voltLoss(int distance, int awg, double amps);
@@ -85,45 +85,45 @@ namespace gnuae
       double voltLoss(int distance, int awg, double amps, double temp, int conductors);
       double voltLoss(int distance, int awg, double amps, double temp, int conductors,
                       wiremetal_t type);
-      int findGauge(int distance, float volts, float amps);
-      int findGauge(int distance, float volts, float amps, int conductors);
-      int findGauge(int distance, float volts, float amps, float temp, int conductors);
-      int findGauge(int distance, float volts, float amps, float temp, float drop);
-      int findGauge(int distance, float volts, float amps, float temp, float drop,
+      int findGauge(int distance, double volts, double amps);
+      int findGauge(int distance, double volts, double amps, int conductors);
+      int findGauge(int distance, double volts, double amps, double temp, int conductors);
+      int findGauge(int distance, double volts, double amps, double temp, double drop);
+      int findGauge(int distance, double volts, double amps, double temp, double drop,
                     int conductors);
-      int findGauge(int distance, float volts, float amps, float temp, float drop,
+      int findGauge(int distance, double volts, double amps, double temp, double drop,
                     int conductors, wiremetal_t type);
-      int findGround(float volts, float amps);
+      int findGround(double volts, double amps);
       
-      float findConduit(int awg);
-      float findConduit(int awg, int conductors);
-      float findConduit(int awg, int conductors, wiretype_t wire,
+      double findConduit(int awg);
+      double findConduit(int awg, int conductors);
+      double findConduit(int awg, int conductors, wiretype_t wire,
                         conduit_type_t conduit);
       
-      int awgPV2PV(int distance, float volts, float amps, float temp,
+      int awgPV2PV(int distance, double volts, double amps, double temp,
                    int conductors);
-      int awgPV2Combiner(int distance, float volts, float amps, float temp,
+      int awgPV2Combiner(int distance, double volts, double amps, double temp,
                          int conductors);
-      int awgCombiner2Charger(int distance, float volts, float amps, float temp,
+      int awgCombiner2Charger(int distance, double volts, double amps, double temp,
                               int conductors);
-      int awgWind2Charger(int distance, float volts, float amps, float temp,
+      int awgWind2Charger(int distance, double volts, double amps, double temp,
                           int conductors);
-      int awgCharger2Battery(int distance, float volts, float amps, float temp,
+      int awgCharger2Battery(int distance, double volts, double amps, double temp,
                              int conductors);
       
-      int awgBattery2Inverter(int distance, float volts, float amps, float temp,
+      int awgBattery2Inverter(int distance, double volts, double amps, double temp,
                               int conductors);
 
-      float wireAmpacity(int awg, int temp, int conductors, bool conduit,
+      double wireAmpacity(int awg, int temp, int conductors, bool conduit,
                          wiretype_t type);
       
       // These are just convienince methods for basic calculations
-      float watts(float volts, float amps);
-      float amps(float watts, float volts);
-      float volts(float watts, float amps);
+      double watts(double volts, double amps);
+      double amps(double watts, double volts);
+      double volts(double watts, double amps);
 
-      float celcius(float temp);
-      float farenheit(float temp);
+      double celcius(double temp);
+      double farenheit(double temp);
       
       void dump(void);
       void toggleDebug(bool val);
@@ -188,40 +188,40 @@ namespace gnuae
 extern "C" {
 #else
   void nec_toggle_debug(int val);
-  float nec_volt_drop(int awg, int distance, float volts, float amps,
-                      float temp, int conductors);
-  float nec_volt_loss(int distance, int awg, double amps, double temp,
+  double nec_volt_drop(int awg, int distance, double volts, double amps,
+                      double temp, int conductors);
+  double nec_volt_loss(int distance, int awg, double amps, double temp,
                       int conductors);
-  float nec_watts(float volts, float amps);
-  float nec_amps(float watts, float volts);
-  float nec_volts(float watts, float amps);
-  float nec_resistance(int awg, float temp);
+  double nec_watts(double volts, double amps);
+  double nec_amps(double watts, double volts);
+  double nec_volts(double watts, double amps);
+  double nec_resistance(int awg, double temp);
 
-  float nec_wire_derate(int awg, float temp);
-  float nec_ampacity(float amps);
-  float nec_crystal_comp(float temp);
+  double nec_wire_derate(int awg, double temp);
+  double nec_ampacity(double amps);
+  double nec_crystal_comp(double temp);
 
-  float nec_over_current(int strings, float isc);
-  int nec_find_gauge(int distance, float volts, float amps, float temp,
+  double nec_over_current(int strings, double isc);
+  int nec_find_gauge(int distance, double volts, double amps, double temp,
                      int conductors);
-  float nec_find_conduit(int awg, int conductors, wiretype_t wire,
+  double nec_find_conduit(int awg, int conductors, wiretype_t wire,
                          conduit_type_t conduit);
   int nec_find_ground();
   
-  int nec_awg_pv2pv(int distance, float volts, float amps, float temp,
+  int nec_awg_pv2pv(int distance, double volts, double amps, double temp,
                     int conductors);
-  int nec_awg_pv2combiner(int distance, float volts, float amps, float temp,
+  int nec_awg_pv2combiner(int distance, double volts, double amps, double temp,
                           int conductors);
-  int nec_awg_combiner2charger(int distance, float volts, float amps, float temp,
+  int nec_awg_combiner2charger(int distance, double volts, double amps, double temp,
                                int conductors);
-  int nec_awg_wind2charger(int distance, float volts, float amps, float temp,
+  int nec_awg_wind2charger(int distance, double volts, double amps, double temp,
                            int conductors);
-  int nec_awg_charger2battery(int distance, float volts, float amps, float temp,
+  int nec_awg_charger2battery(int distance, double volts, double amps, double temp,
                               int conductors);
   
-  int nec_awg_battery2inverter(int distance, float volts, float amps, float temp,
+  int nec_awg_battery2inverter(int distance, double volts, double amps, double temp,
                                int conductors);  
-  float nec_wire_ampacity(int awg, int temp, int conductors, int conduit,
+  double nec_wire_ampacity(int awg, int temp, int conductors, int conduit,
                           wiretype_t type);
   
 #endif

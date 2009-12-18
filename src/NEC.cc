@@ -236,13 +236,13 @@ extern "C" {
 #if 0
 struct nec_table4
 {
-  float tradesize;
-  float id;
-  float area;
-  float area60;
-  float wire1;
-  float wire2;
-  float wireover;
+  double tradesize;
+  double id;
+  double area;
+  double area60;
+  double wire1;
+  double wire2;
+  double wireover;
   
 };
 #endif
@@ -602,59 +602,59 @@ NEC::~NEC(void)
 }
 
 // This calculates the proper fuse size for a circuit
-float
-NEC::fuseSize(float amps)
+double
+NEC::fuseSize(double amps)
 {
   return ampacity(amps);
 }
 
-float
-NEC::breakerSize(float amperage)
+double
+NEC::breakerSize(double amperage)
 {
   return amperage * MAXCURRENT;
 }
 
-float
+double
 NEC::ampacity(void)
 {
   return MAXAMPICITY;
 }
 
-float
-NEC::ampacity(float amps)
+double
+NEC::ampacity(double amps)
 {
   return amps * MAXAMPICITY;
 }
 
-float
+double
 NEC::maxCurrent(void)
 {
   return MAXCURRENT;
 }
 
-float
-NEC::maxCurrent(float amps)
+double
+NEC::maxCurrent(double amps)
 {
   return amps * MAXCURRENT;
 }
 
-float
-NEC::overCurrent(float amps)
+double
+NEC::overCurrent(double amps)
 {
   return amps * MAXCURRENT;
 }
 
-float
-NEC::overCurrent(int strings, float isc)
+double
+NEC::overCurrent(int strings, double isc)
 {
   return (isc * strings) * MAXCURRENT;
 }
 
-float
-NEC::crystalCompensation(float temp)
+double
+NEC::crystalCompensation(double temp)
 {
   int i;
-  float compfactor;
+  double compfactor;
   
   for (i=0; _table_690_7[i].hightempC != 0; i++) {
     if (_celcius) {
@@ -688,10 +688,10 @@ NEC::crystalCompensation(float temp)
   return compfactor;
 }
 
-float
-NEC::crystalCompensation(float voltage, float temp)
+double
+NEC::crystalCompensation(double voltage, double temp)
 {
-  float nvolts;
+  double nvolts;
   
   nvolts = crystalCompensation(temp) * voltage;
   
@@ -701,7 +701,7 @@ NEC::crystalCompensation(float voltage, float temp)
   return nvolts;
 }
 
-float
+double
 NEC::resistance(int awg)
 {
   return resistance(awg, NOMINALTEMP);
@@ -711,11 +711,11 @@ NEC::resistance(int awg)
 // Formula for temperature change: R2 = R1 * (1 + (a * (T2 - 75)))
 // where Acu = 0.00323, Aal = 0.00330 at 75°C.
 //
-float
-NEC::resistance(int awg, float temp)
+double
+NEC::resistance(int awg, double temp)
 {
   int i;
-  float res, k;
+  double res, k;
 
   if (_debug)
     cerr << "Looking up the resistance from NEC Table 8 for gauge #"
@@ -751,38 +751,38 @@ NEC::resistance(int awg, float temp)
   return res;
 }
 
-float
-NEC::resistance(int awg, float temperature, bool exact)
+double
+NEC::resistance(int awg, double temperature, bool exact)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
 }
 
-float
-NEC::resistance(int awg, float temperature, wiremetal_t type)
+double
+NEC::resistance(int awg, double temperature, wiremetal_t type)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
 }
 
-float
-NEC::resistance(int awg, float temperature, wiremetal_t type, bool exact)
+double
+NEC::resistance(int awg, double temperature, wiremetal_t type, bool exact)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
 }
 
 
 // Calculate the K value if specified
-float
-NEC::calcK(int awg, float temp)
+double
+NEC::calcK(int awg, double temp)
 {
   return calcK(awg, temp, _exact);
 }
 
-float
-NEC::calcK(int awg, float temp, bool exact)
+double
+NEC::calcK(int awg, double temp, bool exact)
 {
   int i;
-  float k = 0.0;
-  float mils, res;
+  double k = 0.0;
+  double mils, res;
 
   //  cerr << __PRETTY_FUNCTION__ << ": awg = " << awg << ", temp = " << temp << endl;
 
@@ -811,36 +811,36 @@ NEC::calcK(int awg, float temp, bool exact)
   return k;
 }
 
-float
-NEC::calcK(int awg, float temp, wiretype_t type)
+double
+NEC::calcK(int awg, double temp, wiretype_t type)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
 }
 
-float
-NEC::calcK(int awg, float temp, wiretype_t type, bool exact)
+double
+NEC::calcK(int awg, double temp, wiretype_t type, bool exact)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
 }
 
-float
-NEC::voltDrop(int awg, int distance, float volts, float amps)
+double
+NEC::voltDrop(int awg, int distance, double volts, double amps)
 {
   return voltDrop(awg, distance, volts, amps, NOMINALTEMP, 1);
 }
 
-float
-NEC::voltDrop(int awg, int distance, float volts, float amps, int conductors)
+double
+NEC::voltDrop(int awg, int distance, double volts, double amps, int conductors)
 {
   return voltDrop(awg, distance, volts, amps, NOMINALTEMP, conductors);
 }
 
-float
-NEC::voltDrop(int awg, int distance, float volts, float amps, float temp, int conductors)
+double
+NEC::voltDrop(int awg, int distance, double volts, double amps, double temp, int conductors)
 {
   int i;
-  float drop;
-  float length;
+  double drop;
+  double length;
 
   length = distance;
   
@@ -862,8 +862,8 @@ NEC::voltDrop(int awg, int distance, float volts, float amps, float temp, int co
   return drop;
 }
 
-float
-NEC::voltDrop(int awg, int distance, float volts, float amps, float temp,
+double
+NEC::voltDrop(int awg, int distance, double volts, double amps, double temp,
               int conductors, wiremetal_t type)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
@@ -913,10 +913,10 @@ NEC::voltLoss(int distance, int awg, double amps, double temp, int conductors,
 }
 
 // These are just convienince methods for basic calculations
-float
-NEC::watts(float volts, float amps)
+double
+NEC::watts(double volts, double amps)
 {
-  float watts;
+  double watts;
 
   watts = volts * amps;
   
@@ -926,10 +926,10 @@ NEC::watts(float volts, float amps)
   return watts;
 }
 
-float
-NEC::amps(float watts, float volts)
+double
+NEC::amps(double watts, double volts)
 {
-  float amps;
+  double amps;
 
   amps = watts/volts;
 
@@ -939,10 +939,10 @@ NEC::amps(float watts, float volts)
   return amps;
 }
 
-float
-NEC::volts(float watts, float amps)
+double
+NEC::volts(double watts, double amps)
 {
-  float volts;
+  double volts;
 
   amps = watts/volts;
 
@@ -954,28 +954,28 @@ NEC::volts(float watts, float amps)
 
 
 int
-NEC::findGauge(int distance, float volts, float amps)
+NEC::findGauge(int distance, double volts, double amps)
 {
   return findGauge(distance, volts, amps, NOMINALTEMP, ACCEPTABLE_DROP, 1);
 }
 
 int
-NEC::findGauge(int distance, float volts, float amps, float temp, int conductors)
+NEC::findGauge(int distance, double volts, double amps, double temp, int conductors)
 {
   return findGauge(distance, volts, amps, temp, ACCEPTABLE_DROP, conductors);
 }
 
 int
-NEC::findGauge(int distance, float volts, float amps, int conductors)
+NEC::findGauge(int distance, double volts, double amps, int conductors)
 {
   return findGauge(distance, volts, amps, NOMINALTEMP, ACCEPTABLE_DROP, conductors);
 }
 
 int
-NEC::findGauge(int distance, float volts, float amps, float temp, float drop, int conductors)
+NEC::findGauge(int distance, double volts, double amps, double temp, double drop, int conductors)
 {
 
-  float cmils, calcdrop;
+  double cmils, calcdrop;
   int  i, index;
 
   if (_debug) {
@@ -1020,7 +1020,7 @@ NEC::findGauge(int distance, float volts, float amps, float temp, float drop, in
 }
 
 int
-NEC::findGauge(int distance, float volts, float amps, float temp, float drop,
+NEC::findGauge(int distance, double volts, double amps, double temp, double drop,
                int conductors, wiremetal_t type)
 {
   cerr <<  __PRETTY_FUNCTION__ << " Unimplemented" << endl;
@@ -1028,22 +1028,22 @@ NEC::findGauge(int distance, float volts, float amps, float temp, float drop,
 
 // Find the size (diameter) of the specified conduit type and wire
 // gauge for the specified number of conductors.
-float
+double
 NEC::findConduit(int awg)
 {
   findConduit(awg, 1, _wiretype, _conduit);
 }
 
-float
+double
 NEC::findConduit(int awg, int conductors)
 {
   findConduit(awg, conductors, _wiretype, _conduit);
 }
 
-float
+double
 NEC::findConduit(int awg, int conductors, wiretype_t wire, conduit_type_t conduit)
 {
-  float wirearea, conduit_area;
+  double wirearea, conduit_area;
   struct nec_table4 *table;
   int i;
 
@@ -1227,10 +1227,10 @@ NEC::dump(void)
 }
 
 // Return the Celcius equivalant of a Farenheit temperature
-float
-NEC::celcius(float temp)
+double
+NEC::celcius(double temp)
 {
-  float val;
+  double val;
   
   val = (5.0/9.0) * (temp - 32.0);
 
@@ -1240,10 +1240,10 @@ NEC::celcius(float temp)
 }
 
 // Return the Farenheit equivalant of a Celcius temperature
-float
-NEC::farenheit(float temp)
+double
+NEC::farenheit(double temp)
 {
-  float val;
+  double val;
   
   val = (9/5 * temp) + 32;
 
@@ -1253,13 +1253,13 @@ NEC::farenheit(float temp)
 }
 
 int
-NEC::findGround(float volts, float amps)
+NEC::findGround(double volts, double amps)
 {
   return findGauge(50, volts, amps);
 }
 
 int
-NEC::awgPV2PV(int distance, float volts, float amps, float temp, int conductors)
+NEC::awgPV2PV(int distance, double volts, double amps, double temp, int conductors)
 {
   amps = ampacity(amps);
   amps = crystalCompensation(amps);
@@ -1268,7 +1268,7 @@ NEC::awgPV2PV(int distance, float volts, float amps, float temp, int conductors)
 }
 
 int
-NEC::awgPV2Combiner(int distance, float volts, float amps, float temp, int conductors)
+NEC::awgPV2Combiner(int distance, double volts, double amps, double temp, int conductors)
 {
   
   amps = ampacity(amps);
@@ -1278,38 +1278,38 @@ NEC::awgPV2Combiner(int distance, float volts, float amps, float temp, int condu
 }
 
 int
-NEC::awgCombiner2Charger(int distance, float volts, float amps, float temp, int conductors)
+NEC::awgCombiner2Charger(int distance, double volts, double amps, double temp, int conductors)
 {
   return findGauge(distance, volts, amps, temp, 2.0, conductors);
 }
 
 int
-NEC::awgWind2Charger(int distance, float volts, float amps, float temp, int conductors)
+NEC::awgWind2Charger(int distance, double volts, double amps, double temp, int conductors)
 {
   return findGauge(distance, volts, amps, temp, conductors);
 }
 
 int
-NEC::awgCharger2Battery(int distance, float volts, float amps, float temp, int conductors)
+NEC::awgCharger2Battery(int distance, double volts, double amps, double temp, int conductors)
 {
   return findGauge(distance, volts, amps, temp, conductors);
 }
 
 
 int
-NEC::awgBattery2Inverter(int distance, float volts, float amps, float temp, int conductors)
+NEC::awgBattery2Inverter(int distance, double volts, double amps, double temp, int conductors)
 {
   return findGauge(distance, volts, amps, temp, conductors);
 }
 
 // Calculate the ampacity of a conductor based on the number of
 // conductors in free air or in conduit.
-float
+double
 NEC::wireAmpacity(int awg, int temp, int conductors, bool conduit,
                   wiretype_t type)
 {
   int i;
-  float factor;
+  double factor;
   nec_table_310_16 *table;
 
   // default to free air, no conduit
@@ -1398,112 +1398,112 @@ extern "C" {
 	_nec.toggleDebug(val);
     }
     
-    float nec_volt_drop(int awg, int distance, float volts, float amps, float temp,
+    double nec_volt_drop(int awg, int distance, double volts, double amps, double temp,
 			int conductors)
     {
 	return _nec.voltDrop(awg, distance, volts, amps, temp, conductors);
     }
     
-    float nec_volt_loss(int distance, int awg, double amps, double temperature,
+    double nec_volt_loss(int distance, int awg, double amps, double temperature,
 			int conductors)
     {
 	return _nec.voltLoss(distance, awg, amps, temperature, conductors);
     }
     
-    float nec_watts(float volts, float amps)
+    double nec_watts(double volts, double amps)
     {
 	return _nec.watts(volts, amps);
     }
     
-    float nec_amps(float watts, float volts)
+    double nec_amps(double watts, double volts)
     {
 	return _nec.amps(watts, volts);
     }
     
-    float nec_volts(float watts, float amps)
+    double nec_volts(double watts, double amps)
     {
 	return _nec.volts(watts, amps);
     }
     
-    float nec_resistance(int awg, float temperature)
+    double nec_resistance(int awg, double temperature)
     {
 	return _nec.resistance(awg, temperature);
     }
     
-    float nec_wire_derate(int awg, float temperature)
+    double nec_wire_derate(int awg, double temperature)
     {
 	//    return _nec.wireDerate(awg, temperature);
     }
     
-    float nec_over_current(int strings, float isc)
+    double nec_over_current(int strings, double isc)
     {
 	return _nec.overCurrent(strings, isc);
     }
     
-    int nec_find_gauge(int distance, float volts, float amps, float temp,
+    int nec_find_gauge(int distance, double volts, double amps, double temp,
 		       int conductors)
     {
 	return _nec.findGauge(distance, volts, amps, temp, conductors);
     }
-    int nec_find_ground(float volts, float amps) 
+    int nec_find_ground(double volts, double amps) 
     {
 	return _nec.findGround(volts, amps);
     }
     
-    float nec_crystal_comp(float temp)
+    double nec_crystal_comp(double temp)
     {
 	return _nec.crystalCompensation(temp);
     }
     
-    int nec_awg_pv2pv(int distance, float volts, float amps, float temp,
+    int nec_awg_pv2pv(int distance, double volts, double amps, double temp,
 		      int conductors)
     {
 	return _nec.awgPV2PV(distance, volts, amps, temp, conductors);
     }
     
-    int nec_awg_pv2combiner(int distance, float volts, float amps, float temp,
+    int nec_awg_pv2combiner(int distance, double volts, double amps, double temp,
 			    int conductors)
     {
 	return _nec.awgPV2Combiner(distance, volts, amps, temp, conductors);
     }
     
-    int nec_awg_combiner2charger(int distance, float volts, float amps, float temp,
+    int nec_awg_combiner2charger(int distance, double volts, double amps, double temp,
 				 int conductors)
     {
 	return _nec.awgCombiner2Charger(distance, volts, amps, temp, conductors);
     }
     
-    int nec_awg_wind2charger(int distance, float volts, float amps, float temp,
+    int nec_awg_wind2charger(int distance, double volts, double amps, double temp,
 			     int conductors)
     {
 	return _nec.awgWind2Charger(distance, volts, amps, temp, conductors);
     }
     
-    int nec_awg_charger2battery(int distance, float volts, float amps, float temp,
+    int nec_awg_charger2battery(int distance, double volts, double amps, double temp,
 				int conductors)
     {
 	return _nec.awgCharger2Battery(distance, volts, amps, temp, conductors);
     }
     
     
-    int nec_awg_battery2inverter(int distance, float volts, float amps, float temp,
+    int nec_awg_battery2inverter(int distance, double volts, double amps, double temp,
 				 int conductors)
     {
 	return _nec.awgBattery2Inverter(distance, volts, amps, temp, conductors);
     }
     
-    float nec_wire_ampacity(int awg, int temp, int conductors, int conduit,
+    double nec_wire_ampacity(int awg, int temp, int conductors, int conduit,
 			    wiretype_t type)
     {
 	return _nec.wireAmpacity(awg, temp, conductors, conduit, type);
     }
     
-    float nec_ampacity(float amps)
+    double nec_ampacity(double amps)
     {
 	return _nec.ampacity(amps);
     }
     
-    float nec_find_conduit(int awg, int conductors, wiretype_t wire, conduit_type_t conduit)
+    double nec_find_conduit(int awg, int conductors, wiretype_t wire, conduit_type_t conduit)
     {
 	return _nec.findConduit(awg, conductors, wire, conduit);
     }

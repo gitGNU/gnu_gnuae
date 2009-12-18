@@ -26,14 +26,14 @@
 #include <values.h>
 #endif
 
-const float FEEDERDROP   = 5.0;     // The allowable percentage for feeder lines
-const float BRANCHDROP   = 3.0;     // The allowable percentage for branch lines
-const float COPPERDROP   = 12.9;    // The Approximate K for copper
-const float ALUMINUMDROP = 21.2;    // The Approximate K for copper
-const float COPPERTEMP   = 0.00323; // The temperature factor for copper
-const float ALUMINUMTEMP = 0.00330; // The temperature factor for copper
-const float MAXCURRENT   = 1.25;    // This is the NEC max current factor
-const float MAXAMPICITY  = 1.56;    // This is the NEC wire ampicity factor
+const double FEEDERDROP   = 5.0;     // The allowable percentage for feeder lines
+const double BRANCHDROP   = 3.0;     // The allowable percentage for branch lines
+const double COPPERDROP   = 12.9;    // The Approximate K for copper
+const double ALUMINUMDROP = 21.2;    // The Approximate K for copper
+const double COPPERTEMP   = 0.00323; // The temperature factor for copper
+const double ALUMINUMTEMP = 0.00330; // The temperature factor for copper
+const double MAXCURRENT   = 1.25;    // This is the NEC max current factor
+const double MAXAMPICITY  = 1.56;    // This is the NEC wire ampicity factor
 const int   NOMINALTEMP  = 75;      // The Celcius temperature NEC Table 8 uses
 
 //const double awglist[] = { 18, 16, 14, 12, 10, 8, 6, 4, 3, 2, 1,
@@ -55,7 +55,7 @@ typedef enum { NOTYPE=0, RHH=1, RHW=2, RHW2=4, THHN=8, THHW=32, THW=64, THW2=128
 struct wiredata 
 {
   unsigned int typeflags;
-  float value;
+  double value;
 };
 
 
@@ -72,7 +72,7 @@ struct nec_table_690_7
 {
   int hightempC;
   int lowtempC;
-  float compensation;
+  double compensation;
   int hightempF;
   int lowtempF;
 };
@@ -82,11 +82,11 @@ struct nec_table8
 {
   int awg;
   int conductors;
-  float mils;
-  float dia;
-  float uncoated;
-  float coated; 
-  float aluminum;
+  double mils;
+  double dia;
+  double uncoated;
+  double coated; 
+  double aluminum;
 };
 
 /* NEC Table 9: AC resistance 3 phase @ 167F (75C), 1000 feet stranded.
@@ -94,9 +94,9 @@ struct nec_table8
 */
 struct conduit_type 
 {
-  float pvc;
-  float aluminum;
-  float steel;
+  double pvc;
+  double aluminum;
+  double steel;
 };
 
 struct nec_table9
@@ -117,7 +117,7 @@ struct nec_table_310_11
 {
   int lowconductors;
   int highconductors;
-  float adjust;
+  double adjust;
 };
 
 /*
@@ -128,7 +128,7 @@ struct nec_table_310_15B2
 {
   int lowconductors;
   int highconductors;
-  float adjust;
+  double adjust;
 };
 /*
   NEC Table 310.15(b)(6): Conductor types and sizes for 120/240 volt,
@@ -140,7 +140,7 @@ struct nec_table_310_15B6
 {
   int copper;
   int aluminum;
-  float maxcurrent;
+  double maxcurrent;
 };
 
 /*
@@ -152,9 +152,9 @@ struct nec_table_310_15B6
 struct nec_table_310_16
 {
   int awg;
-  float R60C_140F;
-  float R75C_167F;
-  float R90C_194F;
+  double R60C_140F;
+  double R75C_167F;
+  double R90C_194F;
 };
 
 #if 0
@@ -210,9 +210,9 @@ struct derate
 {
   int lowtempC;
   int hightempC;
-  float R60C_140F;
-  float R75C_167F;
-  float R90C_194F;
+  double R60C_140F;
+  double R75C_167F;
+  double R90C_194F;
   int lowtempF;
   int hightempF;
 };
@@ -242,23 +242,23 @@ struct nec_table_690_31C
 {
   int lowtempC;
   int hightempC;
-  float R60C_140F;
-  float R75C_167F;
-  float R90C_194F;
-  float R105C_221F;
+  double R60C_140F;
+  double R75C_167F;
+  double R90C_194F;
+  double R105C_221F;
   int lowtempF;
   int hightempF;
 };
 
 struct nec_table4
 {
-  float tradesize;
-  float id;
-  float area;
-  float area60;
-  float wire1;
-  float wire2;
-  float wireover;
+  double tradesize;
+  double id;
+  double area;
+  double area60;
+  double wire1;
+  double wire2;
+  double wireover;
   
 };
 
@@ -266,8 +266,8 @@ struct nec_table5
 {
   int type;
   int awg;
-  float dia;
-  float area;
+  double dia;
+  double area;
 };
 
 

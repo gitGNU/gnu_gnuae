@@ -10,7 +10,7 @@ INCLUDES = -I$(top_srcdir)/src
 
 CLEANFILES = *.log *.sum site.bak
 
-bin_PROGRAMS = tnec gdata guitest
+check_PROGRAMS = tnec gdata guitest
 
 tnec_SOURCES = tnec.cc
 tnec_LDADD = $(MYSQL_LIBS) $(GNUAELIB)

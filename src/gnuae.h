@@ -23,20 +23,20 @@ typedef enum { BATTERY, CENTER, CHARGER, COMBINER, INVERTER,
 
 typedef struct {
     long id;
-    const char *name;
-    const char *description;
+    char *name;
+    char *description;
     double sunhours;
     double windhours;
     double windspeed;
-    const char *location;
+    char *location;
     double latitude;
     double longitude;
 } project_t;
 
 typedef struct {
-    const char *item;     // the item name which is used as an index
+    char *item;           // the item name which is used as an index
 			  // into all the data tables. 
-    const char *description; // the description of this item, often
+    char *description;   // the description of this item, often
 			  // a location of other custom data.
     table_e type;	  // the type of the item.
     int id;		  // a numerical ID, currently unused.

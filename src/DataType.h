@@ -26,6 +26,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <vector>
 
 namespace gnuae {
 
@@ -34,7 +35,17 @@ class DataTypeMethods
 {
 public:
     DataTypeMethods(void)  { };
-    ~DataTypeMethods(void) { };  
+    ~DataTypeMethods(void) {
+	if (_data.size()) {
+	    typename std::map<std::string, datatype *>::const_iterator it;
+	    for (it = _data.begin(); it != _data.end(); it++) {
+		datatype *entry = it->second;
+		if (entry) {
+		    delete entry;
+		}
+	    }
+	}
+    }
     
     void addEntry(datatype *entry) {
         // _data.insert( make_pair( entry->name, entry) );
@@ -64,7 +75,7 @@ public:
         entrynames = new std::vector<std::string>;  
         
         if (!_data.size()) {
-            std::cerr << "No Load data in memory!" << std::endl;
+            std::cerr << "No data in memory!" << std::endl;
             return entrynames;
         }
 	typename std::map<std::string, datatype *>::const_iterator it;

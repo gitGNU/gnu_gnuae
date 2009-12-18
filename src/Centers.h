@@ -24,8 +24,8 @@
 
 typedef struct
 {
-  char *name;
-  char *manufacturer;
+  const char *name;
+  const char *manufacturer;
   double price;
   int voltage;
 } center_t;
@@ -43,6 +43,7 @@ class Centers : public DataTypeMethods<center_t> {
 public:
     Centers(void);
     ~Centers(void);
+    
     int readCSV(std::string);
     int readSQL(Database &db);
     
@@ -54,14 +55,6 @@ private:
 
 } // end of gnuae namespace
 
-extern "C" {
-#else
-// C API goes here
-  extern center_t centers[];
-#endif
-
-#ifdef __cplusplus
-}
 #endif
   
 // __CENTERS_H__

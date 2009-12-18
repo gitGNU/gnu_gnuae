@@ -24,11 +24,11 @@
   
 typedef struct
 {
-  char *name;
-  char *manufacturer;
-  double price;
-  int circuits;                 /* The number of input circuits the box supports */
-  int conductors;               /* Some combiner boxes have multiple output lines */
+    const char *name;
+    const char *manufacturer;
+    double price;
+    int circuits;                 /* The number of input circuits the box supports */
+    int conductors;               /* Some combiner boxes have multiple output lines */
 } combiner_t;
 
 #ifdef __cplusplus
@@ -56,15 +56,7 @@ private:
 
 } // end of gnuae namespace
 
-extern "C" {
-#else
-// C API goes here
-    extern combiner_t combiners[];
-#endif
-    
-#ifdef __cplusplus
-}
-#endif
+#endif	// end of cpluplus
 
 // __COMBINERS_H__
 #endif

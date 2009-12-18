@@ -467,16 +467,15 @@ PHP_FUNCTION(gui_add_item)
     char *item = 0, *description = 0;
     // table_e type;
     long item_len = 0, des_len = 0;
-    long type = 0, id = 0;
+    long type = 0, id = 0, projid = 0;
     long days = 0, hours = 0, minutes = 0;
     item_t *nitem = (item_t *)malloc(sizeof(item_t));
 
-    if (zend_parse_parameters(6 TSRMLS_CC, "s|sllll", &item, &item_len,
+    if (zend_parse_parameters(7 TSRMLS_CC, "ls|sllll", &projid, &item, &item_len,
 			      &description, &des_len,
 			      &id, &days, &hours, &minutes) == FAILURE) {
      	WRONG_PARAM_COUNT;
     }
-
     if (item) {
 	nitem->item = strndup(item, item_len);
     } else {
@@ -499,6 +498,8 @@ PHP_FUNCTION(gui_add_item)
     nitem->minutes = minutes;
 
     gui_add_item(nitem);
+    
+    RETURN_LONG(GNUAE_G(count));
 }
 
 // GUI support callbacks
@@ -517,11 +518,13 @@ PHP_FUNCTION(gui_list_items)
 	    item_t *it = items[i++];
 	    if (it->item) {
 		add_next_index_string(item, it->item, strlen(it->item));
+		free(it->item);
 	    } else {
 		add_next_index_string(item, "n/a", 4);
 	    }
 	    if (it->description) {
 		add_next_index_string(item, it->description, strlen(it->description));
+		free(it->description);
 	    } else {
 		add_next_index_string(item, "n/a", 4);
 	    }
@@ -531,8 +534,11 @@ PHP_FUNCTION(gui_list_items)
 	    add_next_index_long(item, it->hours);
 	    add_next_index_long(item, it->minutes);
 	    add_next_index_zval(result, item);
+	    free(it);
 	}
     }
+
+    free(items);
     
     // add_next_index_string(result, "foo", 3);
     

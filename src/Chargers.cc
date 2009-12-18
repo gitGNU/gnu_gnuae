@@ -145,6 +145,7 @@ Chargers::readSQL(Database &db)
 	    thisch->remote = static_cast<feature_e>(strtol(row[13].c_str(), NULL, 0));
     	    addEntry(thisch);
     	}
+	delete result;
     }
 
     // dbglogfile << "Loaded " << dataSize() << " records from centers table." << endl;

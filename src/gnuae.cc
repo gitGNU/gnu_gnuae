@@ -69,12 +69,12 @@ GnuAE::GnuAE()
         _datadir = "/etc/gnuae/";
     }
 
-    _project.name = "none";
-    _project.description = "none";
+    _project.name = const_cast<char *>("none");
+    _project.description = const_cast<char *>("none");
     _project.sunhours = 0.0;
     _project.windhours = 0.0;
     _project.windspeed = 0.0;
-    _project.location = "none";
+    _project.location = const_cast<char *>("none");
     _project.latitude = 0.0;
     _project.longitude = 0.0;
 }
@@ -94,13 +94,13 @@ GnuAE::loadData()
         dbglogfile << "Loaded " << _loads.dataSize() << "records from loads table." << endl;
     } else {
         dbglogfile << "Loading from SQL Database as data source." << endl;
-        _loads.readLoadsSQL(*this);
-        _inverters.readSQL(*this);
-        _batteries.readSQL(*this);
-        _centers.readSQL(*this);
-        _pvpanels.readSQL(*this);
-        _chargers.readSQL(*this);
-        _combiners.readSQL(*this);
+        // _loads.readLoadsSQL(*this);
+        // _inverters.readSQL(*this);
+        // _batteries.readSQL(*this);
+        // _centers.readSQL(*this);
+        // _pvpanels.readSQL(*this);
+        // _chargers.readSQL(*this);
+        // _combiners.readSQL(*this);
         _pumps.readSQL(*this);
         // Wire data is static, and in the NEC spec, so it's not in
         // the SQL database or CSV files.
@@ -171,39 +171,47 @@ GnuAE::newProject(const char *name, const char *description,
     
     project_t *project = new project_t;
     
-    project->name = name;
-    project->description = description;
+    project->name = const_cast<char *>(name);
+    project->description = const_cast<char *>(description);
     project->sunhours = sunhours;
     project->windhours = windhours;
     project->windspeed = windspeed;
-    project->location = location;
+    project->location = const_cast<char *>(location);
     project->latitude = latitude;
     project->longitude = longitude;
 
     string query = "SELECT COUNT(id) FROM projects;";
 
     // Get the count of how many current projects there are
-    vector<vector<string> > *result = Database::queryResults(query);
-    vector<vector<string> >::iterator it = result->begin();
+    vector<vector<string> > *result1 = Database::queryResults(query);
+    vector<vector<string> >::iterator it = result1->begin();
     vector<string> &row = *it;
     id = strtol(row[0].c_str(), NULL, 0) + 1;
-
+    
+    vector<vector<string> > *result2 = 0;
     if (id > 1) {
 	query = "SELECT MAX(id) FROM projects;";
 	
 	// Get the count of how many current projects there are
-	vector<vector<string> > *result = Database::queryResults(query);
-	vector<vector<string> >::iterator it = result->begin();
+	result2 = Database::queryResults(query);
+	vector<vector<string> >::iterator it = result2->begin();
 	vector<string> &row = *it;
 	project->id = strtol(row[0].c_str(), NULL, 0) + 1;
+	id = project->id;
     } else {
 	project->id = id;
     }
     
     // Add ourselves to the database
     queryInsert(project);
+
+    delete project;
+
+    // We can't delete the temporary memory till it's added to the database.
+    delete result1;
+    delete result2;
     
-    return project->id;
+    return id;
 }
 
 // Update an existing project    
@@ -259,7 +267,6 @@ GnuAE::getProject(long id, const char *name)
 #else
     ostrstream     query;
 #endif
-    project_t *proj = 0;
     
     query.str("");
     query << "SELECT * FROM projects WHERE ";
@@ -280,20 +287,23 @@ GnuAE::getProject(long id, const char *name)
 #endif
     vector<vector<string> > *result = Database::queryResults(str);
     vector<vector<string> >::iterator it = result->begin();
+    project_t *proj = 0;
     if (result->size()) {
 	proj = new project_t;
 	vector<string> &row = *it;
-	proj->id = strtol(row[0].c_str(), NULL, 0) + 1;
-	proj->name =             row[1].c_str();
-	proj->description =      row[2].c_str();
-	proj->sunhours  = strtof(row[3].c_str(), NULL);
-	proj->windhours = strtof(row[4].c_str(), NULL);
-	proj->windspeed = strtof(row[5].c_str(), NULL);
+	proj->id =          strtol(row[0].c_str(), NULL, 0) + 1;
+	proj->name =        strdup(row[1].c_str());
+	proj->description = strdup(row[2].c_str());
+	proj->sunhours  =   strtof(row[3].c_str(), NULL);
+	proj->windhours =   strtof(row[4].c_str(), NULL);
+	proj->windspeed =   strtof(row[5].c_str(), NULL);
 	// proj->location  = strtof(row[6].c_str(), NULL);
-	proj->latitude  = strtof(row[6].c_str(), NULL);
-	proj->longitude = strtof(row[7].c_str(), NULL);
+	proj->latitude  =   strtof(row[6].c_str(), NULL);
+	proj->longitude =   strtof(row[7].c_str(), NULL);
     }
 
+    delete result;
+    
     return proj;
 }
 
@@ -364,15 +374,29 @@ GnuAE::addItem(long projid, const char *item, const char *description,
 {
     // DEBUGLOG_REPORT_FUNCTION;
     item_t *nitem = new item_t;
-    nitem->item = item;
-    nitem->description = description;
+    if (item) {
+	nitem->item = const_cast<char *>(item);
+    } else {
+	nitem->item = 0;
+    }
+    if (description) {
+	nitem->description = const_cast<char *>(description);
+    } else {
+	nitem->description = 0;
+    }
     nitem->type = type;
     nitem->id = id;
     nitem->days = days;
     nitem->hours = hours;
     nitem->minutes = minutes;
     
-    addItem(projid, nitem);
+    long ret = addItem(projid, nitem);
+
+    if (nitem) {
+	delete nitem;
+    }
+    
+    return ret;
 }
 
 // Update an existing item in the profile
@@ -456,8 +480,8 @@ GnuAE::getItem(long projid, long id, const char *name)
 	vector<string> &row = *it;
 	// ignore row[0], as it's just our project ID
 	item->id = strtol(row[1].c_str(), NULL, 0);
-	item->item = row[2].c_str();
-	item->description = row[3].c_str();
+	item->item = strdup(row[2].c_str());
+	item->description = strdup(row[3].c_str());
 	if (row[4] == "Battery") {
 	    item->type = BATTERY;
 	} else if (row[4] == "Center") {
@@ -483,6 +507,10 @@ GnuAE::getItem(long projid, long id, const char *name)
 	item->minutes = strtol(row[8].c_str(), NULL, 0);
     }
 
+    if (result) {
+	delete result;
+    }
+    
     return item;
 }
 
@@ -526,18 +554,20 @@ GnuAE::listItems(long projid)
 	    item_t *item = new item_t;
 	    vector<string> &row = *it;
 	    // ignore row[0], as it's just our project ID
-	    item->id = strtol(row[1].c_str(), NULL, 0);
-	    item->item = row[2].c_str();
-	    item->description = row[3].c_str();
-	    item->days = strtol(row[6].c_str(), NULL, 0);
-	    item->hours = strtol(row[7].c_str(), NULL, 0);
-	    item->minutes = strtol(row[8].c_str(), NULL, 0);
+	    item->id =          strtol(row[1].c_str(), NULL, 0);
+	    item->item =        strdup(row[2].c_str());
+	    item->description = strdup(row[3].c_str());
+	    item->days =        strtol(row[6].c_str(), NULL, 0);
+	    item->hours =       strtol(row[7].c_str(), NULL, 0);
+	    item->minutes =     strtol(row[8].c_str(), NULL, 0);
 	    items->push_back(item);
 	}
     } else {
 	delete items;
 	return 0;
     }
+
+    delete result;
 
     return items;
 }
@@ -640,9 +670,7 @@ GnuAE::queryInsert(long projid, item_t *data)
 #endif
     
     // Execute the query
-    Database::queryInsert(str.c_str());
-    
-    return true;
+    return Database::queryInsert(str.c_str());
 }
 
 bool
@@ -675,9 +703,7 @@ GnuAE::queryInsert(project_t *data)
 #endif
     
     // Execute the query
-    Database::queryInsert(str.c_str());
-    
-    return true;
+    return Database::queryInsert(str.c_str());
 }
 
 void

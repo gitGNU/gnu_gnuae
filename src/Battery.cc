@@ -36,59 +36,6 @@ namespace gnuae {
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
-extern "C" {
-#if 0
-  
-  battery_t batteries[] = {
-    // Trojan Batteries
-    { "T105",            "Trojan",         95,   6, 225,    0 },
-    { "T125",            "Trojan",        109.,  6, 235,    0 },
-    { "T145",            "Trojan",        145.,  6, 244,    0 },
-    { "L16G",            "Trojan",        209.,  6, 350,    0 },
-    { "L16P",            "Trojan",        234.,  6, 360,    0 },
-    { "L16H",            "Trojan",        258.,  6, 395,    0 },
-    // Real Good Gell Cells
-    { "32AH Gell Cell",  "Real Goods",     69., 12,  32,    0 },
-    { "51AH Gell Cell",  "Real Goods",    119., 12,  51,    0 },
-    { "74AH Gell Cell",  "Real Goods",    149., 12,  74,    0 },
-    { "86AH Gell Cell",  "Real Goods",    159., 12,  86,    0 },
-    { "98AH Gell Cell",  "Real Goods",    189., 12,  98,    0 },
-    { "183AH Gell Cell", "Real Goods",    339., 12, 183,    0 },
-    { "225AH Gell Cell", "Real Goods",    399., 12, 225,    0 },
-    { "180AH Gell Cell", "Real Goods",    189.,  6, 180,    0 },
-    // 6 Volts, 3 Cell Polypropylene Container
-    { "S-460",           "Surette",       173., 6,  350,  460 },
-    { "S-530",           "Surette",       198., 6,  530,  530 },
-    // 4 Volt, 2 cell batteries, Dual Container
-    { "4CS-17S",         "Surette",       284., 4,  546,  770 },
-    { "4CS-21S",         "Surette",       599., 4, 1104, 1557 },
-    { "4CS-25S",         "Surette",       718., 4, 1350, 1900 },
-    // 6 Volt, 3 cell batteries, Dual Container
-    { "6HHG-31PS",       "Surette",       279., 6,  344,  430 },
-    { "6EHG-31PS",       "Surette",       332., 6,  410,  512 },
-    { "6CS-17PS",        "Surette",       478., 6,  546,  770 },
-    { "6CS-21PS",        "Surette",       534., 6,  683,  963 },
-    { "6CS-25PS",        "Surette",       642., 6,  820, 1156 },
-    // 12 Volt, 6 cell batteries, , Dual Container
-    { "8HHG-31PS",       "Surette",       372., 8,  344,  430 },
-    { "8EHG-31PS",       "Surette",       444., 8,  410,  512 },
-    { "8CS-17PS",        "Surette",       621., 8,  546,  770 },
-    { "8CS-25PS",        "Surette",       933., 8,  820, 1156 },
-    { 0, 0, 0., 0, 0,0 }
-  };
-  struct temp_comp battery_comp[] = {
-    { 80, 26.7, 1.0  },
-    { 70, 21.2, 1.04 },
-    { 60, 15.6, 1.11 },
-    { 50, 10.0, 1.19 },
-    { 40,  4.4, 1.30 },
-    { 30, -1.1, 1.40 },
-    { 20, -6.7, 1.59 }
-    {  0,  0.0,  0.0 }      
-  };
-#endif
-};
-
 Battery::Battery() {
 
 };
@@ -122,6 +69,7 @@ Battery::readSQL(Database &db)
 	    thisbat->rate100 = strtol(row[6].c_str(), NULL, 0);
 	    addEntry(thisbat);
 	}
+	delete result;
     }
 
     dbglogfile << "Loaded " << dataSize() << " records from batteries table." << endl;

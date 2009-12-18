@@ -23,8 +23,8 @@
 #include "config.h"
   
 typedef struct {
-    char *name;
-    char *manufacturer;
+    const char *name;
+    const char *manufacturer;
     double price;
     double wattage;
     double voltage;
@@ -52,19 +52,10 @@ public:
     void dump();
     void dump(pump_t *pump);
 private:
-    //      std::map<std::string, pumps_t> batteries;
 };
 
 } // end of gnuae namespace
 
-extern "C" {
-#else
-// C API goes here
-    extern pump_t pumps[];
-#endif
-
-#ifdef __cplusplus
-}
 #endif
   
 // __PUMPS_H__

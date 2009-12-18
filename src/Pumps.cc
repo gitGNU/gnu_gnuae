@@ -67,14 +67,15 @@ Pumps::readSQL(Database &db)
     	for (it=result->begin(); it!=result->end(); ++it) {
     	    pump_t *thisp = new pump_t;
     	    vector<string> &row = *it;
-    	    thisp->name = const_cast<char *>(row[1].c_str());
-    	    thisp->manufacturer = const_cast<char *>(row[2].c_str());
+    	    thisp->name = row[1].c_str();
+    	    thisp->manufacturer = row[2].c_str();
     	    // thiscent->price = strtof(row[3].c_str(), NULL);
     	    thisp->wattage = strtof(row[4].c_str(), NULL);
     	    thisp->voltage = strtof(row[5].c_str(), NULL);
     	    thisp->gpm = strtof(row[6].c_str(), NULL);
     	    addEntry(thisp);
     	}
+	delete result;
     }
 
     dbglogfile << "Loaded " << dataSize() << " records from pumps table." << endl;

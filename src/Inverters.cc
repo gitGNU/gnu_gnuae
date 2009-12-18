@@ -102,6 +102,7 @@ Inverters::readSQL(Database &db)
 	    // thisinvert->amperage = strtof(row[7].c_str(), NULL);
 	    addEntry(thisinvert);
 	}
+	delete result;
     }
 
     dbglogfile << "Loaded " << dataSize() << " records from inverters table." << endl;

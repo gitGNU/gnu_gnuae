@@ -162,8 +162,8 @@ main(int argc, char **argv) {
 
     project_t *myproj = gdata.getProject(id, "My Project");
     if (myproj) {
-        if ((strcmp(myproj->name, projname) == 0)
-            && (strcmp(myproj->description, projdes) == 0)
+        if ((memcmp(myproj->name, projname, 10) == 0)
+            && (memcmp(myproj->description, projdes, 8) == 0)
             && ((myproj->sunhours > 1.1) && (myproj->sunhours < 1.3))
 	    && ((myproj->windhours > 2.2) && (myproj->windhours < 2.4))
 	    && ((myproj->windspeed > 3.3) && (myproj->windspeed < 3.5))) {
@@ -197,7 +197,7 @@ main(int argc, char **argv) {
     gdata.addItem(id, "My Stereo", "is great", LOAD, 0, 1, 2, 3);
     vector<item_t *> *names = gdata.listItems(id);
     if (names) {
-	// There wilkl be only two entries in the profiles table
+	// There will be only two entries in the profiles table
 	item_t *node0 = names->at(0);
 	item_t *node1 = names->at(1);
 	if ((strcmp(node0->item, "all TV") == 0) 
@@ -209,33 +209,25 @@ main(int argc, char **argv) {
 	} else {
 	    runtest.fail("GnuAE::listItems()");
 	}
+	free(node0->item);
+	free(node0->description);
+	delete node0;
+
+	free(node1->item);
+	free(node1->description);
+	delete node1;
+	delete names;
     } else {
         runtest.unresolved("GnuAE::listItems()");
     }
-    
-#if 0
-    // Debug crap for the C "gui" API used by the PHP extension
-    item_t item1;
-    memset(&item1, 0, sizeof(item_t));
-    item1.item = "TV";
-    item1.description = "sucks";
-    gdata.addItem(&item1);
-    item_t item2;
-    memset(&item2, 0, sizeof(item_t));
-    item2.item = "Stereo";
-    item2.description = "is great";
-    gdata.addItem(&item2);
-    
-    int i = 0;
-    item_t **names = gui_list_items();
-    while (names[i] != 0) {
-	cerr << names[i]->item << ": ";
-	cerr << names[i]->description << endl;
-	i++;
-    }
-    load_t *lod = (load_t *)gui_get_load_data("TV");
-#endif
 
+    free(myproj->name);
+    free(myproj->description);    
+    delete myproj;
+
+    free(myproj2->name);
+    free(myproj2->description);
+    delete myproj2;
 }
 
 static void

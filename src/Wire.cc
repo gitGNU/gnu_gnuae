@@ -85,14 +85,22 @@ struct tempfactor
 Wire::Wire()
 {
     // DEBUGLOG_REPORT_FUNCTION;
+
+    // All the other tables are loaded from an SQL database, but the
+    // wire data is static, as it's defined in the NEC Code. As the
+    // template wants to delete all the entries when deleted, we fake
+    // it out by allocating memory for the wire data, so it behaves
+    // like everything else.
     for (int i=0; wire_table[i].name!=0; i++) {
-	addEntry(&wire_table[i]);
+	// wire_t *wire = new wire_t;
+	// memcpy(wire, &wire_table[i], sizeof(wire_t));
+     	// addEntry(wire);
     }
 }
+
 Wire::~Wire()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-
 }
 
 void

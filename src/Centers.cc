@@ -40,35 +40,14 @@ namespace gnuae {
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
-#if 0
-extern "C" {
-
-  center_t centers[] = {
-    { "None",                      "None",       0.0, 0 },
-    { "Trace SW4024/S",            "Xantrax", 4995.0, 24 },
-    { "Trace SW4048/S",            "Xantrax", 4995.0, 48 },
-    { "Trace SW5548/S",            "Xantrax", 5695.0, 48 },
-    { "Trace SW4024/D",            "Xantrax", 8995.0, 24 },
-    { "Trace SW4048/D",            "Xantrax", 9137.0, 48 },
-    { "Trace SW5548/D",            "Xantrax", 9999.0, 48 },
-    { "Trace DR1512/S",            "Xantrax", 1979.0, 12 },
-    { "Trace DR1512/D",            "Xantrax", 3637.0, 12 },
-    { "Trace DR2412/S",            "Xantrax", 2295.0, 12 },
-    { "Trace DR2412/D",            "Xantrax", 4337.0, 12 },
-    { "Trace DR1524/S",            "Xantrax", 1879.0, 24 },
-    { "Trace DR1524/D",            "Xantrax", 3529.0, 24 },
-    { "Trace DR2424/S",            "Xantrax", 2295.0, 24 },
-    {                0,                    0,      0,  0 }
-  };
-};
-#endif
-
-Centers::Centers() {
-
+Centers::Centers()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
 };
 
-Centers::~Centers() {
-
+Centers::~Centers()
+{
+    // DEBUGLOG_REPORT_FUNCTION;
 };
 
 int
@@ -88,12 +67,13 @@ Centers::readSQL(Database &db)
     	for (it=result->begin(); it!=result->end(); ++it) {
     	    center_t *thiscent = new center_t;
     	    vector<string> &row = *it;
-    	    thiscent->name = const_cast<char *>(row[1].c_str());
-    	    thiscent->manufacturer = const_cast<char *>(row[2].c_str());
+    	    thiscent->name = row[1].c_str();
+    	    thiscent->manufacturer = row[2].c_str();
     	    // thiscent->price = strtof(row[3].c_str(), NULL);
     	    thiscent->voltage = strtol(row[4].c_str(), NULL, 0);
     	    addEntry(thiscent);
     	}
+	delete result;
     }
 
     dbglogfile << "Loaded " << dataSize() << " records from centers table." << endl;

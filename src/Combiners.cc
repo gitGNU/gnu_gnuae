@@ -84,6 +84,7 @@ Combiners::readSQL(Database &db)
     	    thiscm->conductors = strtol(row[5].c_str(), NULL, 0);
     	    addEntry(thiscm);
     	}
+	delete result;
     }
 
     dbglogfile << "Loaded " << dataSize() << " records from centers table." << endl;

@@ -171,6 +171,7 @@ if (bccomp($foo, '16') == 0) {
   fail("nec_awg_battery2inverter(7, 48.3, 45.6, 18.9, 2) == $foo");
  }
 
+
 // Get the list of names from the Loads table
 $foo = gui_list_names("loads");
 $size=count($foo);
@@ -244,28 +245,31 @@ if ($size) {
   fail("gui_list_names(wire) fails to return any entries");
 }
 
-xdebug_start_trace("foo");
-gui_add_item("TV", "TV sucks", 1, 2, 3, 4);
-gui_add_item("Stereo", "is great", 5, 6, 7, 8);
-$foo = gui_list_items();
+//xdebug_start_trace("foo");
+
+$id = 3;
+
+gui_add_item($id, "TV", "TV sucks", 1, 2, 3, 4);
+/* gui_add_item($id, "Stereo", "is great", 5, 6, 7, 8); */
+/* $foo = gui_list_items(); */
 $size=count($foo);
 if ($size == 2) {
   $bar = $foo[0];
-  if ($bar[0] == "TV") {
+  if ($bar[0] == "TV") { 
     pass("gui_list_items() returns $size entries");
   } else {
-    fail("gui_list_items() fails to return any entries");
+    fail("gui_list_items() fails to return any entries"); 
   }
 } else {
   fail("gui_list_items() fails to return any entries");
 }
 
-$foo = gui_get_load_data("TV");
+/* $foo = gui_get_load_data("TV"); */
 
 //var_dump($foo);
 //echo $_GET['fooby'];
 
-xdebug_stop_trace();
+//xdebug_stop_trace();
 
 // Dump the totals
 totals();

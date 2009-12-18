@@ -311,7 +311,7 @@ Loads::readLoadsCSV(std::string filespec)
 	    tmpbuf.erase(0, 1);
 	    tmpbuf.erase(tmpbuf.size()-1, 1);
 	    thisload->name = new char[strlen(buf)+1];
-	    strcpy(thisload->name, tmpbuf.c_str());
+	    strcpy((char *)thisload->name, tmpbuf.c_str());
 	} else {
 	    return lines;
 	}
@@ -329,7 +329,7 @@ Loads::readLoadsCSV(std::string filespec)
 		tmpbuf.erase(0, 1);
 		tmpbuf.erase(tmpbuf.size()-1, 1);
 		thisload->description = new char[strlen(buf)+1];
-		strcpy(thisload->description, tmpbuf.c_str());
+		strcpy((char *)thisload->description, tmpbuf.c_str());
 	    } else {
 		return lines;
 	    }
@@ -408,6 +408,7 @@ Loads::readLoadsSQL(Database &db)
 	    thisload->amperage = strtof(row[7].c_str(), NULL);
 	    addEntry(thisload);
 	}
+	delete result;
     }
 
     dbglogfile << "Loaded " << dataSize() << " records from loads table." << endl;

@@ -26,6 +26,7 @@
 #include <vector>
 #include <sys/time.h>
 #include <cstdio>
+#include <cstdlib>
 
 #ifdef __STDC_HOSTED__
 #include <sstream>
@@ -67,7 +68,7 @@ Database::Database()
 Database::~Database()
 {
   if (_connection) {
-    //closeDB();
+      closeDB();
   }
 }
 
@@ -135,6 +136,7 @@ Database::openDB (std::string &host, std::string &user, std::string &passwd)
         exit(1);
     }
 #endif
+    
     _state = Database::DBOPENED;
     
     return true;
@@ -145,7 +147,10 @@ bool
 Database::closeDB (void)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    mysql_thread_end();
     mysql_close(&_mysql);
+//    std::free(_connection);
+    
     _state = Database::DBCLOSED;
 
     // FIXME: do something intelligent here
@@ -191,7 +196,6 @@ Database::queryResults(string &query)
     nrows = mysql_num_rows(result);
     // dbglogfile << nrows << " rows found for query." << endl;
 
-    // vector<vector<string> > *table = new vector<vector<string> >;
     vector<vector<string> > *table = new vector<vector<string> >;
     while((row = mysql_fetch_row(result))) {
         // vector<string> *data = new vector<string>;
@@ -205,6 +209,7 @@ Database::queryResults(string &query)
         table->push_back(data);
     }
 
+    // We're done with the result
     mysql_free_result(result);
 
     return table;

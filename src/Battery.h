@@ -24,12 +24,12 @@
 
 typedef struct
 {
-  char *name;
-  char *manufacturer;
-  double price;
-  int voltage;
-  int rate20;
-  int rate100;
+    const char *name;
+    const char *manufacturer;
+    double price;
+    int voltage;
+    int rate20;
+    int rate100;
 } battery_t;
 
 #ifdef __cplusplus

@@ -27,16 +27,16 @@
 
 typedef struct
 {
-  char *name;
-  char *manufacturer;
-  double price;
-  int wattage;
-  int voltage;
-  feature_e LCD;
-  feature_e charger;
-  feature_e remote;
-  feature_e tempsensor;
-  feature_e sinewave;
+    const char *name;
+    const char *manufacturer;
+    double price;
+    int wattage;
+    int voltage;
+    feature_e LCD;
+    feature_e charger;
+    feature_e remote;
+    feature_e tempsensor;
+    feature_e sinewave;
 } inverter_t;
 
 #ifdef __cplusplus
@@ -59,15 +59,7 @@ private:
 };
 } // end of gnuae namespace
 
-extern "C" {
-#else
-// C API goes here
-  extern inverter_t inverters[];
-#endif
-
-#ifdef __cplusplus
-}
-#endif
+#endif	// end of cpluplus
   
 // __INVERTERS_H__
 #endif

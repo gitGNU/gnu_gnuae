@@ -28,6 +28,8 @@
 #include <fstream>
 #include <iterator>
 #include <cstdlib>
+#include <memory>
+#include <algorithm>
 
 #include "DataType.h"
 #include "Database.h"
@@ -389,8 +391,10 @@ PVPanels::readModuleDataCSV(std::string filespec)
 	    // the CSV format. So we drop them to have just the plain string left.
 	    tmpbuf.erase(0, 1);
 	    tmpbuf.erase(tmpbuf.size()-1, 1);
-	    pv->Picture = new char[strlen(buf)+1];
-	    strcpy(pv->Picture, tmpbuf.c_str());
+	    //pv->Picture = new char[strlen(buf)+1];
+	    // strcpy(pv->Picture, tmpbuf.c_str());
+	    //std::copy(tmpbuf.begin(), tmpbuf.end(), pv->Picture);
+	    pv->Picture = strdup(tmpbuf.c_str());
 	} else {
 	    pv->Picture = 0;
 	}
@@ -448,7 +452,9 @@ PVPanels::readModuleDataCSV(std::string filespec)
 		}
 		
 		pv->Description = new char[tmpbuf.size()+1];
-		strcpy(pv->Description, tmpbuf.c_str());
+		// strcpy(pv->Description, tmpbuf.c_str());
+		//std::copy(tmpbuf.begin(), tmpbuf.end(), pv->Description);
+		pv->Description = strdup(tmpbuf.c_str());
 	    }
 	} // if _enhanced
 	
@@ -570,6 +576,7 @@ PVPanels::readSQL(Database &db)
 
 	    addEntry(thispv);
 	}
+	delete result;
     }
 
     dbglogfile << "Loaded " << dataSize() << " records from pvpanels table." << endl;

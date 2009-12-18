@@ -65,8 +65,8 @@ typedef struct {
     double Ixxo;                  /*  */
     double C6;                    /*  */
     double C7;                    /*  */
-    char *Picture;
-    char *Description;
+    const char *Picture;
+    const char *Description;
     /* Enhanced fields */
     float Price;
     char *Manufacturer;           /* The company that makes this panel */  

@@ -44,7 +44,7 @@ void
 gui_init()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    dbglogfile.set_verbosity();
+    // dbglogfile.set_verbosity();
     gdata.openDB();
     gdata.loadData();
 }

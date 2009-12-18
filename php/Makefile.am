@@ -27,8 +27,8 @@ AM_CPPFLAGS = -DPHP_ATOM_INC \
 	$(PHP_INCLUDES)
 
 gnuae_la_SOURCES = wrapper.c
-gnuae_la_LDFLAGS = -export-dynamic -avoid-version -module # -rpath $(phplibdir)
-gnuae_la_LIBADD = $(MYSQL_LIBS) ../src/libgnuae.la -lstdc++
+gnuae_la_LDFLAGS = -avoid-version -module -prefer-pic # -rpath $(phpdir)
+gnuae_la_LIBADD = $(MYSQL_LIBS)  ../src/libgnuae.la -lstdc++
 
 install: gnuae.la
 	@echo "WARNING!"
@@ -40,9 +40,9 @@ install-php: $(php_LTLIBRARIES)
 	@test -d "$(DESTDIR)$(pphpdir)" || $(mkinstalldirs) "$(DESTDIR)$(phpdir)"
 	@echo "Installing PHP GnuAE extension to $(DESTDIR)$(phpdir)"
 	@if test -d .libs; then \
-	  cp -f .libs/gnuae.so* $(DESTDIR)$(phpdir)/; \
+	  $(INSTALL_DATA) .libs/gnuae.so $(DESTDIR)$(phpdir)/; \
 	else \
-	  cp -f gnuae.so* $(DESTDIR)$(phpdir)/; \
+	   $(INSTALL_DATA) gnuae.so $(DESTDIR)$(phpdir)/; \
 	fi
 
 

@@ -25,7 +25,7 @@ SUBDIRS = # testsuite
 INCLUDES = -I$(srcdir) \
 	$(MYSQL_CFLAGS)
 
-lib_LTLIBRARIES = libgnuae.la
+noinst_LTLIBRARIES = libgnuae.la
 
 SRC = PVPanel.cc PVPanel.h \
 	NEC.cc NEC.h nec_tables.h \

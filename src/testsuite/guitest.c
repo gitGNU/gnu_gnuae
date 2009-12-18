@@ -174,6 +174,17 @@ item_tests()
         unresolved("gui_update_item()");        
     }
     
+    item_t **items = gui_list_items();
+    if (items) {
+        if (strcmp(items[0]->item, name) == 0) {
+            pass("gui_list_items()");
+        } else {
+            fail("gui_list_items()");
+        }
+    } else {
+        unresolved("gui_list_items()");
+    }
+
     gui_erase_item(id, 50050, name);
     item2 = gui_get_item(id, 50050, name);
     if (item2) {
@@ -181,9 +192,6 @@ item_tests()
     } else {
 	pass("gui_erase_item()");
     }
-
-    gui_list_items();
-    
 }
 
 static void
@@ -191,7 +199,6 @@ usage (const char *prog)
 {
     printf("Usage: %s ", prog);
     printf("-h\tHelp");
-    exit (-1);
 }
 
 // local Variables:

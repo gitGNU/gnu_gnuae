@@ -93,19 +93,26 @@ gui_list_items()
 {
     // DEBUGLOG_REPORT_FUNCTION;
     vector<item_t *> *items = gdata.listItems();
-    item_t **result = new item_t *[items->size()+1];    
-    vector<item_t *>::iterator it;
+    item_t **result = 0;
     int i = 0;
-    for (it=items->begin(); it != items->end(); ++it) {
-	item_t *ti = *it;
-	result[i++] = ti;
+    if (items) {
+	result = new item_t *[items->size()+1];    
+	vector<item_t *>::iterator it;
+	for (it=items->begin(); it != items->end(); ++it) {
+	    item_t *ti = *it;
+	    result[i++] = ti;
+	}
     }
 
     // Terminate the array, since we're not using std::vector
-    result[i] = 0;
+    if (result) {
+	result[i] = 0;
+    }
 
     // We don't need this anymore
-    delete items;
+    if (items) {
+	delete items;
+    }
     
     return result;
 }

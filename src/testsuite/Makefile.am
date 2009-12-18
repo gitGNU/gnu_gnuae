@@ -21,4 +21,4 @@ gdata_SOURCES = gdata.cc
 gdata_LDADD = $(MYSQL_LIBS) $(GNUAELIB)
 
 guitest_SOURCES = guitest.c
-guitest_LDADD = $(MYSQL_LIBS) $(GNUAELIB) 
+guitest_LDADD = $(MYSQL_LIBS) $(GNUAELIB) -lstdc++

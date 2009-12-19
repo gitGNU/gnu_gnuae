@@ -44,8 +44,6 @@ void
 gui_init()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    dbglogfile.setHTMLMode(true);
-    dbglogfile.set_verbosity();
     gdata.openDB();
     gdata.loadData();
 }
@@ -55,6 +53,8 @@ void
 gui_init_db(const char *dbname)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    dbglogfile.setHTMLMode(true);
+    dbglogfile.set_verbosity();
     gdata.closeDB();
     gdata.dbNameSet(dbname);
     gui_init();

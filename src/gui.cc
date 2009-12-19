@@ -19,6 +19,8 @@
 #include "config.h"
 
 #include <iostream>
+#include <memory>
+#include <cstdlib>
 
 #include "gnuae.h"
 #include "log.h"
@@ -35,9 +37,7 @@ const char **
 gui_list_names(const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    const char **ret = gdata.list_names(name);
-    
-    return ret;
+    return gdata.listTableNames(name);
 }
 
 void
@@ -54,6 +54,7 @@ void
 gui_init_db(const char *dbname)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+    gdata.closeDB();
     gdata.dbNameSet(dbname);
     gui_init();
 }
@@ -92,17 +93,20 @@ item_t **
 gui_list_items()
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    vector<item_t *> *items = gdata.listItems();
+    auto_ptr<vector<item_t *> > items = gdata.listItems();
     item_t **result = 0;
     int i = 0;
-    if (items) {
-	result = new item_t *[items->size()+1];    
+    if (items.get()) {
+	// As the result gets freed by a C program, we have to use malloc
+	// instead of new(). 
+	result = new item_t *[items->size()+1];
+	//result = (item_t **)std::malloc(sizeof(item_t) * items->size());
 	vector<item_t *>::iterator it;
 	for (it=items->begin(); it != items->end(); ++it) {
 	    item_t *ti = *it;
 	    result[i++] = ti;
-	    delete ti->item;
-	    delete ti->description;
+	    free(ti->item);
+	    free(ti->description);
 	    delete ti;
 	}
     }
@@ -112,11 +116,6 @@ gui_list_items()
 	result[i] = 0;
     }
 
-    // We don't need this anymore
-    if (items) {
-	delete items;
-    }
-    
     return result;
 }
 
@@ -139,7 +138,10 @@ gui_get_project(long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
 
-    return gdata.getProject(id, name);
+    auto_ptr<project_t > tmp =  gdata.getProject(id, name);
+//    tmp.release();
+
+    return tmp.get();
 }
 
 // Update an existing project

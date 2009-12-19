@@ -42,7 +42,12 @@ extern "C" {
     void gui_init();
     // This is only used to change the default password for testing
     void gui_init_db(const char *dbname);
-
+    
+    // This just sets the name, but doesn't initialize anything. This
+    // is primarily only used for testing, so test results don't contaminate
+    // the regular database in any way.
+    void gui_set_dbname(const char *name);
+    
     // get a list of names for a table. This works for any of the
     // tables, including the project data and the profile data.
     const char **gui_list_names(const char *name);

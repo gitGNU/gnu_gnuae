@@ -171,8 +171,16 @@ if (bccomp($foo, '16') == 0) {
   fail("nec_awg_battery2inverter(7, 48.3, 45.6, 18.9, 2) == $foo");
  }
 
+//
+// GUI API tests
+// 
 
-// Get the list of names from the Loads table
+// This function is only used for testing, and closes the
+// connection to the existing database. This way we don't
+// pollute the main database with testing data.
+gui_init_db("gnuaetest");
+
+// Get the list of names from the tables
 $foo = gui_list_names("loads");
 $size=count($foo);
 if ($size) {
@@ -205,13 +213,13 @@ if ($size) {
   fail("gui_list_names(combiners) fails to return any entries");  
 }
 
-/* $foo = gui_list_names("pvpanels"); */
-/* $size=count($foo); */
-/* if ($size) { */
-/*   pass("gui_list_names(pvpanels) returns $size entries");   */
-/* } else { */
-fail("gui_list_names(pvpanels) fails to return any entries");
-/* } */
+$foo = gui_list_names("pvpanels");
+$size=count($foo);
+if ($size) {
+  pass("gui_list_names(pvpanels) returns $size entries");
+} else {
+  fail("gui_list_names(pvpanels) fails to return any entries");
+}
 
 $foo = gui_list_names("pumps");
 $size=count($foo);
@@ -245,13 +253,39 @@ if ($size) {
   fail("gui_list_names(wire) fails to return any entries");
 }
 
-//xdebug_start_trace("foo");
+xdebug_start_trace("foo");
 
-$id = 3;
+//
+// Project API tests
+// 
 
-gui_add_item($id, "TV", "TV sucks", 1, 2, 3, 4);
-/* gui_add_item($id, "Stereo", "is great", 5, 6, 7, 8); */
-/* $foo = gui_list_items(); */
+// Create a new project entry
+$projname = "My Test";
+$projdes = "testing, 1,2,3...";
+$projid = gui_new_project($projname, $projdes, 1.2, 2.3, 3.4, "none", 4.5, 5.6);
+if ($projid) {
+  pass("gui_new_project()");
+} else {
+  fail("gui_new_project()"); 
+}
+
+// See if we can read the entry back we just created.
+$proj = gui_get_project($projid, $projname);
+if ($proj[0] == $projname && $proj[1] == $projdes) {
+  pass("gui_get_project(id, name)");
+} else {
+  fail("gui_get_project(id, name)"); 
+}
+
+//
+// Chosen Items API tests
+// 
+
+// gui_get_item(3, "TV");
+gui_add_item($projid, "TV", "TV sucks", LOAD, 0, 2, 3, 4);
+gui_add_item($projid, "Stereo", "is great", LOAD, 5, 6, 7, 8);
+
+//$foo = gui_list_items();
 $size=count($foo);
 if ($size == 2) {
   $bar = $foo[0];
@@ -269,7 +303,7 @@ if ($size == 2) {
 //var_dump($foo);
 //echo $_GET['fooby'];
 
-//xdebug_stop_trace();
+xdebug_stop_trace();
 
 // Dump the totals
 totals();

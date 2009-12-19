@@ -47,9 +47,14 @@ static function_entry gnuae_functions[] = {
     PHP_FE(nec_awg_battery2inverter, NULL)
     PHP_FE(gui_list_names, NULL)
     PHP_FE(gui_init, NULL)
+    PHP_FE(gui_init_db, NULL)
     PHP_FE(gui_add_item, NULL)
     PHP_FE(gui_list_items, NULL)
     PHP_FE(gui_get_load_data, NULL)
+    PHP_FE(gui_new_project, NULL)
+    PHP_FE(gui_update_project, NULL)
+    PHP_FE(gui_get_project, NULL)
+    PHP_FE(gui_erase_project, NULL)
     {NULL, NULL, NULL}
 };
 
@@ -141,10 +146,10 @@ PHP_MSHUTDOWN_FUNCTION(gnuae)
 
 PHP_RINIT_FUNCTION(gnuae)
 {
-    //gui_init();
+    gui_init();
 
     // GNUAE_G(items) = malloc(sizeof(item_t) * 10);
-    // GNUAE_G(count) = 0;
+    GNUAE_G(count) = 0;
     
     return SUCCESS;
 }
@@ -430,6 +435,130 @@ PHP_FUNCTION(gui_init)
     gui_init();
 }
 
+// This is only used to change the default password for testing
+PHP_FUNCTION(gui_init_db)
+{
+    char *str;
+    int len;
+    zval *result = malloc(sizeof(zval));
+    
+    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
+	WRONG_PARAM_COUNT;
+    }
+
+    gui_init_db(str);
+}
+
+PHP_FUNCTION(gui_new_project)
+{
+    long projid = 0;
+    char *name = 0, *description = 0;
+    // table_e type;
+    long name_len = 0, des_len = 0;
+    char *location = 0;
+    long location_len = 0;
+    double wind = 0.0, hours = 0.0, speed = 0.0;
+    double latitude = 0.0, longitude = 0.0;
+    project_t proj;
+
+    if (zend_parse_parameters(8 TSRMLS_CC, "ss|dddsdd",
+			      &name, &name_len,
+			      &description, &des_len,
+			      &hours, &wind, &speed,
+			      &location, &location_len,
+			      &latitude, &longitude) == FAILURE) {
+     	WRONG_PARAM_COUNT;
+    }
+    if (name) {
+	proj.name = strndup(name, name_len);
+    } else {
+	proj.name = "none";
+    }
+    
+    if (description) {
+	proj.description = strndup(description, des_len);
+    } else {
+	proj.description = "none";
+    }
+    
+    if (location) {
+	proj.location = strndup(location, des_len);
+    } else {
+	proj.location = "none";
+    }
+    
+    proj.sunhours = hours;
+    proj.windhours = wind;
+    proj.windspeed = speed;
+    proj.latitude = latitude;
+    proj.longitude = longitude;
+
+    projid = gui_new_project(&proj);
+    
+    RETURN_LONG(projid);
+}
+
+PHP_FUNCTION(gui_update_project)
+{
+    char *str;
+    int len;
+    zval *result = malloc(sizeof(zval));
+    
+    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
+	WRONG_PARAM_COUNT;
+    }
+}
+
+// Return an array of the project data.
+PHP_FUNCTION(gui_get_project)
+{
+    char *str;
+    int len;
+    long id;
+    zval *result = malloc(sizeof(zval));
+    
+    if (zend_parse_parameters(2 TSRMLS_CC, "l|s", &id, &str, &len) == FAILURE) {
+	WRONG_PARAM_COUNT;
+    }
+
+    array_init(result);
+    if (len && str) {
+	project_t *proj = gui_get_project(id, str);
+	if (proj) {
+	    add_next_index_string(result, proj->name, strlen(proj->name));
+	    add_next_index_string(result, proj->description, strlen(proj->description));
+	    add_next_index_double(result, proj->sunhours);
+	    add_next_index_double(result, proj->windhours);
+	    add_next_index_double(result, proj->windspeed);
+	    if (proj->location) {
+		add_next_index_string(result, proj->location, strlen(proj->location));
+	    } else {
+		add_next_index_string(result, "none", 4);
+	    }
+	    add_next_index_double(result, proj->latitude);
+	    add_next_index_double(result, proj->longitude);
+	} else {
+	    php_printf("ERROR: didn't get anything back from gui_get_project!\n");
+	}
+    } else {
+	php_printf("Invalid paramaters!");
+    }
+    
+    // 2nd field, 0 is no copy, 3rd field is destruct before returning
+    RETURN_ZVAL(result, 0, 1);    
+}
+
+PHP_FUNCTION(gui_erase_project)
+{
+    char *str;
+    int len;
+    zval *result = malloc(sizeof(zval));
+    
+    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
+	WRONG_PARAM_COUNT;
+    }
+}
+
 // GUI support callbacks
 PHP_FUNCTION(gui_list_names)
 {
@@ -467,37 +596,40 @@ PHP_FUNCTION(gui_add_item)
     char *item = 0, *description = 0;
     // table_e type;
     long item_len = 0, des_len = 0;
-    long type = 0, id = 0, projid = 0;
+    long id = 0, projid = 0;
     long days = 0, hours = 0, minutes = 0;
-    item_t *nitem = (item_t *)malloc(sizeof(item_t));
+    char *type = 0;
+    long type_len = 0;
+    item_t nitem;
 
-    if (zend_parse_parameters(7 TSRMLS_CC, "ls|sllll", &projid, &item, &item_len,
-			      &description, &des_len,
+    if (zend_parse_parameters(8 TSRMLS_CC, "ls|ssllll", &projid, &item, &item_len,
+			      &description, &des_len, &type, &type_len,
 			      &id, &days, &hours, &minutes) == FAILURE) {
      	WRONG_PARAM_COUNT;
     }
     if (item) {
-	nitem->item = strndup(item, item_len);
+	nitem.item = strndup(item, item_len);
     } else {
-	nitem->item = "none";
+	nitem.item = "none";
     }
     
     if (description) {
-	nitem->description = strndup(description, des_len);
+	nitem.description = strndup(description, des_len);
     } else {
-	nitem->description = "none";
+	nitem.description = "none";
     }
     
     //GNUAE_G(items[GNUAE_G(count)]) = nitem;
     GNUAE_G(count)++;
     
     // nitem->type = type;
-    nitem->id = id;
-    nitem->days = days;
-    nitem->hours = hours;
-    nitem->minutes = minutes;
+    nitem.id = id;
+    nitem.type = LOAD; // (table_e)type;
+    nitem.days = days;
+    nitem.hours = hours;
+    nitem.minutes = minutes;
 
-    gui_add_item(nitem);
+    gui_add_item(projid, &nitem);
     
     RETURN_LONG(GNUAE_G(count));
 }

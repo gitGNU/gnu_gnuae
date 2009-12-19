@@ -74,6 +74,12 @@ PHP_FUNCTION(nec_awg_battery2inverter);
 
 // These functions are all related to GUI support
 PHP_FUNCTION(gui_init);
+PHP_FUNCTION(gui_init_db);
+PHP_FUNCTION(gui_new_project);
+PHP_FUNCTION(gui_update_project);
+PHP_FUNCTION(gui_get_project);
+PHP_FUNCTION(gui_erase_project);
+
 // List the names of the various items so we can create a menu
 PHP_FUNCTION(gui_list_names);
 PHP_FUNCTION(gui_add_item);

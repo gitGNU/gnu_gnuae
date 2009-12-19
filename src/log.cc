@@ -144,6 +144,7 @@ LogFile&
 LogFile::getDefaultInstance()
 {
 	static LogFile o;
+	o.setHTMLMode(false);
 	return o;
 }
 
@@ -284,8 +285,12 @@ LogFile::operator << (const char *c) {
 // This grabs the endl operator;
 ostream&
 LogFile::operator << (ostream & (&)(ostream &)) {
-    if (verbose > 0)
+    if (htmlmode) {
+      cout << "<br>";
+    }
+    if (verbose > 0) {
       cout << "\r" << endl;
+    }
     LogFile::outstream << endl;;
     LogFile::outstream.flush();
     LogFile::state = IDLE;

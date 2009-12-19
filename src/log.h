@@ -57,65 +57,73 @@ std::string timestamp();
 // This is a basic file logging class
 class LogFile { 
 public:
-  static LogFile& getDefaultInstance();
-  ~LogFile(void) {
-    if (state == OPEN) {
-      //      flush();
-      //      state = CLOSED;
-      Close();
+    static LogFile& getDefaultInstance();
+    ~LogFile(void) {
+	if (state == OPEN) {
+	    //      flush();
+	    //      state = CLOSED;
+	    Close();
+	}
     }
-  }
-  enum file_state {
-    CLOSED,
-    OPEN,
-    INPROGRESS,
-    IDLE
-  } state;
-  
-  file_state GetState (void) { return state; }
-  LogFile& operator << (ErrCond&);
-  LogFile& operator << (int x);
-  LogFile& operator << (long x);
-  LogFile& operator << (unsigned int x);
-  // These both resolve to an unsigned int.
-  // LogFile& operator << (size_t x);
-  // LogFile& operator << (time_t x);
-  LogFile& operator << (float x);
-  LogFile& operator << (double &x);
-  LogFile& operator << (bool x);
-  LogFile& operator << (void *);
-  LogFile& operator << (const char *);
-  LogFile& operator << (std::string );
-  std::ostream& operator << (std::ostream & (&)(std::ostream &));
-  const char *GetEntry(void);
-  
-  retcode_t Open(const char *);
-  retcode_t Close(void);
-  // accessors for the verbose level
-  void set_verbosity (void) {
-    verbose++;
+    enum file_state {
+	CLOSED,
+	OPEN,
+	INPROGRESS,
+	IDLE
+    } state;
+    
+    file_state GetState (void) { return state; }
+    LogFile& operator << (ErrCond&);
+    LogFile& operator << (int x);
+    LogFile& operator << (long x);
+    LogFile& operator << (unsigned int x);
+    // These both resolve to an unsigned int.
+    // LogFile& operator << (size_t x);
+    // LogFile& operator << (time_t x);
+    LogFile& operator << (float x);
+    LogFile& operator << (double &x);
+    LogFile& operator << (bool x);
+    LogFile& operator << (void *);
+    LogFile& operator << (const char *);
+    LogFile& operator << (std::string );
+    std::ostream& operator << (std::ostream & (&)(std::ostream &));
+    const char *GetEntry(void);
+    
+    retcode_t Open(const char *);
+    retcode_t Close(void);
+    // accessors for the verbose level
+    void set_verbosity (void) {
+	verbose++;
+	//        note (3, "Verbosity now set to %d", verbose);
+    }
+    void set_verbosity (int x) {
+	verbose = x;
     //        note (3, "Verbosity now set to %d", verbose);
-  }
-  void set_verbosity (int x) {
-    verbose = x;
-    //        note (3, "Verbosity now set to %d", verbose);
-  }
-
-  void SetStamp (bool b) {
-    stamp = b;
-  }
-  bool GetStamp (void) {
-    return stamp;
-  }
-  //std::string gettimestamp();
-  
+    }
+    
+    void setHTMLMode (bool m) {
+	htmlmode = m;
+    }
+    bool getHTMLMode (void) {
+	return htmlmode;
+    }
+    
+    void SetStamp (bool b) {
+	stamp = b;
+    }
+    bool GetStamp (void) {
+	return stamp;
+    }
+    //std::string gettimestamp();
+    
 private:
-  static std::ofstream console;
-  std::ofstream outstream;
-  static int verbose;
-  bool stamp;
-  std::string logentry;
-  friend std::ostream & operator << (std::ostream &os, LogFile& e);
+    static std::ofstream console;
+    std::ofstream outstream;
+    static int verbose;
+    bool stamp;
+    std::string logentry;
+    friend std::ostream & operator << (std::ostream &os, LogFile& e);
+    bool htmlmode;
 };
 
 struct __Host_Function_Report__ {

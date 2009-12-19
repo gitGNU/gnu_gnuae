@@ -577,7 +577,7 @@ PHP_FUNCTION(gui_get_project)
 	    add_next_index_double(result, proj->latitude);
 	    add_next_index_double(result, proj->longitude);
 	} else {
-	    php_printf("ERROR: didn't get anything back from gui_get_project!\n");
+	    php_printf("WARNING: didn't get anything back from gui_get_project!\n");
 	}
     } else {
 	php_printf("Invalid paramaters!");
@@ -591,11 +591,14 @@ PHP_FUNCTION(gui_erase_project)
 {
     char *str;
     int len;
+    long id;
     zval *result = malloc(sizeof(zval));
     
-    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
+    if (zend_parse_parameters(2 TSRMLS_CC, "l|s", &id, &str, &len) == FAILURE) {
 	WRONG_PARAM_COUNT;
     }
+
+    gui_erase_project(id, str);
 }
 
 // GUI support callbacks
@@ -620,7 +623,7 @@ PHP_FUNCTION(gui_list_names)
 		names++;
 	    }
 	} else {
-	    php_printf("ERROR: didn't get anything back from gui_list_names!\n");
+	    php_printf("WARNING: didn't get anything back from gui_list_names!\n");
 	}
     } else {
 	php_printf("Invalid paramater for name!");

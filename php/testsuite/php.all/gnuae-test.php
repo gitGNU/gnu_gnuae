@@ -293,6 +293,14 @@ if ($proj2[0] == $proj[0] && $proj2[1] == $proj[1]) {
   fail("gui_update_project(id, name)"); 
 }
 
+gui_erase_project($projid, "New Name");
+$proj3 = gui_get_project($projid, "New Name");
+if (count($proj3)) {
+  fail("gui_erase_project(id, name)");
+} else {
+  pass("gui_erase_project(id, name)"); 
+}
+
 //
 // Chosen Items API tests
 // 

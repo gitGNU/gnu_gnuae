@@ -8,20 +8,24 @@ $fails = 0;
 
 function pass ($msg) {
   global $passes;
-  printf("PASS: %s <p>\n", $msg);
+  printf("PASS: %s <br>\n", $msg);
   $passes++;
 }
 
 function fail ($msg) {
   global $fails;
-  printf("FAIL: %s <p>\n", $msg);
+  printf("FAIL: %s <br>\n", $msg);
   $fails++;
+}
+
+function note ($msg) {
+  printf("%s <br>\n", $msg);
 }
 
 function totals () {
   global $fails, $passes;
-  printf("\n# of passes: %d <p>\n", $passes);
-  printf("# of failures: %d <p>\n", $fails);
+  printf("\n# of passes: %d <br>\n", $passes);
+  printf("# of failures: %d <br>\n", $fails);
 }
 
 // NEC Voltage Drop
@@ -259,6 +263,8 @@ xdebug_start_trace("foo");
 // Project API tests
 // 
 
+note("<h2>Project Tests</h2>");
+
 // Create a new project entry
 $projname = "My Test";
 $projdes = "testing, 1,2,3...";
@@ -275,6 +281,16 @@ if ($proj[0] == $projname && $proj[1] == $projdes) {
   pass("gui_get_project(id, name)");
 } else {
   fail("gui_get_project(id, name)"); 
+}
+
+$proj[0] = "New Name";
+$proj[1] = "New Description";
+gui_update_project($projid, $proj[0], $proj[1], $proj[2], $proj[3], $proj[4], $proj[5], $proj[6], $proj[7], $proj[8]);
+$proj2 = gui_get_project($projid, "New Name");
+if ($proj2[0] == $proj[0] && $proj2[1] == $proj[1]) {
+  pass("gui_update_project(id, name)");
+} else {
+  fail("gui_update_project(id, name)"); 
 }
 
 //

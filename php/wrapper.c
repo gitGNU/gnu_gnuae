@@ -500,13 +500,52 @@ PHP_FUNCTION(gui_new_project)
 
 PHP_FUNCTION(gui_update_project)
 {
-    char *str;
-    int len;
-    zval *result = malloc(sizeof(zval));
-    
-    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
-	WRONG_PARAM_COUNT;
+    long projid = 0;
+    char *name = 0, *description = 0;
+    // table_e type;
+    long name_len = 0, des_len = 0;
+    char *location = 0;
+    long location_len = 0;
+    double wind = 0.0, hours = 0.0, speed = 0.0;
+    double latitude = 0.0, longitude = 0.0;
+    project_t proj;
+
+    if (zend_parse_parameters(9 TSRMLS_CC, "lss|dddsdd",
+			      &projid,
+			      &name, &name_len,
+			      &description, &des_len,
+			      &hours, &wind, &speed,
+			      &location, &location_len,
+			      &latitude, &longitude) == FAILURE) {
+     	WRONG_PARAM_COUNT;
     }
+    if (name) {
+	proj.name = strndup(name, name_len);
+    } else {
+	proj.name = "none";
+    }
+    
+    if (description) {
+	proj.description = strndup(description, des_len);
+    } else {
+	proj.description = "none";
+    }
+    
+    if (location) {
+	proj.location = strndup(location, des_len);
+    } else {
+	proj.location = "none";
+    }
+    
+    proj.sunhours = hours;
+    proj.windhours = wind;
+    proj.windspeed = speed;
+    proj.latitude = latitude;
+    proj.longitude = longitude;
+
+    gui_update_project(projid, &proj);
+    
+    RETURN_BOOL(1);
 }
 
 // Return an array of the project data.

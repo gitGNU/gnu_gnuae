@@ -82,6 +82,8 @@ GnuAE::GnuAE()
 GnuAE::~GnuAE()
 {
     // DEBUGLOG_REPORT_FUNCTION;
+
+    closeDB();
 }
 
 bool
@@ -94,25 +96,24 @@ GnuAE::loadData()
         dbglogfile << "Loaded " << _loads.dataSize() << "records from loads table." << endl;
     } else {
         dbglogfile << "Loading from SQL Database as data source." << endl;
-        // _loads.readLoadsSQL(*this);
-        // _inverters.readSQL(*this);
-        // _batteries.readSQL(*this);
-        // _centers.readSQL(*this);
-        // _pvpanels.readSQL(*this);
-        // _chargers.readSQL(*this);
-        // _combiners.readSQL(*this);
+        _loads.readLoadsSQL(*this);
+        _inverters.readSQL(*this);
+        _batteries.readSQL(*this);
+        _centers.readSQL(*this);
+        _pvpanels.readSQL(*this);
+        _chargers.readSQL(*this);
+        _combiners.readSQL(*this);
         _pumps.readSQL(*this);
         // Wire data is static, and in the NEC spec, so it's not in
         // the SQL database or CSV files.
         // _wire.readSQL(*this);
     }
-
 }
 
 // As this function is to support the GUIs, which are usually only C
 // based, we return a C array instead of an std::vector of strings.
 const char **
-GnuAE::list_names(const char *table)
+GnuAE::listTableNames(const char *table)
 {
     // DEBUGLOG_REPORT_FUNCTION;    
     vector<string> *data = 0;
@@ -144,8 +145,11 @@ GnuAE::list_names(const char *table)
         for (it = data->begin(); it != data->end(); ++it) {
             result[i++] = (*it).c_str();
         }
+	delete data;
+	
         // Terminate the array, since we're not using std::vector
         result[i] = 0;
+	
         return result;
     }
 
@@ -254,11 +258,11 @@ GnuAE::updateProject(long id, project_t *proj)
 #endif
     
     // Execute the query
-    Database::queryInsert(str.c_str());
+    Database::queryInsert(str);
 }
 
 // Look up an existing project by name or ID or both.
-project_t *
+std::auto_ptr<project_t>
 GnuAE::getProject(long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
@@ -287,9 +291,10 @@ GnuAE::getProject(long id, const char *name)
 #endif
     vector<vector<string> > *result = Database::queryResults(str);
     vector<vector<string> >::iterator it = result->begin();
-    project_t *proj = 0;
+    auto_ptr<project_t> proj(new project_t);
     if (result->size()) {
-	proj = new project_t;
+	//proj = new project_t;
+	//proj = (project_t *)malloc(sizeof(project_t));
 	vector<string> &row = *it;
 	proj->id =          strtol(row[0].c_str(), NULL, 0) + 1;
 	proj->name =        strdup(row[1].c_str());
@@ -300,6 +305,8 @@ GnuAE::getProject(long id, const char *name)
 	// proj->location  = strtof(row[6].c_str(), NULL);
 	proj->latitude  =   strtof(row[6].c_str(), NULL);
 	proj->longitude =   strtof(row[7].c_str(), NULL);
+    } else {
+	proj.reset();
     }
 
     delete result;
@@ -338,7 +345,7 @@ GnuAE::eraseProject(long id, const char *name)
 #endif
     
     // Execute the query
-    Database::queryInsert(str.c_str());
+    Database::queryInsert(str);
 
     // Delete all the entries for this project from the
     // profiles table.
@@ -353,7 +360,7 @@ GnuAE::eraseProject(long id, const char *name)
     str = query.str();
 #endif
     
-    return Database::queryInsert(str.c_str());
+    return Database::queryInsert(str);
 }
 
 // Add an item to the array
@@ -363,7 +370,7 @@ GnuAE::addItem(long projid, item_t *nitem)
     // DEBUGLOG_REPORT_FUNCTION;
 //    _chosen_items.push_back(nitem);
 
-    string query = "SELECT COUNT() FROM profiles;";
+    // string query = "SELECT COUNT() FROM profiles;";
     
     queryInsert(projid, nitem);
 }
@@ -373,30 +380,25 @@ GnuAE::addItem(long projid, const char *item, const char *description,
 	       table_e type, int id, int days, int hours, int minutes)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    item_t *nitem = new item_t;
+
+    item_t nitem;
     if (item) {
-	nitem->item = const_cast<char *>(item);
+	nitem.item = const_cast<char *>(item);
     } else {
-	nitem->item = 0;
+	nitem.item = 0;
     }
     if (description) {
-	nitem->description = const_cast<char *>(description);
+	nitem.description = const_cast<char *>(description);
     } else {
-	nitem->description = 0;
+	nitem.description = 0;
     }
-    nitem->type = type;
-    nitem->id = id;
-    nitem->days = days;
-    nitem->hours = hours;
-    nitem->minutes = minutes;
+    nitem.type = type;
+    nitem.id = id;
+    nitem.days = days;
+    nitem.hours = hours;
+    nitem.minutes = minutes;
     
-    long ret = addItem(projid, nitem);
-
-    if (nitem) {
-	delete nitem;
-    }
-    
-    return ret;
+    return addItem(projid, &nitem);
 }
 
 // Update an existing item in the profile
@@ -440,7 +442,7 @@ GnuAE::updateItem(long projid, item_t *item)
 #endif
     
     // Execute the query
-    return Database::queryInsert(str.c_str());
+    return Database::queryInsert(str);
 }
 
 // Look up an existing project by name or ID or both.
@@ -477,10 +479,11 @@ GnuAE::getItem(long projid, long id, const char *name)
     vector<vector<string> >::iterator it = result->begin();
     if (result->size()) {
 	item = new item_t;
+	// item = (item_t *)malloc(sizeof(item_t));
 	vector<string> &row = *it;
 	// ignore row[0], as it's just our project ID
-	item->id = strtol(row[1].c_str(), NULL, 0);
-	item->item = strdup(row[2].c_str());
+	item->id =          strtol(row[1].c_str(), NULL, 0);
+	item->item =        strdup(row[2].c_str());
 	item->description = strdup(row[3].c_str());
 	if (row[4] == "Battery") {
 	    item->type = BATTERY;
@@ -502,8 +505,8 @@ GnuAE::getItem(long projid, long id, const char *name)
 	    item->type = WIRE;
 	}
 //	item->quantity = strtol(row[5].c_str(), NULL, 0);
-	item->days = strtol(row[6].c_str(), NULL, 0);
-	item->hours = strtol(row[7].c_str(), NULL, 0);
+	item->days =    strtol(row[6].c_str(), NULL, 0);
+	item->hours =   strtol(row[7].c_str(), NULL, 0);
 	item->minutes = strtol(row[8].c_str(), NULL, 0);
     }
 
@@ -515,14 +518,14 @@ GnuAE::getItem(long projid, long id, const char *name)
 }
 
 // Get a list of all the items in the profile along with their data.
-vector<item_t *> *
+auto_ptr<vector<item_t *> >
 GnuAE::listItems()
 {
     // DEBUGLOG_REPORT_FUNCTION;
     return listItems(0);
 }
 
-vector<item_t *> *
+auto_ptr<vector<item_t *> >
 GnuAE::listItems(long projid)
 {
     // DEBUGLOG_REPORT_FUNCTION;
@@ -531,7 +534,7 @@ GnuAE::listItems(long projid)
 #else
     ostrstream     query;
 #endif
-    vector<item_t *> *items = new vector<item_t *>;
+    auto_ptr<vector<item_t *> > items(new vector<item_t *>);
 
     query.str("");
     query << "SELECT * FROM profiles";
@@ -552,6 +555,7 @@ GnuAE::listItems(long projid)
     if (result->size()) {
 	for (it = result->begin(); it != result->end(); ++it) {
 	    item_t *item = new item_t;
+	    //item_t *item = (item_t *)malloc(sizeof(item_t));
 	    vector<string> &row = *it;
 	    // ignore row[0], as it's just our project ID
 	    item->id =          strtol(row[1].c_str(), NULL, 0);
@@ -563,8 +567,8 @@ GnuAE::listItems(long projid)
 	    items->push_back(item);
 	}
     } else {
-	delete items;
-	return 0;
+	items.reset();
+	return items;
     }
 
     delete result;
@@ -604,7 +608,7 @@ GnuAE::eraseItem(long projid, long id, const char *name)
 #endif
     
     // Execute the query
-    return Database::queryInsert(str.c_str());
+    return Database::queryInsert(str);
 }
 
 bool
@@ -670,7 +674,7 @@ GnuAE::queryInsert(long projid, item_t *data)
 #endif
     
     // Execute the query
-    return Database::queryInsert(str.c_str());
+    return Database::queryInsert(str);
 }
 
 bool
@@ -703,7 +707,7 @@ GnuAE::queryInsert(project_t *data)
 #endif
     
     // Execute the query
-    return Database::queryInsert(str.c_str());
+    return Database::queryInsert(str);
 }
 
 void

@@ -160,8 +160,8 @@ main(int argc, char **argv) {
 	runtest.fail("GnuAE::newProject()");
     }
 
-    project_t *myproj = gdata.getProject(id, "My Project");
-    if (myproj) {
+    auto_ptr<project_t> myproj = gdata.getProject(id, "My Project");
+    if (myproj.get()) {
         if ((memcmp(myproj->name, projname, 10) == 0)
             && (memcmp(myproj->description, projdes, 8) == 0)
             && ((myproj->sunhours > 1.1) && (myproj->sunhours < 1.3))
@@ -177,8 +177,8 @@ main(int argc, char **argv) {
     
     myproj->sunhours = myproj->sunhours * 2;
     myproj->windhours = myproj->windhours * 2;
-    gdata.updateProject(id, myproj);
-    project_t *myproj2 = gdata.getProject(id, "My Project");
+    gdata.updateProject(id, myproj.get());
+    auto_ptr<project_t> myproj2 = gdata.getProject(id, "My Project");
     if ((myproj2->sunhours == myproj->sunhours)
 	&& (myproj2->sunhours == myproj->sunhours)) {
 	runtest.pass("GnuAE::updateProject()");
@@ -186,7 +186,7 @@ main(int argc, char **argv) {
 	runtest.fail("GnuAE::updateProject()");
     }
     gdata.eraseProject(id, projname);
-    if (gdata.getProject(id, "My Project")) {
+    if (gdata.getProject(id, "My Project").get()) {
 	runtest.fail("GnuAE::eraseProject()");
     } else {
 	runtest.pass("GnuAE::eraseProject()");
@@ -195,8 +195,8 @@ main(int argc, char **argv) {
     // Load Item tests
     gdata.addItem(id, "all TV", "sucks", LOAD, 0, 1, 2, 3);
     gdata.addItem(id, "My Stereo", "is great", LOAD, 0, 1, 2, 3);
-    vector<item_t *> *names = gdata.listItems(id);
-    if (names) {
+    auto_ptr<vector<item_t *> > names = gdata.listItems(id);
+    if (names.get()) {
 	// There will be only two entries in the profiles table
 	item_t *node0 = names->at(0);
 	item_t *node1 = names->at(1);
@@ -211,23 +211,20 @@ main(int argc, char **argv) {
 	}
 	free(node0->item);
 	free(node0->description);
-	delete node0;
+	//delete node0;
 
 	free(node1->item);
 	free(node1->description);
-	delete node1;
-	delete names;
+	//delete node1;
     } else {
         runtest.unresolved("GnuAE::listItems()");
     }
 
     free(myproj->name);
     free(myproj->description);    
-    delete myproj;
 
     free(myproj2->name);
     free(myproj2->description);
-    delete myproj2;
 }
 
 static void

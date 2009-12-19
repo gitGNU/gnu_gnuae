@@ -47,6 +47,8 @@ typedef struct {
 
 #ifdef __cplusplus
 
+#include <memory>
+
 #include "Database.h"
 #include "Battery.h"
 #include "Centers.h"
@@ -82,7 +84,7 @@ public:
     /// database.
     bool loadData();
 
-    const char **list_names(const char *table);
+    const char **listTableNames(const char *table);
     void *getLoadData(long id, const char *item);
 
     // Project functions
@@ -94,7 +96,7 @@ public:
 		    double latitude, double longitude);
 
     // Look up an existing project by name or ID or both.
-    project_t *getProject(long id, const char *name);
+    std::auto_ptr<project_t> getProject(long id, const char *name);
     
     // Update an existing project    
     bool updateProject(long id, project_t *proj);
@@ -120,8 +122,8 @@ public:
 
     // Get a list of all the items in the profile along with their data.
     // std::vector<item_t *> &listItems() { return _chosen_items; };
-    std::vector<item_t *> *listItems();
-    std::vector<item_t *> *listItems(long projid);
+    std::auto_ptr<std::vector<item_t *> > listItems();
+    std::auto_ptr<std::vector<item_t *> > listItems(long projid);
 
     // Query the database to add or update data
     bool queryInsert(long projid, std::vector<item_t *> data);

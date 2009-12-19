@@ -46,6 +46,7 @@ main(int argc, char **argv)
     } else {
 	fail("gui_list_names(loads)");
     }
+    //free(names);
     
     project_tests();
 
@@ -88,10 +89,14 @@ project_tests()
 	} else {
 	    fail("gui_get_project()");
 	}
+	free(proj2->name);
+	free(proj2->description);
+	// free(proj2->location);
+	// free(proj2);
     } else {
 	unresolved("gui_get_project()");
     }
-
+    
     /* change some data */
     proj1.description = des2;
     proj1.latitude = proj1.latitude * 2;
@@ -106,6 +111,10 @@ project_tests()
 	} else {
 	    fail("gui_update_project()");
 	}
+	free(proj2->name);
+	free(proj2->description);
+//	free(proj2->location);
+//      free(proj2);
     } else {
 	unresolved("gui_update_project()");
     }
@@ -116,6 +125,10 @@ project_tests()
     proj2 = gui_get_project(id, name);
     if (proj2) {
 	fail("gui_erase_project()");
+	free(proj2->name);
+	free(proj2->description);
+	// free(proj2->location);
+	free(proj2);
     } else {
 	pass("gui_erase_project()");
     }
@@ -154,10 +167,13 @@ item_tests()
         } else {
             fail("gui_get_item()");
         }
+	free(item2->item);
+	free(item2->description);
+	// free(item2);
     } else {
             unresolved("gui_get_item()");        
     }
-
+    
     item1.description = des2;
     item1.days = item1.days * 2;
     item1.hours = item1.hours * 2;
@@ -170,10 +186,14 @@ item_tests()
         } else {
             fail("gui_update_item()");
         }
+	free(item2->item);
+	free(item2->description);
+	// free(item2);
     } else {
         unresolved("gui_update_item()");        
     }
     
+#if 1
     item_t **items = gui_list_items();
     if (items) {
         if (strcmp(items[0]->item, name) == 0) {
@@ -184,11 +204,14 @@ item_tests()
     } else {
         unresolved("gui_list_items()");
     }
-
+#endif
+    
     gui_erase_item(id, 50050, name);
     item2 = gui_get_item(id, 50050, name);
     if (item2) {
 	fail("gui_erase_item()");
+	free(item2->item);
+	free(item2->description);
     } else {
 	pass("gui_erase_item()");
     }

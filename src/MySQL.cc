@@ -149,8 +149,8 @@ Database::closeDB (void)
     // DEBUGLOG_REPORT_FUNCTION;
     mysql_thread_end();
     mysql_close(&_mysql);
-//    std::free(_connection);
-    
+    _connection = 0;		// same as _mysql's address
+
     _state = Database::DBCLOSED;
 
     // FIXME: do something intelligent here
@@ -169,7 +169,7 @@ Database::queryResults(string &query)
     int         nrows;
     unsigned int i, res;
     
-    dbglogfile << "Result Query is: " << query.c_str() << endl;
+    dbglogfile << "Result Query for " << _dbname.c_str() << " is: " << query.c_str() << endl;
 
     res = mysql_real_query(&_mysql, query.c_str(), query.size());
 
@@ -216,46 +216,42 @@ Database::queryResults(string &query)
 }
 
 bool
-Database::queryInsert(const char *query)
+Database::queryInsert(string &query)
 {
     // DEBUGLOG_REPORT_FUNCTION;
     
     int retries, result;
-    
     retries = 2;
     
-    dbglogfile << "Query is: " << query << endl;
+    dbglogfile << "Query for " << _dbname.c_str() << " is: " << query.c_str() << endl;
     
     while (retries--) {
-	result = mysql_real_query(&_mysql, query, strlen(query));
-	
-	switch (result) {
-	  case CR_SERVER_LOST:
-	  case CR_COMMANDS_OUT_OF_SYNC:
-	  case CR_SERVER_GONE_ERROR:
-	      dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
-	      // Try to reconnect to the database
-	      closeDB();
-	      openDB();
-	      continue;
-	      break;
-	  case -1:
-	  case CR_UNKNOWN_ERROR:
-	      dbglogfile << "MySQL error on query for:\n\t " <<
-		  mysql_error(&_mysql) << endl;
-	      dbglogfile << "Query was: " << query << endl;
-	      return false;
-	      break;            
-	  default:
-	      return true;
+	result = mysql_real_query(&_mysql, query.c_str(), query.size());
+
+	// the result should be zero if sucessful
+	if (result) {	
+	    switch (result) {
+	      case CR_SERVER_LOST:
+	      case CR_COMMANDS_OUT_OF_SYNC:
+	      case CR_SERVER_GONE_ERROR:
+		  dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
+		  // Try to reconnect to the database
+		  closeDB();
+		  openDB();
+		  continue;
+		  break;
+	      case CR_UNKNOWN_ERROR:
+	      default:
+		  dbglogfile << "MySQL error on query for:\n\t " <<
+		      mysql_error(&_mysql) << endl;
+		  dbglogfile << "Query was: " << query.c_str() << endl;
+		  break;            
+	    }
+	    return false;
 	}
-	
-	dbglogfile << "Lost connection to the database server, shutting down..." << endl;
-	
-	return false;
     }
     
-    return false;
+    return true;
 }
 
 char *

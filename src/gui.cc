@@ -53,10 +53,23 @@ void
 gui_init_db(const char *dbname)
 {
     // DEBUGLOG_REPORT_FUNCTION;
+
+    // Use the new database name for the log file.
+    string db = "/tmp/" ;
+    db += dbname;
+    db += "-dbg.log";
+
+    // Dump all debug output in HTML, so it looks ok in a browser.
     dbglogfile.setHTMLMode(true);
+    // make lots of noise.
     dbglogfile.set_verbosity();
+    // Reopen the debug log under the new name.
+    dbglogfile.Open(db.c_str());
+    
+    // disconnect the existing database before choosing another.
     gdata.closeDB();
     gdata.dbNameSet(dbname);
+
     gui_init();
 }
 
@@ -106,9 +119,9 @@ gui_list_items()
 	for (it=items->begin(); it != items->end(); ++it) {
 	    item_t *ti = *it;
 	    result[i++] = ti;
-	    free(ti->item);
-	    free(ti->description);
-	    delete ti;
+	    // free(ti->item);
+	    // free(ti->description);
+	    // delete ti;
 	}
     }
 
@@ -140,9 +153,13 @@ gui_get_project(long id, const char *name)
     // DEBUGLOG_REPORT_FUNCTION;
 
     auto_ptr<project_t > tmp =  gdata.getProject(id, name);
-//    tmp.release();
+    // As auto_ptr will delete the memory when it goes out of scope,
+    // we then can't pass a pointer to the C API. Instead get the
+    // address it points to, and release if from there.
+    project_t *ptr = tmp.get();
+    tmp.release();
 
-    return tmp.get();
+    return ptr;
 }
 
 // Update an existing project

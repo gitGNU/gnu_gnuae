@@ -92,7 +92,7 @@ project_tests()
 	free(proj2->name);
 	free(proj2->description);
 	// free(proj2->location);
-	// free(proj2);
+	free(proj2);
     } else {
 	unresolved("gui_get_project()");
     }
@@ -114,7 +114,7 @@ project_tests()
 	free(proj2->name);
 	free(proj2->description);
 //	free(proj2->location);
-//      free(proj2);
+	free(proj2);
     } else {
 	unresolved("gui_update_project()");
     }

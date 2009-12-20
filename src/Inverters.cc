@@ -118,7 +118,7 @@ Inverters::dump()
 	cerr << "No Inverter data in memory." << endl;
     } else {
 	vector<string>::iterator it;
-	vector<string> *loadnames = dataNames();
+	auto_ptr<vector<string> > loadnames = dataNames();
 	for (it = loadnames->begin(); it != loadnames->end(); it++) {
 	    dump(findEntry(*it));
 	}

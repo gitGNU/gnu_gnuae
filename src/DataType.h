@@ -27,6 +27,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace gnuae {
 
@@ -67,12 +68,12 @@ public:
         return _data[name];
     }
     
-    std::vector<std::string> *dataNames(void) {
+    std::auto_ptr<std::vector<std::string> > dataNames(void) {
         // std::map<std::string, datatype *>::const_iterator itttt;
         // std::map<std::string, void *>::const_iterator it ;
-        std::vector<std::string> *entrynames;
+	std::auto_ptr<std::vector<std::string> > entrynames;
+	entrynames.reset(new std::vector<std::string>);
         datatype *entry;
-        entrynames = new std::vector<std::string>;  
         
         if (!_data.size()) {
             std::cerr << "No data in memory!" << std::endl;

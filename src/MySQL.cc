@@ -225,32 +225,30 @@ Database::queryInsert(string &query)
     
     dbglogfile << "Query for " << _dbname.c_str() << " is: " << query.c_str() << endl;
     
-    while (retries--) {
-	result = mysql_real_query(&_mysql, query.c_str(), query.size());
-
-	// the result should be zero if sucessful
-	if (result) {	
-	    switch (result) {
-	      case CR_SERVER_LOST:
-	      case CR_COMMANDS_OUT_OF_SYNC:
-	      case CR_SERVER_GONE_ERROR:
-		  dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
-		  // Try to reconnect to the database
-		  closeDB();
-		  openDB();
-		  continue;
-		  break;
-	      case CR_UNKNOWN_ERROR:
-	      default:
-		  dbglogfile << "MySQL error on query for:\n\t " <<
-		      mysql_error(&_mysql) << endl;
-		  dbglogfile << "Query was: " << query.c_str() << endl;
-		  break;            
-	    }
-	    return false;
-	}
-    }
+    result = mysql_real_query(&_mysql, query.c_str(), query.size());
     
+    // the result should be zero if sucessful
+    if (result) {	
+	switch (result) {
+	  case CR_SERVER_LOST:
+	  case CR_COMMANDS_OUT_OF_SYNC:
+	  case CR_SERVER_GONE_ERROR:
+	      dbglogfile << "MySQL connection error: " << mysql_error(&_mysql) << endl;
+	      // Try to reconnect to the database
+	      closeDB();
+	      openDB();
+//	      continue;
+	      break;
+	  case CR_UNKNOWN_ERROR:
+	  default:
+	      dbglogfile << "MySQL error on query for:\n\t " <<
+		  mysql_error(&_mysql) << endl;
+	      dbglogfile << "Query was: " << query.c_str() << endl;
+	      break;            
+	}
+	return false;
+    }
+
     return true;
 }
 

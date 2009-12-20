@@ -19,7 +19,7 @@ function fail ($msg) {
 }
 
 function note ($msg) {
-  printf("%s <br>\n", $msg);
+  printf("\n%s <br>\n\n", $msg);
 }
 
 function totals () {

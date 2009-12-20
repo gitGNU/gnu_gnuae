@@ -20,6 +20,8 @@
 #include <sys/stat.h>
 #include <cstdlib>
 #include <vector>
+#include <memory>
+
 #include "gnuae.h"
 #include "log.h"
 
@@ -116,7 +118,7 @@ const char **
 GnuAE::listTableNames(const char *table)
 {
     // DEBUGLOG_REPORT_FUNCTION;    
-    vector<string> *data = 0;
+    auto_ptr<vector<string> > data;
     
     if (strncmp(table, "load", 2) == 0) {
         data = _loads.dataNames();
@@ -138,14 +140,13 @@ GnuAE::listTableNames(const char *table)
         data = _batteries.dataNames();
     }
 
-    if (data) {
+    if (data.get()) {
         const char **result = new const char *[data->size()+1];
         vector<string>::iterator it;
         int i = 0;
         for (it = data->begin(); it != data->end(); ++it) {
             result[i++] = (*it).c_str();
         }
-	delete data;
 	
         // Terminate the array, since we're not using std::vector
         result[i] = 0;

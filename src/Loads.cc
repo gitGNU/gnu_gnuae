@@ -28,6 +28,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <memory>
 #include <vector>
 #include <string>
 #include <cstdlib>
@@ -142,24 +143,24 @@ Loads::~Loads(void)
 void
 Loads::dump(void)
 {
-  vector<string>::iterator it;
-  vector<string> *loadnames;
-  load_t *load;
-  int i;
+    vector<string>::iterator it;
+    auto_ptr<vector<string> > loadnames;
+    load_t *load;
+    int i;
+    
+    cerr << endl << "Dumping System Loads" << endl;
+    
+    loadnames = dataNames();
   
-  cerr << endl << "Dumping System Loads" << endl;
-
-  loadnames = dataNames();
-  
-  if (dataSize() == 0) {
-    cerr << "No Load data in memory" << endl;
-    return;
-  }
-  
-  //    namelist[i++] = strdup("Hey Now");
-  for (it = loadnames->begin(); it != loadnames->end(); it++) {
-    dump(findEntry(*it));
-  }
+    if (dataSize() == 0) {
+	cerr << "No Load data in memory" << endl;
+	return;
+    }
+    
+    //    namelist[i++] = strdup("Hey Now");
+    for (it = loadnames->begin(); it != loadnames->end(); it++) {
+	dump(findEntry(*it));
+    }
 }
 
 void
@@ -187,25 +188,25 @@ Loads::dump(struct load *entry)
 void
 Loads::writeLoads(string filespec)
 {
-  ofstream os;
-  ostringstream tmpstr;
-  int lines = -1;
-  vector<string>::iterator it;
-  vector<string> *loadnames;
-  load_t *thisload;
-  int i;
-  char *home;
-  string loadfile;
-  struct stat stats;
-  
-  loadnames = dataNames();
-  
-  if (loadnames->size() == 0) {
-    cerr << "No Load data in memory" << endl;
-    return;
-  }
-
-  if (filespec.size() == 0) {
+    ofstream os;
+    ostringstream tmpstr;
+    int lines = -1;
+    vector<string>::iterator it;
+    auto_ptr<vector<string> > loadnames;
+    load_t *thisload;
+    int i;
+    char *home;
+    string loadfile;
+    struct stat stats;
+    
+    loadnames = dataNames();
+    
+    if (loadnames->size() == 0) {
+	cerr << "No Load data in memory" << endl;
+	return;
+    }
+    
+    if (filespec.size() == 0) {
 
     home = getenv("HOME");
     
@@ -489,7 +490,7 @@ double
 Loads::calcWatts(void)
 {
     vector<string>::iterator it;
-    vector<string> *loadnames;
+    auto_ptr<vector<string> > loadnames;
     load_t *thisload;
     double watts = 0.0, hours;
     
@@ -574,7 +575,7 @@ double
 Loads::calcHoursDaily(void)
 {
     vector<string>::iterator it;
-    vector<string> *loadnames;
+    auto_ptr<vector<string> > loadnames;
     load_t *thisload;
     double hours = 0.0;
     
@@ -635,7 +636,7 @@ extern "C" {
     load_names(const char **namelist)
     {
 	vector<string>::iterator it;
-	vector<string> *loadnames;
+	auto_ptr<vector<string> > loadnames;
 	string entry;
 	int i = 0;
 	

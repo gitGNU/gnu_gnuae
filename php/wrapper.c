@@ -50,6 +50,7 @@ static function_entry gnuae_functions[] = {
     PHP_FE(gui_init_db, NULL)
     PHP_FE(gui_add_item, NULL)
     PHP_FE(gui_list_items, NULL)
+    PHP_FE(gui_erase_item, NULL)
     PHP_FE(gui_get_load_data, NULL)
     PHP_FE(gui_new_project, NULL)
     PHP_FE(gui_update_project, NULL)
@@ -591,14 +592,14 @@ PHP_FUNCTION(gui_erase_project)
 {
     char *str;
     int len;
-    long id;
+    long projid;
     zval *result = malloc(sizeof(zval));
     
-    if (zend_parse_parameters(2 TSRMLS_CC, "l|s", &id, &str, &len) == FAILURE) {
+    if (zend_parse_parameters(2 TSRMLS_CC, "l|s", &projid, &str, &len) == FAILURE) {
 	WRONG_PARAM_COUNT;
     }
 
-    gui_erase_project(id, str);
+    gui_erase_project(projid, str);
 }
 
 // GUI support callbacks
@@ -674,6 +675,20 @@ PHP_FUNCTION(gui_add_item)
     gui_add_item(projid, &nitem);
     
     RETURN_LONG(GNUAE_G(count));
+}
+
+PHP_FUNCTION(gui_erase_item)
+{
+    char *str;
+    int len;
+    long id, projid;
+    zval *result = malloc(sizeof(zval));
+    
+    if (zend_parse_parameters(3 TSRMLS_CC, "ll|s", &projid, &id, &str, &len) == FAILURE) {
+	WRONG_PARAM_COUNT;
+    }
+
+    gui_erase_item(projid, id, str);
 }
 
 // GUI support callbacks

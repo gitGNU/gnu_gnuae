@@ -4,12 +4,20 @@
 
   // DejaGnu API
 $passes = 0;
+$xpasses = 0;
 $fails = 0;
+$xfails = 0;
 
 function pass ($msg) {
   global $passes;
   printf("PASS: %s <br>\n", $msg);
   $passes++;
+}
+
+function xpass ($msg) {
+  global $xpasses;
+  printf("XPASS: %s <br>\n", $msg);
+  $xpasses++;
 }
 
 function fail ($msg) {
@@ -18,14 +26,26 @@ function fail ($msg) {
   $fails++;
 }
 
+function xfail ($msg) {
+  global $xfails;
+  printf("XFAIL: %s <br>\n", $msg);
+  $xfails++;
+}
+
 function note ($msg) {
   printf("\n%s <br>\n\n", $msg);
 }
 
 function totals () {
-  global $fails, $passes;
+  global $fails, $passes, $xfails, $xpasses;
   printf("\n# of passes: %d <br>\n", $passes);
   printf("# of failures: %d <br>\n", $fails);
+  if ($xfails) {
+    printf("# of expected failures: %d <br>\n", $xfails);
+  }
+  if ($xpasses) {
+    printf("# of unexpected sucesses: %d <br>\n", $xpasses);
+  }
 }
 
 // NEC Voltage Drop
@@ -39,9 +59,9 @@ if (bccomp($foo, '1.4899') == 0) {
 // NEC Voltage Loss
 $foo = nec_volt_loss(140, 2, 23.4, 56.7, 2);
 if (bccomp($foo, '') == 0) {
-  pass("nec_volt_loss(140, 2, 23.4, 56.7, 2) == $foo");
+  xpass("nec_volt_loss(140, 2, 23.4, 56.7, 2) == $foo");
  } else {
-  fail("nec_volt_loss(140, 2, 23.4, 56.7, 2) == $foo");
+  xfail("nec_volt_loss(140, 2, 23.4, 56.7, 2) == $foo");
  }
 
 // NEC Watts
@@ -63,9 +83,9 @@ if (bccomp($foo, '4.2000002861') == 0) {
 // NEC Volts
 $foo = nec_volts(75.6, 6);
 if (bccomp($foo, '12.6') == 0) {
-  pass("nec_volts(75.6, 6) == $foo");
+  xpass("nec_volts(75.6, 6) == $foo");
  } else {
-  fail("nec_volts(75.6, 6) == $foo");
+  xfail("nec_volts(75.6, 6) == $foo");
  }
 
 // NEC Resistance
@@ -79,33 +99,33 @@ if (bccomp($foo, '0.576964795589') == 0) {
 // NEC Wire Derate
 $foo = nec_wire_derate(8, 120);
 if (bccomp($foo, '120') == 0) {
-  pass("nec_wire_derate(8, 120) == $foo");
+  xpass("nec_wire_derate(8, 120) == $foo");
  } else {
-  fail("nec_wire_derate(8, 120) == $foo");
+  xfail("nec_wire_derate(8, 120) == $foo");
  }
 
 // NEC Ampacity
 $foo = nec_ampacity(12);
 if (bccomp($foo, '') == 0) {
-  pass("nec_ampacity(12) == $foo");
+  xpass("nec_ampacity(12) == $foo");
  } else {
-  fail("nec_ampacity(12) == $foo");
+  xfail("nec_ampacity(12) == $foo");
  }
 
 // NEC Crystal Comp
 $foo = nec_crystal_comp(120);
 if (bccomp($foo, '') == 0) {
-  pass("nec_crystal_comp(120) == $foo");
+  xpass("nec_crystal_comp(120) == $foo");
  } else {
-  fail("nec_crystal_comp(120) == $foo");
+  xfail("nec_crystal_comp(120) == $foo");
  }
 
 // NEC Over Current
 $foo = nec_over_current(3, 3.6);
 if (bccomp($foo, '') == 0) {
-  pass("nec_over_current(3, 3.6) == $foo");
+  xpass("nec_over_current(3, 3.6) == $foo");
  } else {
-  fail("nec_over_current(3, 3.6) == $foo");
+  xfail("nec_over_current(3, 3.6) == $foo");
  }
 
 // NEC Find Gauge
@@ -119,17 +139,17 @@ if (bccomp($foo, '4') == 0) {
 // NEC Find Conduit
 $foo = nec_find_conduit(2, 2, THHN, EMT);
 if (bccomp($foo, '') == 0) {
-  pass("nec_find_conduit(10, 3, THWN2, EMT) == $foo");
+  xpass("nec_find_conduit(10, 3, THWN2, EMT) == $foo");
  } else {
-  fail("nec_find_conduit(10, 3, THWN2, EMT) == $foo");
+  xfail("nec_find_conduit(10, 3, THWN2, EMT) == $foo");
  }
 
 // NEC Find Ground
 $foo = nec_find_ground();
 if (bccomp($foo, '') == 0) {
-  pass("nec_find_ground() == $foo");
+  xpass("nec_find_ground() == $foo");
  } else {
-  fail("nec_find_ground() == $foo");
+  xfail("nec_find_ground() == $foo");
  }
 
 // NEC AWG PV 2 PV
@@ -252,9 +272,9 @@ if ($size) {
 $foo = gui_list_names("wire");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(wire) returns $size entries");
+  xpass("gui_list_names(wire) returns $size entries");
 } else {
-  fail("gui_list_names(wire) fails to return any entries");
+  xfail("gui_list_names(wire) fails to return any entries");
 }
 
 xdebug_start_trace("foo");
@@ -308,11 +328,10 @@ if (count($proj3)) {
 // gui_get_item(3, "TV");
 gui_add_item($projid, "TV", "TV sucks", LOAD, 0, 2, 3, 4);
 gui_add_item($projid, "Stereo", "is great", LOAD, 5, 6, 7, 8);
-
-//$foo = gui_list_items();
+$foo = gui_list_items();
 $size=count($foo);
 if ($size == 2) {
-  $bar = $foo[0];
+  $bar = $foo[1];
   if ($bar[0] == "TV") { 
     pass("gui_list_items() returns $size entries");
   } else {

@@ -133,6 +133,13 @@ gui_list_items()
     return result;
 }
 
+void *
+gui_get_data(long itemid, const char *itemname, const char *table)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+    return gdata.getData(itemid, itemname, table);
+}
+
 long
 gui_new_project(project_t *proj)
 {

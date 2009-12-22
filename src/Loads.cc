@@ -68,67 +68,6 @@ extern "C" {
 
   const int LINELEN = 1024;
   const int FIELDLEN = 512;
-#if 0
-  load_t loads[] = {
-    // DC loads
-    { "Wireless Phone", "Telemobile PTEL Wireless Phone",DC, HOUSEHOLD, 12.,    3., 0., 0, 1, 0.25, 1, 0 },
-    { "DC Lights", "Compact Flourescent Light Bulb",     DC, HOUSEHOLD, 24.,   15., 0., 0, 1, 0.25, 1, 0 },
-    { "SQ Flex Pump", "Grundfos SQ Flex Deep Well Pump", DC, HOUSEHOLD, 24.,  192., 0., 0, 1, 0.25, 1, 0 },
-    { "ETA Pump", "Dankoff ETA Deep Well Pump",          DC, HOUSEHOLD, 24.,  192., 0., 0, 1, 0.25, 1, 0 },
-    { "Pressure Booster", "Flowlight Pressure Booster",  DC, HOUSEHOLD, 24.,  180., 0., 0, 1, 0.25, 1, 0 },
-    { "19' Refridgerator", "SunFrost 19'",               DC, HOUSEHOLD, 24.,  696., 0., 0, 1, 0.25, 1, 0 },
-    { "16' Refridgerator", "SunFrost 16'",               DC, HOUSEHOLD, 24.,  696., 0., 0, 1, 0.25, 1, 0 },
-    { "12' Refridgerator", "SunFrost 12'",               DC, HOUSEHOLD, 24.,  696., 0., 0, 1, 0.25, 1, 0 },
-    // AC Loads
-    { "AC Lights", "Compact Flourescent Light Bulb",     AC, HOUSEHOLD, 120.,  18., 0., 0, 1, 0.25, 1, 0 },
-    { "Vacumn", "Old Hoover Upright Vacumn",             AC, HOUSEHOLD, 120., 800., 0., 0, 1, 0.25, 1, 0 },
-    { "Stereo", "Stereo/Amp",                            AC, HOUSEHOLD, 120.,  18., 0., 0, 1, 0.25, 1, 0 },
-    { "Alarm Clock", "Clock/Radio",                      AC, HOUSEHOLD, 120.,   1., 0., 0, 1, 0.25, 1, 0 },
-    { "Tape Deck", "Harmon Kardon Tape Deck",            AC, HOUSEHOLD, 120.,  18., 0., 0, 1, 0.25, 1, 0 },
-    { "TV", "", AC, HOUSEHOLD, 120., 18., 0., 0, 1, 0.25, 1, 0 },
-    { "VCR", "", AC, HOUSEHOLD, 120., 18., 0., 0, 1, 0.25, 1, 0 },
-    { "CD Player", "Harmon Kardon CD Player",            AC, HOUSEHOLD, 120., 18., 0., 0, 1, 0.25, 1, 0 },
-    { "Clothes Washer", "", AC, HOUSEHOLD, 120., 18., 0., 0, 1, 0.25, 1, 0 },
-
-    { "Dish Washer", "Apartment Sized Dish Washer",      AC, KITCHEN,   120., 687., 0., 0, 1, 0.25, 1, 0 },
-    { "Coffee Grinder", "Coffe Grinder",                 AC, KITCHEN,   120.,  93., 0., 0, 1, 0.25, 1, 0 },
-    { "Toaster Oven", "Toaster Oven",                    AC, HOUSEHOLD, 120., 240., 0., 0, 1, 0.25, 1, 0 },
-    { "Blender", "Blender",                              AC, HOUSEHOLD, 120., 531., 0., 0, 1, 0.25, 1, 0 },
-    // Tools
-    { "Sewing Machine", "Singer Sewing Machine",         AC, TOOLS,     120.,  51., 0., 0, 1, 0.25, 1, 0 },
-    { "Glue Gun", "Glue Gun",                            AC, TOOLS,     120.,   5., 0., 0, 1, 0.25, 1, 0 },
-    { "Cordless Charger", "Dewalt 18V Battery Charger",  AC, TOOLS,     120.,  70., 0., 0, 1, 0.25, 1, 0 },
-#if 0
-    { "Soldering Iron", "Radio Shack Soldering Iron",    AC, TOOLS,     120.,   0., 0., 0, 1, 0.25, 1, 0 },
-    { "Hand Saw", "Rotary Hand Saw",                     AC, TOOLS,     120.,   0., 0., 0, 1, 0.25, 1, 0 },
-    { "Hand Drill", "Small Hand Drill",                  AC, TOOLS,     120.,   0., 0., 0, 1, 0.25, 1, 0 },
-    { "Table Saw", "Table Saw",                          AC, TOOLS,     120.,   0., 0., 0, 1, 0.25, 1, 0 },
-    { "Drill Press", "Drill Press",                      AC, TOOLS,     120.,   0., 0., 0, 1, 0.25, 1, 0 },
-    { "Jigsaw", "Jigsaw",                                AC, TOOLS,     120.,   0., 0., 0, 1, 0.25, 1, 0 },
-#endif
-    { "Yaesu Charger", "Charger for Yaesu FT51",         AC, DIGITAL,   120.,   1., 0., 0, 1, 0.25, 1, 0 },
-    { "Maxon Charger", "Charger for Maxon 201+3",        AC, DIGITAL,   120.,   1., 0., 0, 1, 0.25, 1, 0 },
-    { "Nokia Charger", "Nokia 5660 Cell Phone Charger",  AC, DIGITAL,   120.,   3., 0., 0, 1, 0.25, 1, 0 },
-    { "Laptop", "HP Omnibook6100 Laptop",                AC, DIGITAL,   120.,  24., 0., 0, 1, 0.25, 1, 0 },
-    { "Laser Printer", "HP LaserJet 5MP",                AC, DIGITAL,   120., 200., 0., 0, 1, 0.25, 1, 0 },
-    { "18\" LCD Monitor", "HP 1820 LCD Monitor",         AC, DIGITAL,   120.,  30., 0., 0, 1, 0.25, 1, 0 },
-    { "Gateway Laptop", "gateway Solo 5150 Laptop",      AC, DIGITAL,   120.,  20., 0., 0, 1, 0.25, 1, 0 },
-    { "Docking Station", "Gateway Docking Station",      AC, DIGITAL,   120.,  34., 0., 0, 1, 0.25, 1, 0 },
-    { "21\" CRT", "Panisonic S21 CRT",                   AC, DIGITAL,   120., 103., 0., 0, 1, 0.25, 1, 0 },
-    { "133Mhz Pentium", "133 Mgz Pentium I PC",          AC, DIGITAL,   120.,  53., 0., 0, 1, 0.25, 1, 0 },
-    { "Terminal Server", "Livingston Port Master",       AC, DIGITAL,   120.,  20., 0., 0, 1, 0.25, 1, 0 },
-    { "Zycel Modem", "Zycel 1496+ Modem",                AC, DIGITAL,   120.,   6., 0., 0, 1, 0.25, 1, 0 },
-    { "US Robotics Modem", "56K US Robotics Modem",      AC, DIGITAL,   120.,   4., 0., 0, 1, 0.25, 1, 0 },
-    { "PC Speakers", "Yamaha Speakers",                  AC, DIGITAL,   120.,   4., 0., 0, 1, 0.25, 1, 0 },
-#if 0
-    { "Dual 3.0Ghz Xeon", "HP wx6000, Dual Xeon PC",     AC, DIGITAL, 120., 0., 0., 0, 1, 0.25, 1, 0 },
-    { "Sun Ultra 60", "Sun Ultra 60 Workstation",        AC, DIGITAL, 120., 0., 0., 0, 1, 0.25, 1, 0 },
-    { "HP A500", "HP A500 PA-RISC Server",               AC, DIGITAL, 120., 0., 0., 0, 1, 0.25, 1, 0 },
-    { "HP zx6000", "HP dual Itanium zx6000 Workstation", AC, DIGITAL, 120., 0., 0., 0, 1, 0.25, 1, 0 },
-#endif
-    { 0, 0, NOLOAD, NOGROUP, 0., 0., 0., 0, 0, 0., 0, 0 }
-  };
-#endif
 };
 
 Loads::Loads(void)
@@ -166,22 +105,26 @@ Loads::dump(void)
 void
 Loads::dump(struct load *entry)
 {
-  cerr << "Dumping System Load for " << entry->name << endl;
-
-  if (entry->name != 0)
-    cerr << "\tIs an " << load_strs[entry->type] << " device";
-  else
-    cerr << "\tThere is no device name" << endl;
-  
-  cerr << " in the " << loadgroup_strs[entry->group] << " category" << endl;
-  cerr << "\tThe Voltage is " << entry->voltage;
-  cerr << ", the Wattage is " << entry->wattage;
-  cerr << ". The Amperage is " << entry->amperage << endl;
-
-  if (entry->description != NULL)
-    cerr << "\tThe Description is \"" << entry->description << "\"" << endl;
-  else
-    cerr << "\tThere is no description" << endl;
+    if (entry) {
+	cerr << "Dumping System Load for " << entry->name << endl;
+	
+	if (entry->name != 0)
+	    cerr << "\tIs an " << load_strs[entry->type] << " device";
+	else
+	    cerr << "\tThere is no device name" << endl;
+	
+	cerr << " in the " << loadgroup_strs[entry->group] << " category" << endl;
+	cerr << "\tThe Voltage is " << entry->voltage;
+	cerr << ", the Wattage is " << entry->wattage;
+	cerr << ". The Amperage is " << entry->amperage << endl;
+	
+	if (entry->description != NULL)
+	    cerr << "\tThe Description is \"" << entry->description << "\"" << endl;
+	else
+	    cerr << "\tThere is no description" << endl;
+    } else {
+	cerr << "ERROR: no entry specified to dump!" << endl;
+    }
 }
 
 // Dump the data as a comma delimited ASCII text file
@@ -400,10 +343,30 @@ Loads::readLoadsSQL(Database &db)
 	for (it=result->begin(); it!=result->end(); ++it) {
 	    load_t *thisload = new load_t;
 	    vector<string> &row = *it;
-	    thisload->name = const_cast<char *>(row[1].c_str());
-	    thisload->description = const_cast<char *>(row[2].c_str());
-	    thisload->type = static_cast<loadtype_e>(strtol(row[3].c_str(), NULL, 0));
-	    thisload->group = static_cast<loadgroup_e>(strtol(row[4].c_str(), NULL, 0));
+	    thisload->name = strdup(row[1].c_str());
+	    thisload->description = strdup(row[2].c_str());
+	    if (!row[3].empty()) {
+		if (row[3] == "AC") {
+		    thisload->type = AC;
+		} else if (row[3] == "DC") {
+		    thisload->type = DC;
+		} else {
+		    thisload->type = NOLOAD;
+		}
+	    }	
+	    if (!row[4].empty()) {
+		if (row[4] == "HOUSEHOLD") {
+		    thisload->group = HOUSEHOLD;
+		} else if (row[4] == "TOOLS") {
+		    thisload->group = TOOLS;
+		} else if (row[4] == "KITCHEN") {
+		    thisload->group = KITCHEN;
+		} else if (row[4] == "DIGITAL") {
+		    thisload->group = DIGITAL;
+		} else {
+		    thisload->group = UNDEFINED;
+		}
+	    }
 	    thisload->voltage = strtof(row[5].c_str(), NULL);
 	    thisload->wattage = strtof(row[6].c_str(), NULL);
 	    thisload->amperage = strtof(row[7].c_str(), NULL);

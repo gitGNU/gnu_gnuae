@@ -90,12 +90,16 @@ Inverters::readSQL(Database &db)
 	for (it=result->begin(); it!=result->end(); ++it) {
 	    inverter_t *thisinvert = new inverter_t;
 	    vector<string> &row = *it;
-	    thisinvert->name = const_cast<char *>(row[1].c_str());
-	    thisinvert->manufacturer = const_cast<char *>(row[2].c_str());
+	    if (!row[1].empty()) {
+		thisinvert->name = strdup(row[1].c_str());
+	    }
+	    if (!row[2].empty()) {
+		thisinvert->manufacturer = strdup(row[2].c_str());
+	    }
 	    thisinvert->price = strtof(row[3].c_str(), NULL);
 	    thisinvert->wattage = strtol(row[4].c_str(), NULL, 0);
 	    thisinvert->voltage = strtol(row[5].c_str(), NULL, 0);
-	    thisinvert->LCD = static_cast<feature_e>(strtol(row[6].c_str(), NULL, 0));
+	    // thisinvert->LCD = static_cast<feature_e>(strtol(row[6].c_str(), NULL, 0));
 	    // thisinvert->group = static_cast<loadgroup>(strtol(row[4].c_str(), NULL, 0));
 	    // thisinvert->voltage = strtof(row[5].c_str(), NULL);
 	    // thisinvert->wattage = strtof(row[6].c_str(), NULL);

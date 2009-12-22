@@ -51,7 +51,7 @@ static function_entry gnuae_functions[] = {
     PHP_FE(gui_add_item, NULL)
     PHP_FE(gui_list_items, NULL)
     PHP_FE(gui_erase_item, NULL)
-    PHP_FE(gui_get_load_data, NULL)
+    PHP_FE(gui_get_data, NULL)
     PHP_FE(gui_new_project, NULL)
     PHP_FE(gui_update_project, NULL)
     PHP_FE(gui_get_project, NULL)
@@ -65,7 +65,7 @@ zend_module_entry gnuae_module_entry = {
     gnuae_functions,
     PHP_MINIT(gnuae),
     PHP_MSHUTDOWN(gnuae),
-    PHP_RINIT(gnuae),
+    NULL, //PHP_RINIT(gnuae),
     NULL,
     NULL,
     "1.0",
@@ -74,6 +74,7 @@ zend_module_entry gnuae_module_entry = {
 
 ZEND_GET_MODULE(gnuae)
 
+// Called when initializing this module into php
 PHP_MINIT_FUNCTION(gnuae)
 {
 
@@ -137,6 +138,7 @@ PHP_MINIT_FUNCTION(gnuae)
     return SUCCESS;
 }
 
+// Called when this module is shutdown by php
 PHP_MSHUTDOWN_FUNCTION(gnuae)
 {
     
@@ -145,6 +147,7 @@ PHP_MSHUTDOWN_FUNCTION(gnuae)
     return SUCCESS;
 }
 
+// Called after each request
 PHP_RINIT_FUNCTION(gnuae)
 {
     gui_init();
@@ -561,6 +564,7 @@ PHP_FUNCTION(gui_get_project)
 	WRONG_PARAM_COUNT;
     }
 
+    // php_printf("DEBUG: Looking for %d, %s!<br>\n", id, str);
     array_init(result);
     if (len && str) {
 	project_t *proj = gui_get_project(id, str);
@@ -578,7 +582,7 @@ PHP_FUNCTION(gui_get_project)
 	    add_next_index_double(result, proj->latitude);
 	    add_next_index_double(result, proj->longitude);
 	} else {
-	    php_printf("WARNING: didn't get anything back from gui_get_project!\n");
+	    php_printf("WARNING: didn't get anything back from gui_get_project!!<br>\n");
 	}
     } else {
 	php_printf("Invalid paramaters!");
@@ -624,7 +628,7 @@ PHP_FUNCTION(gui_list_names)
 		names++;
 	    }
 	} else {
-	    php_printf("WARNING: didn't get anything back from gui_list_names!\n");
+	    php_printf("WARNING: didn't get anything back from gui_list_names!<br>\n");
 	}
     } else {
 	php_printf("Invalid paramater for name!");
@@ -723,7 +727,7 @@ PHP_FUNCTION(gui_list_items)
 	    add_next_index_long(item, it->hours);
 	    add_next_index_long(item, it->minutes);
 	    add_next_index_zval(result, item);
-	    free(it);
+//	    free(it);
 	}
     }
 
@@ -735,33 +739,57 @@ PHP_FUNCTION(gui_list_items)
     RETURN_ZVAL(result, 0, 1);
 }
 
-PHP_FUNCTION(gui_get_load_data)
+PHP_FUNCTION(gui_get_data)
 {
-    char *str;
-    int len;
+    char *table = 0;
+    int table_len = 0;
+    char *name = 0;
+    int name_len = 0;
+    long id = 0;
     zval *result = malloc(sizeof(zval));
     
-    if (zend_parse_parameters(1 TSRMLS_CC, "s", &str, &len) == FAILURE) {
+    if (zend_parse_parameters(3 TSRMLS_CC, "ls|s", &id, &name, &name_len, &table, &table_len) == FAILURE) {
 	WRONG_PARAM_COUNT;
     }
 
+    // If the optional table name isn't supplied, assume it's a load
+    if (table_len == 0 || table == 0) {
+	table = "loads";
+    }
+    
     array_init(result);
+    if (name_len && name) {
+	
+	if (strcmp(table, "loads") == 0) {
+	    load_t *load = gui_get_data(id, name, table);
+	    if (load) {
+		add_next_index_string(result, load->name, strlen(load->name));
+		add_next_index_string(result, load->description, strlen(load->description));
+		add_next_index_long(result, load->type);
+		add_next_index_long(result, load->group);
+		add_next_index_double(result, load->voltage);
+		add_next_index_double(result, load->wattage);
+		add_next_index_double(result, load->amperage);
+	    }
+	} else if (strcmp(table, "batteries") == 0) {
+	} else if (strcmp(table, "chargers") == 0) {
+	} else if (strcmp(table, "inverters") == 0) {
+	} else if (strcmp(table, "modules") == 0) {
+	} else if (strcmp(table, "pumps") == 0) {
+	} else if (strcmp(table, "centers") == 0) {
+	} else if (strcmp(table, "combiners") == 0) {
+	} else if (strcmp(table, "wire") == 0) {
 #if 0
-    if (len && str) {
-	load_t *load = (load_t *)gui_get_load_data(str);
-	if (load) {
-	    add_next_index_string(result, load->name, strlen(load->name));
-	    add_next_index_string(result, load->description, strlen(load->description));
-	    add_next_index_long(result, load->type);
-	    add_next_index_long(result, load->group);
-	    add_next_index_double(result, load->voltage);
-	    add_next_index_double(result, load->wattage);
-	    add_next_index_double(result, load->amperage);
+	} else if (strcmp(table, "prices") == 0) {
+	    result = _prices.findEntry(item);
+	} else if (strcmp(table, "vendors") == 0) {
+	    result = _vendors.findEntry(item);
+#endif
 	}
     } else {
 	php_printf("Invalid paramater for name!");
     }
-#endif
+
     // 2nd field, 0 is no copy, 3rd field is destruct before returning
     RETURN_ZVAL(result, 0, 1);
 }

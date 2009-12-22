@@ -102,7 +102,7 @@ GnuAE::loadData()
         _inverters.readSQL(*this);
         _batteries.readSQL(*this);
         _centers.readSQL(*this);
-        _pvpanels.readSQL(*this);
+        _modules.readSQL(*this);
         _chargers.readSQL(*this);
         _combiners.readSQL(*this);
         _pumps.readSQL(*this);
@@ -120,23 +120,23 @@ GnuAE::listTableNames(const char *table)
     // DEBUGLOG_REPORT_FUNCTION;    
     auto_ptr<vector<string> > data;
     
-    if (strncmp(table, "load", 2) == 0) {
+    if (strncmp(table, "loads", 2) == 0) {
         data = _loads.dataNames();
-    } else if (strncmp(table, "center", 2) == 0) {
+    } else if (strncmp(table, "centers", 2) == 0) {
         data = _centers.dataNames();
-    } else if (strncmp(table, "charger", 2) == 0) {
+    } else if (strncmp(table, "chargers", 2) == 0) {
         data = _chargers.dataNames();
-    } else if (strncmp(table, "combiner", 2) == 0) {
+    } else if (strncmp(table, "combiners", 2) == 0) {
         data = _combiners.dataNames();
-    } else if (strncmp(table, "inverter", 2) == 0) {
+    } else if (strncmp(table, "inverters", 2) == 0) {
         data = _inverters.dataNames();
-    } else if (strncmp(table, "pump", 2) == 0) {
+    } else if (strncmp(table, "pumps", 2) == 0) {
         data = _pumps.dataNames();
     } else if (strncmp(table, "wire", 2) == 0) {
         data = _wire.dataNames();
-    } else if (strncmp(table, "pvpanel", 2) == 0) {
-        data = _pvpanels.dataNames();
-    } else if (strncmp(table, "battery", 2) == 0) {
+    } else if (strncmp(table, "modules", 2) == 0) {
+        data = _modules.dataNames();
+    } else if (strncmp(table, "batteries", 2) == 0) {
         data = _batteries.dataNames();
     }
 
@@ -155,14 +155,6 @@ GnuAE::listTableNames(const char *table)
     }
 
     return 0;
-}
-
-void *
-GnuAE::getLoadData(long id, const char *item)
-{
-    // DEBUGLOG_REPORT_FUNCTION;
-    load_t *load = _loads.findEntry(item);
-    return (void *)load;
 }
 
 // Create or redefine the overall project settings
@@ -446,6 +438,100 @@ GnuAE::updateItem(long projid, item_t *item)
     return Database::queryInsert(str);
 }
 
+void *
+GnuAE::getData(long id, const char *item, const char *table)
+{
+// DEBUGLOG_REPORT_FUNCTION;
+
+    // If no table is specified, use the loads table as a default
+    if (!table) {
+	table = "loads";
+    }
+
+    void *result;
+    if (strcmp(table, "loads") == 0) {
+	result = _loads.findEntry(item);
+    } else if (strcmp(table, "batteries") == 0) {
+	result = _batteries.findEntry(item);
+    } else if (strcmp(table, "chargers") == 0) {
+	result = _chargers.findEntry(item);
+    } else if (strcmp(table, "inverters") == 0) {
+	result = _inverters.findEntry(item);
+    } else if (strcmp(table, "modules") == 0) {
+	result = _modules.findEntry(item);
+    } else if (strcmp(table, "pumps") == 0) {
+	result = _pumps.findEntry(item);
+    } else if (strcmp(table, "centers") == 0) {
+	result = _centers.findEntry(item);
+    } else if (strcmp(table, "combiners") == 0) {
+	result = _combiners.findEntry(item);
+    } else if (strcmp(table, "wire") == 0) {
+	result = _wire.findEntry(item);
+#if 0
+    } else if (strcmp(table, "prices") == 0) {
+	result = _prices.findEntry(item);
+    } else if (strcmp(table, "vendors") == 0) {
+	result = _vendors.findEntry(item);
+#endif
+    }
+	
+    return result;
+}
+
+#if 0
+void *
+GnuAE::getData(long projid, long id, const char *name, const char *table)
+{
+    // DEBUGLOG_REPORT_FUNCTION;
+
+#ifdef __STDC_HOSTED__
+    ostringstream  query;
+#else
+    ostrstream     query;
+#endif
+    
+    query.str("");
+    query << "SELECT * FROM " << table << " WHERE ";
+    if (id != 0 && name != 0) {
+	query << " itemID = " << id;
+	query << " and name = \'" << name << "\'";
+    } else if (id == 0 && name != 0) {
+	query << " name = \'" << name << "\'";
+    } else if (id != 0 && name == 0) {
+	query << " id = " << id;
+    }
+    query << ends;
+
+#ifdef __STDC_HOSTED__
+    string str = query.str().c_str();
+#else
+    string str = query.str();
+#endif
+    vector<vector<string> > *result = Database::queryResults(str);
+    vector<vector<string> >::iterator it = result->begin();
+    item_t *item = 0;
+    if (result->size()) {
+	item = new item_t;
+	// item = (item_t *)malloc(sizeof(item_t));
+	vector<string> &row = *it;
+	// ignore row[0], as it's just our project ID
+	item->id =          strtol(row[1].c_str(), NULL, 0);
+	item->item =        strdup(row[2].c_str());
+	item->description = strdup(row[3].c_str());
+//	item->quantity = strtol(row[5].c_str(), NULL, 0);
+	item->days =    strtol(row[6].c_str(), NULL, 0);
+	item->hours =   strtol(row[7].c_str(), NULL, 0);
+	item->minutes = strtol(row[8].c_str(), NULL, 0);
+    }
+
+    if (result) {
+	delete result;
+    }
+    
+    return item;
+}
+#endif
+
 // Look up an existing project by name or ID or both.
 item_t *
 GnuAE::getItem(long projid, long id, const char *name)
@@ -723,7 +809,7 @@ GnuAE::dump()
     _combiners.dump();
     _pumps.dump();
     _wire.dump();
-    _pvpanels.dump();
+    _modules.dump();
 
     if (_usesql) {
         cerr << "Using SQL Queries" << endl;

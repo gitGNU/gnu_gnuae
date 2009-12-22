@@ -83,8 +83,9 @@ PHP_FUNCTION(gui_erase_project);
 // List the names of the various items so we can create a menu
 PHP_FUNCTION(gui_list_names);
 PHP_FUNCTION(gui_add_item);
+PHP_FUNCTION(gui_erase_item);
 PHP_FUNCTION(gui_list_items);
-PHP_FUNCTION(gui_get_load_data);
+PHP_FUNCTION(gui_get_data);
 
 extern zend_module_entry gnuae_module_entry;
 #define phpext_gnuae_ptr &gnuae_module_entry

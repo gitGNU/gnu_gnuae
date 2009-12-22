@@ -130,8 +130,12 @@ Chargers::readSQL(Database &db)
     	for (it=result->begin(); it!=result->end(); ++it) {
     	    charger_t *thisch = new charger_t;
     	    vector<string> &row = *it;
-    	    thisch->name = const_cast<char *>(row[1].c_str());
-    	    thisch->manufacturer = const_cast<char *>(row[2].c_str());
+	    if (!row[1].empty()) {
+		thisch->name = strdup(row[1].c_str());
+	    }
+	    if (!row[2].empty()) {
+		thisch->manufacturer = strdup(row[2].c_str());
+	    }
     	    // thiscent->price = strtof(row[3].c_str(), NULL);
     	    thisch->amperage = strtol(row[4].c_str(), NULL, 0);
     	    thisch->volts_in = strtol(row[5].c_str(), NULL, 0);

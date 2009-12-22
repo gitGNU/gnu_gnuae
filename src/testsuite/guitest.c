@@ -193,7 +193,6 @@ item_tests()
         unresolved("gui_update_item()");        
     }
     
-#if 1
     item_t **items = gui_list_items();
     if (items) {
         if (strcmp(items[0]->item, name) == 0) {
@@ -204,7 +203,6 @@ item_tests()
     } else {
         unresolved("gui_list_items()");
     }
-#endif
     
     gui_erase_item(id, 50050, name);
     item2 = gui_get_item(id, 50050, name);

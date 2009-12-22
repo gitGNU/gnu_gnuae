@@ -52,6 +52,8 @@ extern "C" {
     // tables, including the project data and the profile data.
     const char **gui_list_names(const char *name);
 
+    void *gui_get_data(long itemid, const char *itemname, const char *table);
+
     // Project functions go here
 
     // Add a new project to the database

@@ -77,8 +77,13 @@ Combiners::readSQL(Database &db)
     	for (it=result->begin(); it!=result->end(); ++it) {
     	    combiner_t *thiscm = new combiner_t;
     	    vector<string> &row = *it;
-    	    thiscm->name = const_cast<char *>(row[1].c_str());
-    	    thiscm->manufacturer = const_cast<char *>(row[2].c_str());
+	    if (!row[1].empty()) {
+		thiscm->name = strdup(row[1].c_str());
+	    }
+	    if (!row[2].empty()) {
+		thiscm->manufacturer = strdup(row[2].c_str());
+	    }
+
     	    // thiscent->price = strtof(row[3].c_str(), NULL);
     	    thiscm->circuits = strtol(row[4].c_str(), NULL, 0);
     	    thiscm->conductors = strtol(row[5].c_str(), NULL, 0);

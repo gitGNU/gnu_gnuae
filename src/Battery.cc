@@ -61,8 +61,12 @@ Battery::readSQL(Database &db)
 	for (it=result->begin(); it!=result->end(); ++it) {
 	    battery_t *thisbat = new battery_t;
 	    vector<string> &row = *it;
-	    thisbat->name = const_cast<char *>(row[1].c_str());
-	    thisbat->manufacturer = const_cast<char *>(row[2].c_str());
+	    if (!row[1].empty()) {
+		thisbat->name = strdup(row[1].c_str());
+	    }
+	    if (!row[2].empty()) {
+		thisbat->manufacturer = strdup(row[2].c_str());
+	    }
 	    thisbat->price = strtof(row[3].c_str(), NULL);
 	    thisbat->voltage = strtol(row[4].c_str(), NULL, 0);
 	    thisbat->rate20 = strtol(row[5].c_str(), NULL, 0);

@@ -85,7 +85,7 @@ public:
     bool loadData();
 
     const char **listTableNames(const char *table);
-    void *getLoadData(long id, const char *item);
+    void *getData(long id, const char *item, const char *table);
 
     // Project functions
     
@@ -139,7 +139,7 @@ private:
     Combiners	_combiners;
     Inverters	_inverters;
     Loads	_loads;
-    PVPanels	_pvpanels;
+    PVPanels	_modules;
     Pumps	_pumps;
     Wire	_wire;
     bool	_usesql;

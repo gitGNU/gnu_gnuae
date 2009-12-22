@@ -67,7 +67,7 @@ Battery::readSQL(Database &db)
 	    if (!row[2].empty()) {
 		thisbat->manufacturer = strdup(row[2].c_str());
 	    }
-	    thisbat->price = strtof(row[3].c_str(), NULL);
+//	    thisbat->price = strtof(row[3].c_str(), NULL);
 	    thisbat->voltage = strtol(row[4].c_str(), NULL, 0);
 	    thisbat->rate20 = strtol(row[5].c_str(), NULL, 0);
 	    thisbat->rate100 = strtol(row[6].c_str(), NULL, 0);
@@ -103,7 +103,6 @@ Battery::dump(battery_t *bat)
     if (bat) {
 	dbglogfile << "Battery Name is: " << bat->name;
 	dbglogfile << ", Manufacturer is: " << bat->manufacturer << endl;
-	// dbglogfile << bat->price << endl;
 	dbglogfile << "\tVoltage is: "<< bat->voltage;
 	dbglogfile << ", Rate20 is: " << bat->rate20;
 	dbglogfile << ", Rate100 is: " << bat->rate100 << endl;

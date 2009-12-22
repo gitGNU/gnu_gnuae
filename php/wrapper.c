@@ -21,6 +21,15 @@
 #include "NEC.h"
 #include "gui.h"
 #include "Loads.h"
+#include "Battery.h"
+#include "Centers.h"
+#include "Chargers.h"
+#include "Combiners.h"
+#include "Inverters.h"
+#include "Loads.h"
+#include "PVPanel.h"
+#include "Pumps.h"
+#include "Wire.h"
 
 ZEND_DECLARE_MODULE_GLOBALS(gnuae)
 
@@ -759,9 +768,8 @@ PHP_FUNCTION(gui_get_data)
     
     array_init(result);
     if (name_len && name) {
-	
 	if (strcmp(table, "loads") == 0) {
-	    load_t *load = gui_get_data(id, name, table);
+	    load_t *load = (load_t *)gui_get_data(id, name, table);
 	    if (load) {
 		add_next_index_string(result, load->name, strlen(load->name));
 		add_next_index_string(result, load->description, strlen(load->description));
@@ -772,18 +780,145 @@ PHP_FUNCTION(gui_get_data)
 		add_next_index_double(result, load->amperage);
 	    }
 	} else if (strcmp(table, "batteries") == 0) {
+	    battery_t *batt = (battery_t *)gui_get_data(id, name, table);
+	    if (batt) {
+		add_next_index_string(result, batt->name, strlen(batt->name));
+		add_next_index_string(result, batt->manufacturer, strlen(batt->manufacturer));
+		add_next_index_long(result, batt->voltage);
+		add_next_index_long(result, batt->rate20);
+		add_next_index_long(result, batt->rate100);
+	    }
 	} else if (strcmp(table, "chargers") == 0) {
+	    charger_t *charger = (charger_t *)gui_get_data(id, name, table);
+	    if (charger) {
+		add_next_index_string(result, charger->name, strlen(charger->name));
+		add_next_index_string(result, charger->manufacturer, strlen(charger->manufacturer));
+		add_next_index_long(result,   charger->amperage);
+		add_next_index_long(result,   charger->volts_in);
+		add_next_index_long(result,   charger->volts_out);
+		add_next_index_double(result, charger->efficiency);
+		add_next_index_double(result, charger->openmax);
+		add_next_index_long(result,   charger->lcd);
+		add_next_index_long(result,   charger->MPPT);
+		add_next_index_long(result,   charger->PWM);
+		add_next_index_long(result,   charger->tempsensor);
+		add_next_index_long(result,   charger->remote);
+	    }
 	} else if (strcmp(table, "inverters") == 0) {
-	} else if (strcmp(table, "modules") == 0) {
+	    inverter_t *invert = (inverter_t *)gui_get_data(id, name, table);
+	    if (invert) {
+		add_next_index_string(result, invert->name, strlen(invert->name));
+		add_next_index_string(result, invert->manufacturer, strlen(invert->manufacturer));
+		add_next_index_long(result, invert->wattage);
+		add_next_index_long(result, invert->voltage);
+		add_next_index_long(result, invert->LCD);
+		add_next_index_long(result, invert->charger);
+		add_next_index_long(result, invert->remote);
+		add_next_index_long(result, invert->tempsensor);
+		add_next_index_long(result, invert->sinewave);
+	    }    
 	} else if (strcmp(table, "pumps") == 0) {
+	    pump_t *pump = (pump_t *)gui_get_data(id, name, table);
+	    if (pump) {
+		add_next_index_string(result, pump->name, strlen(pump->name));
+		add_next_index_string(result, pump->manufacturer, strlen(pump->manufacturer));
+		add_next_index_long(result, pump->wattage);
+		add_next_index_long(result, pump->voltage);
+		add_next_index_long(result, pump->gpm);
+	    }
 	} else if (strcmp(table, "centers") == 0) {
+	    center_t *center = (center_t *)gui_get_data(id, name, table);
+	    if (center) {
+		add_next_index_string(result, center->name, strlen(center->name));
+		add_next_index_string(result, center->manufacturer, strlen(center->manufacturer));
+		add_next_index_long(result, center->voltage);
+	    }
 	} else if (strcmp(table, "combiners") == 0) {
+	    combiner_t *combiner = (combiner_t *)gui_get_data(id, name, table);
+	    if (combiner) {
+		add_next_index_string(result, combiner->name, strlen(combiner->name));
+		add_next_index_string(result, combiner->manufacturer, strlen(combiner->manufacturer));
+		add_next_index_long(result, combiner->circuits);
+		add_next_index_long(result, combiner->conductors);
+	    }
 	} else if (strcmp(table, "wire") == 0) {
+	    wire_t *wire = (wire_t *)gui_get_data(id, name, table);
+	    if (wire) {
+		add_next_index_string(result, wire->name, strlen(wire->name));
+		add_next_index_double(result, wire->area_mm);
+		add_next_index_long(result,   wire->area_mils);
+		add_next_index_long(result,   wire->strand_qty);
+		add_next_index_double(result, wire->strand_mm);
+		add_next_index_double(result, wire->strans_in);
+		add_next_index_double(result, wire->dia_mm);
+		add_next_index_double(result, wire->dia_in);
+		add_next_index_double(result, wire->sarea_mm);
+		add_next_index_double(result, wire->sarea_in);
+		add_next_index_double(result, wire->uncoated_km);
+		add_next_index_double(result, wire->uncoated_kft);
+		add_next_index_double(result, wire->coated_km);
+		add_next_index_double(result, wire->coated_kft);
+		add_next_index_double(result, wire->alum_km);
+		add_next_index_double(result, wire->alum_kft);
+	    }
+	} else if (strcmp(table, "modules") == 0) {
+	    pvpanel_t *pv = ( pvpanel_t *)gui_get_data(id, name, table);
+	    if (pv) {
+		add_next_index_string(result, pv->name, strlen(pv->name));
+		add_next_index_string(result, pv->Vintage, strlen(pv->Vintage));
+		add_next_index_double(result, pv->Area);
+		add_next_index_string(result, pv->Material, strlen(pv->Material));
+		add_next_index_long(result,   pv->Series_Cells);
+		add_next_index_long(result,   pv-> Parallel_C_S);
+		add_next_index_double(result, pv->Isco);
+		add_next_index_double(result, pv->Voco);
+		add_next_index_double(result, pv->Impo);
+		add_next_index_double(result, pv->Vmpo);
+		add_next_index_double(result, pv->aIsc);
+		add_next_index_double(result, pv->aImp);
+		add_next_index_double(result, pv->C0);
+		add_next_index_double(result, pv->C1);
+		add_next_index_double(result, pv->BVoco);
+		add_next_index_double(result, pv->mBVoc);
+		add_next_index_double(result, pv->BVmpo);
+		add_next_index_double(result, pv->mBVmp);
+		add_next_index_double(result, pv->n);
+		add_next_index_double(result, pv->C2);
+		add_next_index_double(result, pv->C3);
+		add_next_index_double(result, pv->A0);
+		add_next_index_double(result, pv->A1);
+		add_next_index_double(result, pv->A2);
+		add_next_index_double(result, pv->A3);
+		add_next_index_double(result, pv->A4);
+		add_next_index_double(result, pv->B0);
+		add_next_index_double(result, pv->B1);
+		add_next_index_double(result, pv->B2);
+		add_next_index_double(result, pv->B3);
+		add_next_index_double(result, pv->B4);
+		add_next_index_double(result, pv->B5);
+		add_next_index_double(result, pv->d_Tc);
+		add_next_index_double(result, pv->fd);
+		add_next_index_double(result, pv->a);
+		add_next_index_double(result, pv->b);
+		add_next_index_double(result, pv->C4);
+		add_next_index_double(result, pv->C5);
+		add_next_index_double(result, pv->Ixo);
+		add_next_index_double(result, pv->Ixxo);
+		add_next_index_double(result, pv->C6);
+		add_next_index_double(result, pv->C7);
+		add_next_index_string(result, pv->Picture, strlen(pv->Picture));
+		add_next_index_string(result, pv->Description, strlen(pv->Description));
+		add_next_index_string(result, pv->Manufacturer, strlen(pv->Manufacturer));
+	    }
 #if 0
 	} else if (strcmp(table, "prices") == 0) {
-	    result = _prices.findEntry(item);
+	    price_t *cost = gui_get_data(id, name, table);
+	    if (cost) {
+	    }
 	} else if (strcmp(table, "vendors") == 0) {
-	    result = _vendors.findEntry(item);
+	    vendor_t *vendor = gui_get_data(id, name, table);
+	    if (vendor) {
+	    }
 #endif
 	}
     } else {

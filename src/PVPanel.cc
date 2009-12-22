@@ -160,10 +160,6 @@ PVPanels::dump(pvpanel_t *pv, bool enhanced)
 	cerr << "Description is " << pv->Description << endl;
     }
     
-    if (pv->Price) {
-	cerr << "Price is $" << pv->Price << endl;
-    }
-    
     if (pv->Manufacturer) {
 	cerr << "Manufacturer is " << pv->Manufacturer << endl;
     }
@@ -437,7 +433,7 @@ PVPanels::readModuleDataCSV(std::string filespec)
 		    field.erase(0, 1);    // erase the comma
 		    if (field.size() > 0) {
 			field.erase(field.size(), string::npos);
-			pv->Price = atof(field.c_str());
+			// pv->Price = atof(field.c_str());
 			tmpbuf.erase(pos1, string::npos); // erase this part from
 			// the string
 		    }
@@ -708,10 +704,6 @@ PVPanels::writeDatabase(string filespec)
 	
 	if (_enhanced) {
 	    /* Enhanced fields */
-	    if (pv->Price)
-		os << pv->Price << ",";
-	    else
-		os << ",";
 	    if (pv->Manufacturer)
 		os << "\"" << pv->Manufacturer << "\""; 
 	    else

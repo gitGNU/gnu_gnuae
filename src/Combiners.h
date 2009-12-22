@@ -26,7 +26,6 @@ typedef struct
 {
     const char *name;
     const char *manufacturer;
-    double price;
     int circuits;                 /* The number of input circuits the box supports */
     int conductors;               /* Some combiner boxes have multiple output lines */
 } combiner_t;

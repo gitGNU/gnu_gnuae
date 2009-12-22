@@ -29,7 +29,6 @@ typedef struct
 {
     const char *name;
     const char *manufacturer;
-    double price;
     int wattage;
     int voltage;
     feature_e LCD;

@@ -25,7 +25,6 @@
 typedef struct {
     const char *name;
     const char *manufacturer;
-    double price;
     double wattage;
     double voltage;
     double gpm;

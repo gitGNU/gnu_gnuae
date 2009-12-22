@@ -68,7 +68,6 @@ typedef struct {
     const char *Picture;
     const char *Description;
     /* Enhanced fields */
-    float Price;
     char *Manufacturer;           /* The company that makes this panel */  
 } pvpanel_t;
 

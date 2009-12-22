@@ -96,7 +96,7 @@ Inverters::readSQL(Database &db)
 	    if (!row[2].empty()) {
 		thisinvert->manufacturer = strdup(row[2].c_str());
 	    }
-	    thisinvert->price = strtof(row[3].c_str(), NULL);
+	    // thisinvert->price = strtof(row[3].c_str(), NULL);
 	    thisinvert->wattage = strtol(row[4].c_str(), NULL, 0);
 	    thisinvert->voltage = strtol(row[5].c_str(), NULL, 0);
 	    // thisinvert->LCD = static_cast<feature_e>(strtol(row[6].c_str(), NULL, 0));

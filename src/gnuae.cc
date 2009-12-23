@@ -461,7 +461,6 @@ GnuAE::getData(long id, const char *item, const char *table)
 	result = _modules.findEntry(item);
     } else if (strncmp(table, "pumps", 2) == 0) {
 	result = _pumps.findEntry(item);
-	_pumps.dump();
     } else if (strncmp(table, "centers", 2) == 0) {
 	result = _centers.findEntry(item);
     } else if (strncmp(table, "combiners", 2) == 0) {

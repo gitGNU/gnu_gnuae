@@ -449,23 +449,24 @@ GnuAE::getData(long id, const char *item, const char *table)
     }
 
     void *result;
-    if (strcmp(table, "loads") == 0) {
+    if (strncmp(table, "loads", 2) == 0) {
 	result = _loads.findEntry(item);
-    } else if (strcmp(table, "batteries") == 0) {
+    } else if (strncmp(table, "batteries", 2) == 0) {
 	result = _batteries.findEntry(item);
-    } else if (strcmp(table, "chargers") == 0) {
+    } else if (strncmp(table, "chargers", 2) == 0) {
 	result = _chargers.findEntry(item);
-    } else if (strcmp(table, "inverters") == 0) {
+    } else if (strncmp(table, "inverters", 2) == 0) {
 	result = _inverters.findEntry(item);
-    } else if (strcmp(table, "modules") == 0) {
+    } else if (strncmp(table, "modules", 2) == 0) {
 	result = _modules.findEntry(item);
-    } else if (strcmp(table, "pumps") == 0) {
+    } else if (strncmp(table, "pumps", 2) == 0) {
 	result = _pumps.findEntry(item);
-    } else if (strcmp(table, "centers") == 0) {
+	_pumps.dump();
+    } else if (strncmp(table, "centers", 2) == 0) {
 	result = _centers.findEntry(item);
-    } else if (strcmp(table, "combiners") == 0) {
+    } else if (strncmp(table, "combiners", 2) == 0) {
 	result = _combiners.findEntry(item);
-    } else if (strcmp(table, "wire") == 0) {
+    } else if (strncmp(table, "wire", 2) == 0) {
 	result = _wire.findEntry(item);
 #if 0
     } else if (strcmp(table, "prices") == 0) {

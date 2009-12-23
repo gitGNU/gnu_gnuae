@@ -76,7 +76,7 @@ extern "C" {
     // delete a load from the profile database
     bool gui_erase_item(long projid, long id, const char *name);
     // Get a list of the chosen items in the profile
-    item_t **gui_list_items();
+    item_t **gui_list_items(long projid);
     
     // List of loads stuff goes here.
     

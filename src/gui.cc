@@ -104,10 +104,10 @@ gui_erase_item(long projid, long id, const char *name)
 }
 
 item_t **
-gui_list_items()
+gui_list_items(long projid)
 {
     // DEBUGLOG_REPORT_FUNCTION;
-    auto_ptr<vector<item_t *> > items = gdata.listItems();
+    auto_ptr<vector<item_t *> > items = gdata.listItems(projid);
     item_t **result = 0;
     int i = 0;
     if (items.get()) {

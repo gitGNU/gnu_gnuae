@@ -82,7 +82,9 @@ public:
 	typename std::map<std::string, datatype *>::const_iterator it;
         for (it = _data.begin(); it != _data.end(); it++) {
             entry = static_cast<datatype *>(it->second);
-            entrynames->push_back(entry->name);
+	    if (entry) {
+		entrynames->push_back(entry->name);
+	    }
         }
         return entrynames;
     }

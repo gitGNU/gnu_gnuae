@@ -432,7 +432,7 @@ if (count($proj3)) {
 // gui_get_item(3, "TV");
 gui_add_item($projid, "TV", "TV sucks", LOAD, 50050, 2, 3, 4);
 gui_add_item($projid, "Stereo", "is great", LOAD, 50051, 6, 7, 8);
-$foo = gui_list_items();
+$foo = gui_list_items($projid);
 $size=count($foo);
 if ($size == 2) {
   if ($foo[1][0] == "TV") { 
@@ -445,7 +445,7 @@ if ($size == 2) {
 }
 
 gui_erase_item($projid, $foo[1][2], "TV");
-$foo = gui_list_items();
+$foo = gui_list_items($projid);
 $size=count($foo);
 if ($size == 1) {
   pass("gui_erase_items(TV) returns $size entries");

@@ -76,7 +76,7 @@ Pumps::readSQL(Database &db)
     	    // thiscent->price = strtof(row[3].c_str(), NULL);
     	    thisp->wattage = strtof(row[4].c_str(), NULL);
     	    thisp->voltage = strtof(row[5].c_str(), NULL);
-    	    thisp->gpm = strtof(row[6].c_str(), NULL);
+    	    thisp->gpm =     strtof(row[6].c_str(), NULL);
     	    addEntry(thisp);
     	}
 	delete result;

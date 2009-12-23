@@ -193,7 +193,7 @@ item_tests()
         unresolved("gui_update_item()");        
     }
     
-    item_t **items = gui_list_items();
+    item_t **items = gui_list_items(id);
     if (items) {
         if (strcmp(items[0]->item, name) == 0) {
             pass("gui_list_items()");

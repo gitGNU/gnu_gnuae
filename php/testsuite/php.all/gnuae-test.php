@@ -217,20 +217,54 @@ if ($size) {
   fail("gui_list_names(load) fails to return any entries");  
 }
 
+$foo = gui_get_data(0, "TV", "loads");
+if (count($foo)) {
+  if ($foo[0] == "TV") {
+    pass("gui_get_data(loads) returns legit data");
+  } else {
+    fail("gui_get_data(loads) fails to legit data");
+  }
+} else {
+  fail("gui_get_data(loads) fails to legit data");
+}
+
 $foo = gui_list_names("centers");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(center) returns $size entries");  
+  pass("gui_list_names(centers) returns $size entries");  
 } else {
-  fail("gui_list_names(center) fails to return any entries");  
+  fail("gui_list_names(centers) fails to return any entries");  
 }
 
-$foo = gui_list_names("inverter");
+$foo = gui_get_data(0, "SW4024", "centers");
+if (count($foo)) {
+  if ($foo[0] == "SW4024") {
+    pass("gui_get_data(centers) returns legit data");
+  } else {
+    fail("gui_get_data(centers) fails to legit data");
+  }
+} else {
+  fail("gui_get_data(centers) fails to legit data");
+}
+
+
+$foo = gui_list_names("inverters");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(inverter) returns $size entries");  
+  pass("gui_list_names(inverters) returns $size entries");  
 } else {
-  fail("gui_list_names(inverter) fails to return any entries");  
+  fail("gui_list_names(inverters) fails to return any entries");  
+}
+
+$foo = gui_get_data(0, "Trace 2548", "inverters");
+if (count($foo)) {
+  if ($foo[0] == "Trace 2548") {
+    pass("gui_get_data(inverters) returns legit data");
+  } else {
+    fail("gui_get_data(inverters) fails to legit data");
+  }
+} else {
+  fail("gui_get_data(inverters) fails to legit data");
 }
 
 $foo = gui_list_names("combiners");
@@ -241,13 +275,36 @@ if ($size) {
   fail("gui_list_names(combiners) fails to return any entries");  
 }
 
-$foo = gui_list_names("pvpanels");
+$foo = gui_get_data(0, "PSPV", "combiners");
+if (count($foo)) {
+  if ($foo[0] == "PSPV") {
+    pass("gui_get_data(combiners) returns legit data");
+  } else {
+    fail("gui_get_data(combiners) fails to legit data");
+  }
+} else {
+  fail("gui_get_data(combiners) fails to legit data");
+}
+
+$foo = gui_list_names("modules");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(pvpanels) returns $size entries");
+  pass("gui_list_names(modules) returns $size entries");
 } else {
-  fail("gui_list_names(pvpanels) fails to return any entries");
+  fail("gui_list_names(modules) fails to return any entries");
 }
+
+// $foo = gui_get_data(0, "8-KC80-Array", "modules");
+// var_dump($foo);
+// if (count($foo)) {
+//   if ($foo[0] == "8-KC80-Array") {
+//     pass("gui_get_data(modules) returns legit data");
+//   } else {
+//     fail("gui_get_data(modules) fails to legit data");
+//   }
+// } else {
+//   fail("gui_get_data(modules) fails to legit data");
+// }
 
 $foo = gui_list_names("pumps");
 $size=count($foo);
@@ -257,12 +314,34 @@ if ($size) {
   fail("gui_list_names(pumps) fails to return any entries");
 }
 
-$foo = gui_list_names("charger");
+$foo = gui_get_data(0, "ETA", "pumps");
+if (count($foo)) {
+  if ($foo[0] == "ETA") {
+    pass("gui_get_data(pumps) returns legit data");
+  } else {
+    fail("gui_get_data(pumps) fails to legit data");
+  }
+} else {
+  fail("gui_get_data(pumps) fails to legit data");
+}
+
+$foo = gui_list_names("chargers");
 $size=count($foo);
 if ($size) {
-  pass("gui_list_names(charger) returns $size entries");
+  pass("gui_list_names(chargers) returns $size entries");
 } else {
-  fail("gui_list_names(charger) fails to return any entries");
+  fail("gui_list_names(chargers) fails to return any entries");
+}
+
+$foo = gui_get_data(0, "C35", "chargers");
+if (count($foo)) {
+  if ($foo[0] == "C35") {
+    pass("gui_get_data(chargers) returns legit data");
+  } else {
+    fail("gui_get_data(chargers) fails to legit data");
+  }
+} else {
+  fail("gui_get_data(chargers) fails to legit data");
 }
 
 $foo = gui_list_names("batteries");
@@ -273,6 +352,18 @@ if ($size) {
   fail("gui_list_names(batteries) fails to return any entries");
 }
 
+$foo = gui_get_data(0, "L16H", "batteries");
+if (count($foo)) {
+  if ($foo[0] == "L16H") {
+    pass("gui_get_data(batteries) returns legit data");
+  } else {
+    fail("gui_get_data(batteries) fails to legit data");
+  }
+} else {
+  fail("gui_get_data(batteries) fails to legit data");
+}
+
+
 $foo = gui_list_names("wire");
 $size=count($foo);
 if ($size) {
@@ -281,12 +372,16 @@ if ($size) {
   xfail("gui_list_names(wire) fails to return any entries");
 }
 
-$foo = gui_get_data(0, "TV", "loads");
-if ($foo[0] == "TV") {
-  pass("gui_get_data(loads) returns legit data");
-} else {
-  fail("gui_get_data(loads) fails to legit data");
-}
+// $foo = gui_get_data(0, "", "");
+// if (count($foo)) {
+// if ($foo[0] == "L16H") {
+//   pass("gui_get_data() returns legit data");
+// } else {
+//   fail("gui_get_data() fails to legit data");
+// }
+// } else {
+//   fail("gui_get_data() fails to legit data");
+// }
 
 //
 // Project API tests
@@ -324,8 +419,6 @@ if ($proj2[0] == $proj[0] && $proj2[1] == $proj[1]) {
 
 gui_erase_project($projid, "New Name");
 $proj3 = gui_get_project($projid, "New Name");
-var_dump($proj3);
-
 if (count($proj3)) {
   fail("gui_erase_project(id, name)");
 } else {
@@ -343,21 +436,21 @@ $foo = gui_list_items();
 $size=count($foo);
 if ($size == 2) {
   if ($foo[1][0] == "TV") { 
-    pass("gui_list_items() returns $size entries");
+    pass("gui_list_items(TV) returns $size entries");
   } else {
-    fail("gui_list_items() fails to return any entries"); 
+    fail("gui_list_items(TV) fails to return any entries"); 
   }
 } else {
-  fail("gui_list_items() fails to return any entries");
+  fail("gui_list_items(TV) fails to return any entries");
 }
 
 gui_erase_item($projid, $foo[1][2], "TV");
 $foo = gui_list_items();
 $size=count($foo);
 if ($size == 1) {
-  pass("gui_erase_items() returns $size entries");
+  pass("gui_erase_items(TV) returns $size entries");
 } else {
-  fail("gui_erase_items() fails to return any entries"); 
+  fail("gui_erase_items(TV) fails to return any entries"); 
 }
 
 gui_erase_item($projid, $foo[0][2], "Stereo");

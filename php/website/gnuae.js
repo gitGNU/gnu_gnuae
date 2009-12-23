@@ -35,37 +35,109 @@ else if (window.ActiveXObject) {
   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
-function projSearch() {
-  var theQuery = document.getElementById('projname').value;
-  // var theQuery = document.getElementById("load").options[document.getElementById("load").selectedIndex].text;  
-  //If the form data is *not* blank, query the DB and return the results
-  if(theQuery !== "") {
-    //Change the content of the "result" DIV to "Searching..."
-    //This gives our user confidence that the script is working if it
-    //takes a moment for the result to be returned. However the user
-    //will likely never see this as the result will be returned in an
-    //instant... 
-    document.getElementById('result').innerHTML = "Searching for project " + theQuery;
-    
-    //This sets a variable with the URL (and query strings) to our PHP script
-    var url = 'newLoad.php' + theQuery;
-    //Open the URL above "asynchronously" (that's what the "true" is
-    //for) using the GET method 
-    xmlhttp.open('GET', url, true);
-    //Check that the PHP script has finished sending us the result
-    xmlhttp.onreadystatechange = function() {
-      if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-        //Replace the content of the "result" DIV with the result returned
-        // by the PHP script
-        document.getElementById('result').innerHTML = xmlhttp.responseText + ' ';
-      } else {
-        //If the PHP script fails to send a response, or sends back an
-        //error, display a simple user-friendly notification 
-//        document.getElementById('result').innerHTML = 'Error: preSearch Failed!';
-      }
-    };
-    xmlhttp.send(null);  
+// This updates the information for this project from the web page.
+function updateProfile(op, name)
+{
+  var theID = document.getElementById('projid').value;
+  var theName = document.getElementById('projname').value;
+  var theLoad = document.getElementById("load").options[document.getElementById("load").selectedIndex].text;
+  
+  
+  //This sets a variable with the URL (and query strings) to our PHP script
+  var url = 'profiles.php?projid=' + theID;
+  url += '&projname=' + theName;
+  url += '&op=' + op;
+  if (op == 'update') {
+    url += '&loadname=' + theLoad;
+    // url += '&projinfo=' + document.getElementById('projinfo').value;
+    // url += '&days=' + document.getElementById('days').value;
+    //    url += '&location=' + document.getElementById('location').value;
+    document.getElementById('status').innerHTML = 'Adding to Profile: ' + url;
   }
+  
+  if (op == 'write') {
+    alert("Operation is " + op + ": " + theLoad + " or " + name);  // debugging crap
+    // url += '&projinfo=' + document.getElementById('projinfo').value;
+    // url += '&days=' + document.getElementById('days').value;
+    //    url += '&location=' + document.getElementById('location').value;
+    document.getElementById('status').innerHTML = 'Writing Profile' + url;
+  }
+  
+  // alert("URL is " + url);
+  // Open the URL above "asynchronously" (that's what the "true" is
+  // for) using the GET method 
+  xmlhttp.open('GET', url, true);
+  // Check that the PHP script has finished sending us the result
+  xmlhttp.onreadystatechange = function() {
+    if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      // Replace the content of the "result" DIV with the result
+      // returned by the PHP script
+      document.getElementById('result').innerHTML = xmlhttp.responseText + ' ';
+      document.getElementById('status').innerHTML = 'updateProfile(' + op + ') done...';
+    } else {
+      if(xmlhttp.readyState == 3) {
+        document.getElementById('status').innerHTML = 'updateProfile(' + op + ') in progress...'
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      } else {
+        // If the PHP script fails to send a response, or sends back an
+        //        error, display a simple user-friendly notification 
+        document.getElementById('status').innerHTML = 'Error: updateProfile(' + op + ') Failed!'
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      }
+    }
+  };
+  // alert("Writing data to database!" + url);  // debugging crap
+  xmlhttp.send(null);
+}
+
+// This updates the information for this project from the web page.
+function newProject(op)
+{
+  var theID = document.getElementById('projid').value;
+  var theName = document.getElementById('projname').value;
+
+  //  alert("Operation is " + op);  // debugging crap
+  
+  //This sets a variable with the URL (and query strings) to our PHP script
+  var url = 'project.php?projid=' + theID;
+  url += '&projname=' + theName;
+  url += '&op=' + op;
+
+  if (op == 'write') {
+    url += '&projinfo=' + document.getElementById('projinfo').value;
+    url += '&latitude=' + document.getElementById('latitude').value;
+    url += '&longitude=' + document.getElementById('longitude').value;
+    url += '&sunhours=' + document.getElementById('sunhours').value;
+    url += '&windhours=' +  document.getElementById('windhours').value;
+    url += '&speed=' + document.getElementById('speed').value;
+    //    url += '&location=' + document.getElementById('location').value;
+    document.getElementById('status').innerHTML = 'updating Project' + url;
+    //alert("Writing data to database!" + url);  // debugging crap
+  }
+  
+  // Open the URL above "asynchronously" (that's what the "true" is
+  // for) using the GET method 
+  xmlhttp.open('GET', url, true);
+  // Check that the PHP script has finished sending us the result
+  xmlhttp.onreadystatechange = function() {
+    if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      // Replace the content of the "result" DIV with the result
+      // returned by the PHP script
+      document.getElementById('result').innerHTML = xmlhttp.responseText + ' ';
+      document.getElementById('status').innerHTML = 'newProject(' + op + ') done...';
+    } else {
+      if(xmlhttp.readyState == 3) {
+        document.getElementById('status').innerHTML = 'newProject(' + op + ') in progress...'
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      } else {
+        // If the PHP script fails to send a response, or sends back an
+        //        error, display a simple user-friendly notification 
+        document.getElementById('status').innerHTML = 'Error: newProject(' + op + ') Failed!'
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      }
+    }
+  };
+  xmlhttp.send(null);
 }
 
 // This updates the information for this project from the web page.
@@ -76,27 +148,48 @@ function updateProject()
   var theInfo = document.getElementById('projinfo').value;
   var theLat = document.getElementById('latitude').value;
   var theLon = document.getElementById('longitude').value;
+  var theSunHours = document.getElementById('projsunhours').value;
+  var theWindHours = document.getElementById('projwindhours').value;
+  var theSpeed = document.getElementById('projspeed').value;
+  var theLocation = document.getElementById('projlocation').value;
 
-  document.getElementById('result').innerHTML = "Updating project " + theName
+  document.getElementById('status').innerHTML = "Updating project " + theName
     + ": " + theID + ": " + theInfo + ":" + theLat + ":" + theLon;
 
   //This sets a variable with the URL (and query strings) to our PHP script
-  var url = 'updateProject.php?projid=' + theID;
+  var url = 'project.php?projid=' + theID;
   url += '&projname=' + theName;
   url += '&projinfo=' + theInfo;
-  url += '&projlat=' + theLat;
-  url += '&projlon=' + theLon;
-  
+  url += '&latitude=' + theLat;
+  url += '&longitude=' + theLon;
+  url += '&sunhours=' + theSunHours;
+  url += '&windhours=' + theWindHours;
+  url += '&speed=' + theSpeed;
+  url += '&location=' + thelocation;
+  url += '&op=write';
+
+  alert("URL is " + url);
+
   //Open the URL above "asynchronously" (that's what the "true" is for) using the GET method
   xmlhttp.open('GET', url, true);
   //Check that the PHP script has finished sending us the result
   xmlhttp.onreadystatechange = function() {
     if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-      //Replace the content of the "result" DIV with the result returned by the PHP script
-      document.getElementById('continue').innerHTML = xmlhttp.responseText + ' ';
+      // Replace the content of the "result" DIV with the result
+      // returned by the PHP script
+      document.getElementById('result').innerHTML = xmlhttp.responseText + ' ';
+      document.getElementById('status').innerHTML = 'updateProject() done...'
+      + xmlhttp.readyState + " : " + xmlhttp.status;
     } else {
-      //If the PHP script fails to send a response, or sends back an error, display a simple user-friendly notification
-      //        document.getElementById('result').innerHTML = 'Error: preSearch Failed!';
+      if(xmlhttp.readyState == 3) {
+        document.getElementById('status').innerHTML = 'updateProject() in progress...'
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      } else {
+        // If the PHP script fails to send a response, or sends back an
+        //        error, display a simple user-friendly notification 
+        document.getElementById('status').innerHTML = 'Error: updateProject() Failed!'
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      }
     }
   };
   xmlhttp.send(null);
@@ -113,7 +206,7 @@ function newLoad()
   }
   
   //This sets a variable with the URL (and query strings) to our PHP script
-  var url = 'newLoad.php?loadid=' + theID;
+  var url = 'newload.php?loadid=' + theID;
   url += '&loadname=' + theQuery;
   //Open the URL above "asynchronously" (that's what the "true" is
   //for) using the GET method

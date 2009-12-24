@@ -28,6 +28,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <cstdlib>
 
 namespace gnuae {
 
@@ -42,6 +43,14 @@ public:
 	    for (it = _data.begin(); it != _data.end(); it++) {
 		datatype *entry = it->second;
 		if (entry) {
+		    //std::cerr << "Deleting: " << entry->name << std::endl;
+		    if (entry->name) {
+			free((void *)entry->name);
+		    }
+		    //std::cerr << "Deleting: " << entry->manufacturer << std::endl;
+		    if (entry->manufacturer) {
+			free((void *)entry->manufacturer);
+		    }
 		    delete entry;
 		}
 	    }
@@ -61,6 +70,13 @@ public:
     }
     
     void clearData(void) {
+	typename std::map<std::string, datatype *>::const_iterator it;
+        for (it = _data.begin(); it != _data.end(); it++) {
+            datatype *entry = static_cast<datatype *>(it->second);
+	    if (entry) {
+		delete entry;
+	    }
+        }
         _data.clear();
     }
     
@@ -106,7 +122,7 @@ public:
             return _data[name];
         }
 #endif   
-private:
+protected:
     std::map<std::string, datatype *> _data;
 };
 

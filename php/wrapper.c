@@ -642,13 +642,13 @@ PHP_FUNCTION(gui_list_names)
     }
 
     array_init(result);
-    const char **names = 0;
+    char **names = 0;
     if (len && str) {
-	names = (const char **)gui_list_names(str);
+	names = (char **)gui_list_names(str);
 	if (names) {
 	    int i = 0;
 	    while (names[i] != 0) {
-		add_next_index_string(result, names[i], 1);
+		add_next_index_string(result, names[i], strlen(names[i]));
 		names++;
 	    }
 	} else {
@@ -773,7 +773,7 @@ PHP_FUNCTION(gui_get_data)
 {
     char *table = 0;
     int table_len = 0;
-    char *name = 0;
+    const char *name = 0;
     int name_len = 0;
     long id = 0;
     zval *result = malloc(sizeof(zval));
@@ -794,6 +794,7 @@ PHP_FUNCTION(gui_get_data)
 	    if (load) {
 		add_next_index_string(result, load->name, strlen(load->name));
 		add_next_index_string(result, load->description, strlen(load->description));
+		add_next_index_string(result, load->manufacturer, strlen(load->manufacturer));
 		add_next_index_long(result, load->type);
 		add_next_index_long(result, load->group);
 		add_next_index_double(result, load->voltage);
@@ -883,7 +884,7 @@ PHP_FUNCTION(gui_get_data)
 		add_next_index_double(result, wire->alum_kft);
 	    }
 	} else if (strcmp(table, "modules") == 0) {
-	    pvpanel_t *pv = ( pvpanel_t *)gui_get_data(id, name, table);
+	    pvpanel_t *pv = (pvpanel_t *)gui_get_data(id, name, table);
 	    if (pv) {
 		add_next_index_string(result, pv->name, strlen(pv->name));
 		add_next_index_string(result, pv->Vintage, strlen(pv->Vintage));
@@ -929,7 +930,7 @@ PHP_FUNCTION(gui_get_data)
 		add_next_index_double(result, pv->C7);
 		add_next_index_string(result, pv->Picture, strlen(pv->Picture));
 		add_next_index_string(result, pv->Description, strlen(pv->Description));
-		add_next_index_string(result, pv->Manufacturer, strlen(pv->Manufacturer));
+		add_next_index_string(result, pv->manufacturer, strlen(pv->manufacturer));
 	    }
 #if 0
 	} else if (strcmp(table, "prices") == 0) {

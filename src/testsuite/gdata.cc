@@ -211,11 +211,11 @@ main(int argc, char **argv) {
 	}
 	free(node0->item);
 	free(node0->description);
-	//delete node0;
+	delete node0;
 
 	free(node1->item);
 	free(node1->description);
-	//delete node1;
+	delete node1;
     } else {
         runtest.unresolved("GnuAE::listItems()");
     }

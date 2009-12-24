@@ -37,34 +37,6 @@ namespace gnuae {
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
-#if 0
-extern "C" {
-  
-  inverter_t inverters[] = {
-    { "None",                          "",    0.0,    0,  0,  NO },
-    { "Trace 812",              "Xantrex",  650.0,  575, 12,  NO },
-    { "Trace DR1512",           "Xantrex",  950.0, 1500, 12,  NO },
-    { "Trace DR2412",           "Xantrex", 1285.0, 2400, 12,  NO },
-    { "Trace 2512",             "Xantrex", 1575.0, 2500, 12,  NO },
-    { "Trace SW2512",           "Xantrex", 2485.0, 2500, 12, YES },
-    { "Trace 724",              "Xantrex",  725.0,  425, 24,  NO },
-    { "Trace DR1524",           "Xantrex",  895.0, 1500, 24,  NO },
-    { "Trace DR2424",           "Xantrex", 1225.0, 2400, 24,  NO },
-    { "Trace 2232",             "Xantrex", 1475.0, 2200, 24,  NO },
-    { "Trace 2536",             "Xantrex", 1900.0, 2500, 24,  NO },
-    { "Trace 2548",             "Xantrex", 1995.0, 2500, 24,  NO },
-    { "Trace SW4024",           "Xantrex", 3185.0, 4000, 24, YES },
-    { "Trace SW4048",           "Xantrex", 3185.0, 4000, 48, YES },
-    { "Trace SW5048",           "Xantrex", 3680.0, 5500, 48, YES },
-    { "Heart Freedom 10",       "Xantrex", 1095.0, 1000, 24,  NO },
-    { "Heart Freedom 20",       "Xantrex", 1095.0, 2000, 24,  NO },
-    { "Heart Freedom 25",       "Xantrex", 1655.0, 2500, 24,  NO },
-    { "Heart HF-12-600" ,       "Xantrex",  600.0,  300, 24,  NO },
-    { 0,                                0,      0.,    0, 0,  NO }
-  };
-};
-#endif
-
 Inverters::Inverters()
 {
 }

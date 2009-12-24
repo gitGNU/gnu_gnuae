@@ -24,7 +24,7 @@
 
 typedef struct {
     char *name;
-    char *Vintage;                /* The year the test was done */
+    long Vintage;                /* The year the test was done */
     double Area;                  /* The area in square feet */
     char *Material;
     int Series_Cells;
@@ -65,10 +65,10 @@ typedef struct {
     double Ixxo;                  /*  */
     double C6;                    /*  */
     double C7;                    /*  */
-    const char *Picture;
-    const char *Description;
+    char *Picture;
+    char *Description;
     /* Enhanced fields */
-    char *Manufacturer;           /* The company that makes this panel */  
+    char *manufacturer;           /* The company that makes this panel */  
 } pvpanel_t;
 
 extern const int LINELEN;
@@ -84,7 +84,7 @@ extern const int FIELDLEN;
 
 namespace gnuae {
 
-class PVPanels: public DataTypeMethods<pvpanel_t>, NEC
+    class PVPanels: public DataTypeMethods<pvpanel_t> // , NEC
 {
 public:
     PVPanels(void);
@@ -96,7 +96,7 @@ public:
 
     int readSQL(Database &db);    
     
-    std::vector<pvpanel_t *> getPVPanels(void) { return _data; };
+    std::vector<pvpanel_t *> getPVPanels(void) { return _pvdata; };
   
     void setPVPanels(std::vector<struct pvpanel *>);
     std::vector<std::string> *names(void);
@@ -109,24 +109,26 @@ public:
     
     void add(pvpanel_t *pv);
     std::vector<struct pvpanel *> *search(std::string str);
-    pvpanel_t *operator [] (int x) { return _data[x]; };
+    pvpanel_t *operator [] (int x) { return _pvdata[x]; };
     
-    int dataSize(void) { return _data.size(); };
-    float fuseSize(float amps) { return NEC::ampacity(amps); };
+    int dataSize(void) { return _pvdata.size(); };
+    float fuseSize(float amps) {
+	// return NEC::ampacity(amps);
+    };
 
     float ampacity(pvpanel_t *pv, int parallel) {
-	return pv->Isco * parallel * NEC::ampacity();
+	//return pv->Isco * parallel * NEC::ampacity();
     };
     float overCurrent(pvpanel_t *pv, int parallel) {
 	return ampacity(pv, parallel);
     };
   
     float maxCurrent(pvpanel_t *pv, int parallel) {
-	return pv->Isco * parallel * NEC::maxCurrent();
+	//return pv->Isco * parallel * NEC::maxCurrent();
     };
   
     float crystalCompensation(pvpanel_t *pv, float temp) {
-	return pv->Voco * NEC::crystalCompensation(temp);
+	// return pv->Voco * NEC::crystalCompensation(temp);
     };
   
     float maxCurrent(pvpanel_t *pv, float temp) {
@@ -139,7 +141,7 @@ public:
 private:
     bool _debug;
     bool _enhanced;
-    std::vector<pvpanel_t *> _data;
+    std::vector<pvpanel_t *> _pvdata;
 };
 
 // #if 0

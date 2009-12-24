@@ -36,12 +36,13 @@ namespace gnuae {
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
-Battery::Battery() {
+Battery::Battery()
+{
 
 };
 
-Battery::~Battery() {
-
+Battery::~Battery()
+{
 };
 
 int

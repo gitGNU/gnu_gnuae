@@ -39,6 +39,7 @@ typedef struct
     double coated_kft;
     double alum_km;
     double alum_kft;
+    char *manufacturer;
 } wire_t;
 
 #ifdef __cplusplus

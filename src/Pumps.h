@@ -23,8 +23,8 @@
 #include "config.h"
   
 typedef struct {
-    const char *name;
-    const char *manufacturer;
+    char *name;
+    char *manufacturer;
     double wattage;
     double voltage;
     double gpm;

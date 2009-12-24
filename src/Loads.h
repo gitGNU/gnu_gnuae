@@ -27,8 +27,9 @@ typedef enum { INACTIVE, ACTIVE } activedev_e;
 typedef enum { UNDEFINED, HOUSEHOLD, TOOLS, KITCHEN, DIGITAL } loadgroup_e;
 
 typedef struct load {
-    const char *name;
-    const char *description;
+    char *name;
+    char *description;
+    char *manufacturer;
     loadtype_e type;
     loadgroup_e group;
     double voltage;

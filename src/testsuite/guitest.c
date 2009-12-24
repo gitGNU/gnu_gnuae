@@ -92,7 +92,7 @@ project_tests()
 	free(proj2->name);
 	free(proj2->description);
 	// free(proj2->location);
-	//free(proj2);
+	free(proj2);
     } else {
 	unresolved("gui_get_project()");
     }
@@ -114,7 +114,7 @@ project_tests()
 	free(proj2->name);
 	free(proj2->description);
 //	free(proj2->location);
-	//free(proj2);
+	free(proj2);
     } else {
 	unresolved("gui_update_project()");
     }
@@ -169,7 +169,7 @@ item_tests()
         }
 	free(item2->item);
 	free(item2->description);
-	// free(item2);
+	free(item2);
     } else {
             unresolved("gui_get_item()");        
     }
@@ -188,11 +188,11 @@ item_tests()
         }
 	free(item2->item);
 	free(item2->description);
-	// free(item2);
+	free(item2);
     } else {
         unresolved("gui_update_item()");        
     }
-    
+
     item_t **items = gui_list_items(id);
     if (items) {
         if (strcmp(items[0]->item, name) == 0) {

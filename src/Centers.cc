@@ -64,17 +64,12 @@ Centers::readSQL(Database &db)
     	string query = "SELECT * from centers";
     	vector<vector<string> > *result = db.queryResults(query);
     	vector<vector<string> >::iterator it;
-    	for (it=result->begin(); it!=result->end(); ++it) {
+    	for (it=result->begin(); it!= result->end(); ++it) {
     	    center_t *thiscent = new center_t;
     	    vector<string> &row = *it;
-	    if (!row[1].empty()) {
-		thiscent->name = strdup(row[1].c_str());
-	    }
-	    if (!row[2].empty()) {
-		thiscent->manufacturer = strdup(row[2].c_str());
-	    }
-    	    // thiscent->price = strtof(row[3].c_str(), NULL);
-    	    thiscent->voltage = strtol(row[4].c_str(), NULL, 0);
+	    thiscent->name = strdup(row[1].c_str());
+	    thiscent->manufacturer = strdup(row[2].c_str());
+    	    thiscent->voltage = strtol(row[3].c_str(), NULL, 0);
     	    addEntry(thiscent);
     	}
 	delete result;

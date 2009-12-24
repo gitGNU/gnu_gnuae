@@ -29,6 +29,7 @@
 #include <iterator>
 #include <cstdlib>
 #include <memory>
+#include <map>
 #include <algorithm>
 
 #include "DataType.h"
@@ -61,6 +62,25 @@ PVPanels::PVPanels(void)
 
 PVPanels::~PVPanels(void)
 {
+    if (_data.size()) {
+	std::map<std::string, pvpanel_t *>::const_iterator it;
+ 	for (it = _data.begin(); it != _data.end(); it++) {
+ 	    pvpanel_t *entry = it->second;
+ 	    if (entry) {
+ 		if (entry->Description) {
+ 		    free(entry->Description);
+ 		}
+ 		if (entry->Material) {
+ 		    free(entry->Material);
+ 		}
+#if 0
+ 		if (entry->Picture) {
+ 		    free(entry->Picture);
+ 		}
+#endif
+ 	    }
+ 	}
+    }
 }
 
 void
@@ -96,7 +116,7 @@ PVPanels::dump(pvpanel_t *pv, bool enhanced)
     }
     
     if (pv->Vintage != 0) {
-	if (*pv->Vintage != 0) {
+	if (pv->Vintage != 0) {
 	    cerr << "Vintage is " << pv->Vintage << endl;
 	} else {
 	    cerr << "No Vintage specified" << endl;
@@ -160,8 +180,8 @@ PVPanels::dump(pvpanel_t *pv, bool enhanced)
 	cerr << "Description is " << pv->Description << endl;
     }
     
-    if (pv->Manufacturer) {
-	cerr << "Manufacturer is " << pv->Manufacturer << endl;
+    if (pv->manufacturer) {
+	cerr << "manufacturer is " << pv->manufacturer << endl;
     }
 }
 
@@ -248,8 +268,8 @@ PVPanels::readModuleDataCSV(std::string filespec)
 	    // the CSV format. So we drop them to have just the plain string left.
 	    tmpbuf.erase(0, 1);
 	    tmpbuf.erase(tmpbuf.size()-1, 1);
-	    pv->Vintage = new char[strlen(buf)+1];
-	    strcpy(pv->Vintage, tmpbuf.c_str());
+	    pv->Vintage;// = new char[strlen(buf)+1];
+	    pv->Vintage, strtol(tmpbuf.c_str(), NULL, 0);
 	}
 	
 	in.getline(buf, LINELEN, ','); // Get a token from the line
@@ -415,10 +435,10 @@ PVPanels::readModuleDataCSV(std::string filespec)
 		    if (field.size() > 0) {
 			field.erase(field.size(), 1); // erase last double quote
 			if (field.size() == 1) {
-			    pv->Manufacturer = 0;
+			    pv->manufacturer = 0;
 			} else {
-			    pv->Manufacturer = new char[field.size()+1];
-			    strcpy(pv->Manufacturer, field.c_str());
+			    pv->manufacturer = new char[field.size()+1];
+			    strcpy(pv->manufacturer, field.c_str());
 			    tmpbuf.erase(pos1, string::npos); // erase this part from
 			    // the string
 			}
@@ -454,7 +474,7 @@ PVPanels::readModuleDataCSV(std::string filespec)
 	    }
 	} // if _enhanced
 	
-	_data.push_back(pv);
+	addEntry(pv);
     }
     
     in.close();
@@ -480,7 +500,7 @@ PVPanels::names(void)
 	return pvnames;
     }
     
-    for (it = _data.begin(); it != _data.end(); it++) {
+    for (it = _pvdata.begin(); it != _pvdata.end(); it++) {
 	entry = *it;
 	pvnames->push_back(entry->name);
     }
@@ -524,10 +544,17 @@ PVPanels::readSQL(Database &db)
 	for (it=result->begin(); it!=result->end(); ++it) {
 	    pvpanel_t *thispv = new pvpanel_t;
 	    vector<string> &row = *it;
-	    thispv->name = const_cast<char *>(row[1].c_str());
-	    thispv->Vintage = const_cast<char *>(row[2].c_str());
-	    thispv->Area = strtof(row[3].c_str(), NULL);
-	    thispv->Material = const_cast<char *>(row[4].c_str());
+	    if (!row[1].empty()) {
+		thispv->name = strdup(row[1].c_str());
+	    }
+	    if (!row[2].empty()) {
+		thispv->manufacturer = strdup(row[2].c_str());
+	    }
+	    thispv->Vintage = strtol(row[3].c_str(), NULL, 0);
+	    thispv->Area = strtof(row[4].c_str(), NULL);
+	    if (!row[5].empty()) {
+		thispv->Material = strdup(row[5].c_str());
+	    }
 	    thispv->Series_Cells = strtol(row[5].c_str(), NULL, 0);
 	    thispv->Parallel_C_S = strtol(row[6].c_str(), NULL, 0);
 	    thispv->Isco = strtof(row[7].c_str(), NULL);
@@ -564,11 +591,22 @@ PVPanels::readSQL(Database &db)
 	    thispv->C5 = strtof(row[38].c_str(), NULL);
 	    thispv->Ixo = strtof(row[39].c_str(), NULL);
 	    thispv->Ixxo = strtof(row[40].c_str(), NULL);
-	    thispv->C6 = strtof(row[41].c_str(), NULL);
-	    thispv->C7 = strtof(row[42].c_str(), NULL);
-	    thispv->Picture = const_cast<char *>(row[43].c_str());
-	    thispv->Description = const_cast<char *>(row[44].c_str());
-	    thispv->Manufacturer = const_cast<char *>(row[45].c_str());
+	    thispv->C6 = strtof(row[42].c_str(), NULL);
+	    thispv->C7 = strtof(row[43].c_str(), NULL);
+	    if (!row[44].empty()) {
+		if (row[44] != "0") {
+		    thispv->Picture = strdup(row[44].c_str());
+		} else {
+		    thispv->Picture = 0;
+		}
+	    }
+	    if (!row[45].empty()) {
+		if (row[44] != "0") {
+		    thispv->Description = strdup(row[45].c_str());
+		} else {
+		    thispv->Description = 0;
+		}
+	    }
 
 	    addEntry(thispv);
 	}
@@ -583,7 +621,7 @@ PVPanels::readSQL(Database &db)
 void
 PVPanels::add(pvpanel_t *pv)
 {
-    _data.push_back(pv);
+    addEntry(pv);
 }
 
 void
@@ -630,12 +668,12 @@ PVPanels::writeDatabase(string filespec)
     os << "name,Vintage,Area,Material,Series_Cells,Parallel_C-S,Isco,Voco,Impo,Vmpo,aIsc,aImp,C0,C1,BVoco,mBVoc,BVmpo,mBVmp,n,C2,C3,A0,A1,A2,A3,A4,B0,B1,B2,B3,B4,B5,d(Tc),fd,a,b,C4,C5,Ixo,Ixxo,C6,C7,Picture,Description";
     
     if (_enhanced) {
-	os << ",Price,Manufacturer";
+	os << ",Price,manufacturer";
     }
     
     os << endl;
     
-    for (it = _data.begin(); it != _data.end(); it++) {
+    for (it = _pvdata.begin(); it != _pvdata.end(); it++) {
 	pv = *it;
 	if (pv->name == 0) {
 	    break;
@@ -704,8 +742,8 @@ PVPanels::writeDatabase(string filespec)
 	
 	if (_enhanced) {
 	    /* Enhanced fields */
-	    if (pv->Manufacturer)
-		os << "\"" << pv->Manufacturer << "\""; 
+	    if (pv->manufacturer)
+		os << "\"" << pv->manufacturer << "\""; 
 	    else
 		os << "\"\"";
 	}

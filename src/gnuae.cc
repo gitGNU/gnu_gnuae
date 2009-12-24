@@ -98,10 +98,10 @@ GnuAE::loadData()
         dbglogfile << "Loaded " << _loads.dataSize() << "records from loads table." << endl;
     } else {
         dbglogfile << "Loading from SQL Database as data source." << endl;
-        _loads.readLoadsSQL(*this);
+	_loads.readLoadsSQL(*this);
         _inverters.readSQL(*this);
         _batteries.readSQL(*this);
-        _centers.readSQL(*this);
+        //_centers.readSQL(*this);
         _modules.readSQL(*this);
         _chargers.readSQL(*this);
         _combiners.readSQL(*this);

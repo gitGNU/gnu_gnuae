@@ -47,7 +47,6 @@ Pumps::Pumps()
 
 Pumps::~Pumps()
 {
-    // DEBUGLOG_REPORT_FUNCTION;
 }
 
 int

@@ -37,80 +37,13 @@ namespace gnuae {
 static LogFile& dbglogfile = LogFile::getDefaultInstance();
 static GnuAE& gdata = GnuAE::getDefaultInstance();
 
-#if 0
-extern "C" {
-
-  charger_t chargers[] = {
-    // Outback charge controllers
-    { "None",                       "",        0,  0,  0,  0,   0., 0,
-                                         NO, NO, NO, OPTIONAL, OPTIONAL },
-    { "MX60",               "Outback",     649.0, 60, 60, 24,   1., 125.0,
-                                        YES, YES, NO, OPTIONAL, OPTIONAL },
-    // RV Products charge controllers
-    { "solarboost 50L",     "RV Products", 419.0, 50, 24, 24, 0.97, 125.0,
-                                        NO, YES, NO, OPTIONAL, OPTIONAL },
-    { "Solarboost 50DL",    "RV Products", 499.0, 50, 24, 24, 0.97, 125.0,
-                                        YES, YES, NO, OPTIONAL, OPTIONAL },
-    { "Solarboost 2000E",   "RV Products",   229.0, 30, 48, 24, 0.95, 125.0,
-                                        OPTIONAL, YES, NO, OPTIONAL, OPTIONAL },
-    { "Solarboost 3048",    "RV Products", 479.0, 30, 48, 48, 0.97, 125.0,
-                                        NO, YES, NO, OPTIONAL, OPTIONAL },
-    { "Solarboost 3048DL",  "RV Products", 559.0, 30, 48, 48, 0.97, 125.0,
-                                        YES, YES, NO, OPTIONAL, OPTIONAL },
-    { "Solarboost 6024HL",  "RV Products", 509.0, 60, 48, 24, 0.95, 125.0,
-                                        NO, YES, NO, OPTIONAL, OPTIONAL },
-    { "Solarboost 6024HDL", "RV Products", 589.0, 60, 48, 24, 0.95, 125.0,
-                                        YES, YES, NO, OPTIONAL, OPTIONAL },
-    // Xantrex (Trace Engineering) charge controllers
-    { "C35",                "Xantrex",      119.0, 35, 24, 24, 1.0, 0.0,
-                                        YES, NO, NO, OPTIONAL, OPTIONAL },
-    { "C40",                "Xantrex",      159.0, 40, 48, 24, 1.0, 0.0,
-                                        YES, NO, NO, OPTIONAL, OPTIONAL },
-    { "C60",                "Xantrex",      199.0, 60, 24, 24, 1.0, 0.0,
-                                        YES, NO, NO, OPTIONAL, OPTIONAL },
-    // Morningstar charge controllers
-    { "TS-45",              "Morningstar",  159.0, 45, 24, 24, 1.0, 0.0,
-                                        YES, NO, NO, OPTIONAL, OPTIONAL },
-    { "TS-60",              "Morningstar",  199.0, 60, 24, 24, 1.0, 0.0,
-                                        YES, NO, NO, OPTIONAL, OPTIONAL },
-    { "PS-15",              "Morningstar",  112.0, 15, 24, 24, 1.0, 0.0,
-                                        NO, NO, YES, YES, NO },
-    { "PS-15M",             "Morningstar",  179.0, 15, 24, 24, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "PS-15M-48V",         "Morningstar",  222.0, 15, 48, 48, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "PS-30",              "Morningstar",  152.0, 30, 24, 24, 1.0, 0.0,
-                                        NO, NO, YES, YES, NO },
-    { "PS-30M",             "Morningstar",  152.0, 30, 24, 24, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "SS-6-12V",           "Morningstar",  48.0, 6, 12, 12, 1.0, 0.0,
-                                        NO, NO, YES, YES, NO },
-    { "SS-6L-12V",          "Morningstar",  59.0, 6, 12, 12, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "SS-10-12V",          "Morningstar",  55.0, 10, 12, 12, 1.0, 0.0,
-                                        NO, NO, YES, YES, NO },
-    { "SS-10L-12V",         "Morningstar",  70.0, 10, 12, 12, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "SS-10L-24V",         "Morningstar",  76.0, 10, 24, 24, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "SS-20L-12V",         "Morningstar",  95.0, 20, 12, 12, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "SS-20L-24V",         "Morningstar", 101.0, 20, 24, 24, 1.0, 0.0,
-                                        YES, NO, YES, YES, NO },
-    { "SG-4",               "Morningstar",  30.0, 4.5, 12, 12, 1.0, 0.0,
-                                        NO, NO, NO, NO, NO },
-    {                   0,              0,    0., 0,   0., 0,   1., 0.0,
-                                        NONE,     NONE,    NONE, NONE }
-  };
-};
-#endif
-
-Chargers::Chargers() {
+Chargers::Chargers()
+{
 
 }
 
-Chargers::~Chargers() {
-
+Chargers::~Chargers()
+{
 }
 
 int

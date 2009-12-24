@@ -199,7 +199,7 @@ if (bccomp($foo, '16') == 0) {
 // GUI API tests
 // 
 
-xdebug_start_trace("foo");
+//xdebug_start_trace("foo");
 
 // Test database functions
 
@@ -460,7 +460,7 @@ gui_erase_item($projid, $foo[0][2], "Stereo");
 //var_dump($foo);
 //echo $_GET['fooby'];
 
-xdebug_stop_trace();
+//xdebug_stop_trace();
 
 // Dump the totals
 totals();

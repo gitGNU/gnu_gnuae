@@ -52,12 +52,13 @@ extern "C" {
 };
 #endif
 
-Combiners::Combiners() {
+Combiners::Combiners()
+{
 
 }
 
-Combiners::~Combiners() {
-
+Combiners::~Combiners()
+{
 }
 
 int

@@ -77,6 +77,18 @@ Loads::Loads(void)
 
 Loads::~Loads(void)
 {
+    if (_data.size()) {
+	std::map<std::string, load_t *>::const_iterator it;
+	for (it = _data.begin(); it != _data.end(); it++) {
+	    load_t *entry = it->second;
+	    if (entry) {
+		//std::cerr << "Deleting: " << entry->description << std::endl;
+		if (entry->description) {
+		    free(entry->description);
+		}
+	    }
+	}
+    }
 }
 
 void
@@ -345,31 +357,32 @@ Loads::readLoadsSQL(Database &db)
 	    vector<string> &row = *it;
 	    thisload->name = strdup(row[1].c_str());
 	    thisload->description = strdup(row[2].c_str());
-	    if (!row[3].empty()) {
-		if (row[3] == "AC") {
+	    thisload->manufacturer = strdup(row[3].c_str());
+	    if (!row[4].empty()) {
+		if (row[4] == "AC") {
 		    thisload->type = AC;
-		} else if (row[3] == "DC") {
+		} else if (row[4] == "DC") {
 		    thisload->type = DC;
 		} else {
 		    thisload->type = NOLOAD;
 		}
 	    }	
-	    if (!row[4].empty()) {
-		if (row[4] == "HOUSEHOLD") {
+	    if (!row[5].empty()) {
+		if (row[5] == "HOUSEHOLD") {
 		    thisload->group = HOUSEHOLD;
-		} else if (row[4] == "TOOLS") {
+		} else if (row[5] == "TOOLS") {
 		    thisload->group = TOOLS;
-		} else if (row[4] == "KITCHEN") {
+		} else if (row[5] == "KITCHEN") {
 		    thisload->group = KITCHEN;
-		} else if (row[4] == "DIGITAL") {
+		} else if (row[5] == "DIGITAL") {
 		    thisload->group = DIGITAL;
 		} else {
 		    thisload->group = UNDEFINED;
 		}
 	    }
-	    thisload->voltage = strtof(row[5].c_str(), NULL);
-	    thisload->wattage = strtof(row[6].c_str(), NULL);
-	    thisload->amperage = strtof(row[7].c_str(), NULL);
+	    thisload->voltage = strtof(row[6].c_str(), NULL);
+	    thisload->wattage = strtof(row[7].c_str(), NULL);
+	    thisload->amperage = strtof(row[8].c_str(), NULL);
 	    addEntry(thisload);
 	}
 	delete result;

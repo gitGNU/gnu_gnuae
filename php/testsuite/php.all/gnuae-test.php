@@ -203,6 +203,8 @@ if (bccomp($foo, '16') == 0) {
 
 // Test database functions
 
+note("<h2>Database Tests</h2>");
+
 // This function is only used for testing, and closes the
 // connection to the existing database. This way we don't
 // pollute the main database with testing data.
@@ -408,7 +410,7 @@ if ($proj[0] == $projname && $proj[1] == $projdes) {
 
 $proj[0] = "New Name";
 $proj[1] = "New Description";
-gui_update_project($projid, $proj[0], $proj[1], $proj[2], $proj[3], $proj[4], $proj[5], $proj[6], $proj[7], $proj[8]);
+gui_update_project($projid, $proj[0], $proj[1], $proj[2], $proj[3], $proj[4], $proj[5], "", $proj[7], $proj[8]);
 $proj2 = gui_get_project($projid, "New Name");
 if ($proj2[0] == $proj[0] && $proj2[1] == $proj[1]) {
   pass("gui_update_project(id, name)");

@@ -101,7 +101,7 @@ GnuAE::loadData()
 	_loads.readLoadsSQL(*this);
         _inverters.readSQL(*this);
         _batteries.readSQL(*this);
-        //_centers.readSQL(*this);
+        _centers.readSQL(*this);
         _modules.readSQL(*this);
         _chargers.readSQL(*this);
         _combiners.readSQL(*this);

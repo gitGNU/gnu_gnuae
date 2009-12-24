@@ -217,9 +217,9 @@ if ($size) {
   fail("gui_list_names(load) fails to return any entries");  
 }
 
-$foo = gui_get_data(0, "TV", "loads");
-if (count($foo)) {
-  if ($foo[0] == "TV") {
+$foo1 = gui_get_data(0, "TV", "loads");
+if (count($foo1)) {
+  if ($foo1[0] == "TV") {
     pass("gui_get_data(loads) returns legit data");
   } else {
     fail("gui_get_data(loads) fails to legit data");
@@ -228,17 +228,17 @@ if (count($foo)) {
   fail("gui_get_data(loads) fails to legit data");
 }
 
-$foo = gui_list_names("centers");
-$size=count($foo);
+$foo2 = gui_list_names("centers");
+$size=count($foo2);
 if ($size) {
   pass("gui_list_names(centers) returns $size entries");  
 } else {
   fail("gui_list_names(centers) fails to return any entries");  
 }
 
-$foo = gui_get_data(0, "SW4024", "centers");
-if (count($foo)) {
-  if ($foo[0] == "SW4024") {
+$foo3 = gui_get_data(0, "SW4024", "centers");
+if (count($foo3)) {
+  if ($foo3[0] == "SW4024") {
     pass("gui_get_data(centers) returns legit data");
   } else {
     fail("gui_get_data(centers) fails to legit data");
@@ -247,18 +247,17 @@ if (count($foo)) {
   fail("gui_get_data(centers) fails to legit data");
 }
 
-
-$foo = gui_list_names("inverters");
-$size=count($foo);
+$foo4 = gui_list_names("inverters");
+$size=count($foo4);
 if ($size) {
   pass("gui_list_names(inverters) returns $size entries");  
 } else {
   fail("gui_list_names(inverters) fails to return any entries");  
 }
 
-$foo = gui_get_data(0, "Trace 2548", "inverters");
-if (count($foo)) {
-  if ($foo[0] == "Trace 2548") {
+$foo5 = gui_get_data(0, "Trace 2548", "inverters");
+if (count($foo5)) {
+  if ($foo5[0] == "Trace 2548") {
     pass("gui_get_data(inverters) returns legit data");
   } else {
     fail("gui_get_data(inverters) fails to legit data");
@@ -267,17 +266,17 @@ if (count($foo)) {
   fail("gui_get_data(inverters) fails to legit data");
 }
 
-$foo = gui_list_names("combiners");
-$size=count($foo);
+$foo6 = gui_list_names("combiners");
+$size=count($foo6);
 if ($size) {
   pass("gui_list_names(combiners) returns $size entries");  
 } else {
   fail("gui_list_names(combiners) fails to return any entries");  
 }
 
-$foo = gui_get_data(0, "PSPV", "combiners");
-if (count($foo)) {
-  if ($foo[0] == "PSPV") {
+$foo7 = gui_get_data(0, "PSPV", "combiners");
+if (count($foo7)) {
+  if ($foo7[0] == "PSPV") {
     pass("gui_get_data(combiners) returns legit data");
   } else {
     fail("gui_get_data(combiners) fails to legit data");
@@ -286,8 +285,8 @@ if (count($foo)) {
   fail("gui_get_data(combiners) fails to legit data");
 }
 
-$foo = gui_list_names("modules");
-$size=count($foo);
+$foo8 = gui_list_names("modules");
+$size=count($foo8);
 if ($size) {
   pass("gui_list_names(modules) returns $size entries");
 } else {
@@ -306,17 +305,17 @@ if ($size) {
 //   fail("gui_get_data(modules) fails to legit data");
 // }
 
-$foo = gui_list_names("pumps");
-$size=count($foo);
+$foo10 = gui_list_names("pumps");
+$size=count($foo10);
 if ($size) {
   pass("gui_list_names(pumps) returns $size entries");
 } else {
   fail("gui_list_names(pumps) fails to return any entries");
 }
 
-$foo = gui_get_data(0, "ETA", "pumps");
-if (count($foo)) {
-  if ($foo[0] == "ETA") {
+$foo11 = gui_get_data(0, "ETA", "pumps");
+if (count($foo11)) {
+  if ($foo11[0] == "ETA") {
     pass("gui_get_data(pumps) returns legit data");
   } else {
     fail("gui_get_data(pumps) fails to legit data");
@@ -325,17 +324,17 @@ if (count($foo)) {
   fail("gui_get_data(pumps) fails to legit data");
 }
 
-$foo = gui_list_names("chargers");
-$size=count($foo);
+$foo12 = gui_list_names("chargers");
+$size=count($foo12);
 if ($size) {
   pass("gui_list_names(chargers) returns $size entries");
 } else {
   fail("gui_list_names(chargers) fails to return any entries");
 }
 
-$foo = gui_get_data(0, "C35", "chargers");
-if (count($foo)) {
-  if ($foo[0] == "C35") {
+$foo13 = gui_get_data(0, "C35", "chargers");
+if (count($foo13)) {
+  if ($foo13[0] == "C35") {
     pass("gui_get_data(chargers) returns legit data");
   } else {
     fail("gui_get_data(chargers) fails to legit data");
@@ -344,17 +343,17 @@ if (count($foo)) {
   fail("gui_get_data(chargers) fails to legit data");
 }
 
-$foo = gui_list_names("batteries");
-$size=count($foo);
+$foo14 = gui_list_names("batteries");
+$size=count($foo14);
 if ($size) {
   pass("gui_list_names(batteries) returns $size entries");
 } else {
   fail("gui_list_names(batteries) fails to return any entries");
 }
 
-$foo = gui_get_data(0, "L16H", "batteries");
-if (count($foo)) {
-  if ($foo[0] == "L16H") {
+$foo15 = gui_get_data(0, "L16H", "batteries");
+if (count($foo15)) {
+  if ($foo15[0] == "L16H") {
     pass("gui_get_data(batteries) returns legit data");
   } else {
     fail("gui_get_data(batteries) fails to legit data");
@@ -364,8 +363,8 @@ if (count($foo)) {
 }
 
 
-$foo = gui_list_names("wire");
-$size=count($foo);
+$foo16 = gui_list_names("wire");
+$size=count($foo16);
 if ($size) {
   xpass("gui_list_names(wire) returns $size entries");
 } else {
@@ -432,10 +431,10 @@ if (count($proj3)) {
 // gui_get_item(3, "TV");
 gui_add_item($projid, "TV", "TV sucks", LOAD, 50050, 2, 3, 4);
 gui_add_item($projid, "Stereo", "is great", LOAD, 50051, 6, 7, 8);
-$foo = gui_list_items($projid);
-$size=count($foo);
+$foo17 = gui_list_items($projid);
+$size=count($foo17);
 if ($size == 2) {
-  if ($foo[1][0] == "TV") { 
+  if ($foo17[1][0] == "TV") { 
     pass("gui_list_items(TV) returns $size entries");
   } else {
     fail("gui_list_items(TV) fails to return any entries"); 
@@ -444,16 +443,16 @@ if ($size == 2) {
   fail("gui_list_items(TV) fails to return any entries");
 }
 
-gui_erase_item($projid, $foo[1][2], "TV");
-$foo = gui_list_items($projid);
-$size=count($foo);
+gui_erase_item($projid, 50050, "TV");
+$foo18 = gui_list_items($projid);
+$size=count($foo18);
 if ($size == 1) {
   pass("gui_erase_items(TV) returns $size entries");
 } else {
   fail("gui_erase_items(TV) fails to return any entries"); 
 }
 
-gui_erase_item($projid, $foo[0][2], "Stereo");
+gui_erase_item($projid, 50051, "Stereo");
 
 /* $foo = gui_get_load_data("TV"); */
 

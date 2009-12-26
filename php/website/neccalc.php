@@ -82,7 +82,7 @@
      <label>Diameter
      <select id=conddia onChange=updateNEC('conddia')>
      <option>1/2"</option>
-     <option>2/3"</option>
+     <option>3/4"</option>
      <option>1"</option>
      <option>1 1/4"</option>
      <option>1 1/2"</option>
@@ -92,7 +92,7 @@
      <option>2 1/2"</option>
      <option>2 3/4"</option>
      </select>
-   <input type=radio name=wtype  size=3 value="coppe" checked=$wtype onchange=updateNEC('type')>Copper</input>
+   <input type=radio name=wtype  size=3 value="copper" checked=$wtype onchange=updateNEC('type')>Copper</input>
    <input type=radio name=wtype  size=3 value="aluminum" checked=$wtype onchange=updateNEC('type')>Aluminum</input>
    <p>
      <label>AWG

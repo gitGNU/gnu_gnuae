@@ -35,6 +35,50 @@ else if (window.ActiveXObject) {
   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
+
+// This updates the information for this project from the web page.
+function updateWiring(id)
+{
+
+  var theResult = document.getElementById(id).value;
+
+  document.getElementById('status').innerHTML = 'ID is: ' + id + ":" + theResult;
+}
+
+// This updates the information for this project from the web page.
+function updateNEC(op)
+{
+  var theWatts  = document.getElementById('watts').value;
+  var theVolts  = document.getElementById('volts').value;
+  var theAmps   = document.getElementById('amps').value;
+  var theResult = "foo";
+
+  //alert("Operation is " + op + ":" + theWatts + ":" + theVolts + ":" + theAmps);  // debugging crap
+  
+  document.getElementById('status').innerHTML = 'Opeation is: ' + op;
+  if (op == 'watts') {
+    var result=<?php nec_volts(67.4, 22.4); ?>;
+    document.getElementById('status').innerHTML = 'FIXME ' + result;
+  }
+  if (op == 'watts') {
+    theResult=<?php echo nec_volts(67.4, 22.4) ?>;
+  } else if (op == 'volts') {
+    theResult=<?php nec_resisdence(1, 2, 3) ?>;
+  } else if (op == 'amps') {
+    theResult = "bar";
+  } else if (op == 'reset') {
+    theWatts = 0;
+    document.getElementById('watts').value = 0;
+    theVolts = 0;
+    document.getElementById('volts').value = 0;
+    theAmps = 0;
+    document.getElementById('amps').value = 0;
+    theResult = "Resetting all fields";
+  }
+  document.getElementById('result').innerHTML = 'Result is: ' + theResult;
+  
+}
+
 // This updates the information for this project from the web page.
 function updateProfile(op, name)
 {
@@ -57,9 +101,10 @@ function updateProfile(op, name)
   
   if (op == 'write') {
     alert("Operation is " + op + ": " + theLoad + " or " + name);  // debugging crap
-    // url += '&projinfo=' + document.getElementById('projinfo').value;
-    // url += '&days=' + document.getElementById('days').value;
-    //    url += '&location=' + document.getElementById('location').value;
+    //url += '&hours=' + document.getElementById('item[0]_hours').value;
+    // url += '&days=' + document.getElementById('item[0]_days').value;
+    // url += '&minutes=' + document.getElementById('item[0]_minutes').value;
+    //    url += '&location=' + document.getElementById('item[0]_location').value;
     document.getElementById('status').innerHTML = 'Writing Profile' + url;
   }
   

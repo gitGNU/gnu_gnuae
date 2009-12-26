@@ -29,7 +29,7 @@ function wireMetal($id) {
 function wireLength($id) {
 
   $newid = "wlen_$id";
-  echo '</td><td><label>Length<input type=text size=3 value=0 id=$newid onChange=updateWiring("$newid")>';
+  echo "</td><td><label>Length<input type=text size=3 value=0 id=$newid onChange=updateWiring('$newid')>";
 }
 
   // Print all the wire types as a selection menu

@@ -14,7 +14,18 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
+
+//
+// This file populates a table of the main wire runs between components.
+// It uses the calculated peak load to suggest the minimum wire gauge,
+// based on the length of the wire run, and other criteria like voltage
+// drop or voltage loss.
+
+// You have to have chosen an inverter, charge controller, and modules
+// for the calculations to be correct, as that data is used for
+// the voltages.
+//
 -->
 
 <html>
@@ -30,57 +41,33 @@
    
 <?php
    
-   gui_init_db("gnuaetest");
+   //   gui_init_db("gnuaetest");
    include "support.php";
 
-   $id="mod2mod";
    print <<<_HTML_
    <table>
    <tr><td>
-   <form name=$id onSubmit="return updateWirig($id)">
+   <form name=$id onChange="return updateWiring('fixme')">
 _HTML_;
-   echo "<label>Modules to charger</td><td>";
-   wireTypes('type1');
-   echo "</td><td>";
-   awg('type2');
-   echo "</td><td><label>Length<input type=text size=3 value=0 onChange=updateWiring($id)>";
-   echo "</td><td></tr><tr>";
 
+   echo "<label>Modules to charger</td><td>";
+   wireDetails('mod2charg');
+    
+// Charger to Batteries wire details
    echo "</td><td><label>Charger to Batteries</td><td>";
-   wireTypes('type1');
-   echo "</td><td>";
-   awg('type2');
-   echo "</td><td><label>Length<input type=text size=3 value=0 onChange=updateWiring($id)>";
-   echo "</td><td></tr><tr>";
+   wireDetails('charg2batt');
 
    echo "</td><td><label>Batteries to Inverter</td><td>";
-   wireTypes('type1');
-   echo "</td><td>";
-   awg('type2');
-   echo "</td><td><label>Length<input type=text size=3 value=0 onChange=updateWiring($id)>";
-   echo "</td><td></tr><tr>";
+   wireDetails('batt2invert');
 
    echo "</td><td><label>Inverter to Building</td><td>";
-   wireTypes('type1');
-   echo "</td><td>";
-   awg('type2');
-   echo "</td><td><label>Length<input type=text size=3 value=0 onChange=updateWiring($id)>";
-   echo "</td><td></tr><tr>";
+   wireDetails('invert2bld');
 
    echo "</td><td><label>Wind Generator to charger</td><td>";
-   wireTypes('type1');
-   echo "</td><td>";
-   awg('type2');
-   echo "</td><td><label>Length<input type=text size=3 value=0 onChange=updateWiring($id)>";
-   echo "</td><td></tr><tr>";
+   wireDetails('gen2charg');
 
-   echo "</td><td><label>Module to Module</td><td>";
-   wireTypes('type1');
-   echo "</td><td>";
-   awg('type2');
-   echo "</td><td><label>Length<input type=text size=3 value=0 onChange=updateWiring($id)>";
-   echo "</td><td></tr><tr>";
-
+   echo "</td><td><label>Modules to Module</td><td>";
+   wireDetails('mod2mod');
    echo "</form></table>";
 
 ?>

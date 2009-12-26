@@ -19,11 +19,26 @@
 
 <?php
 
-  // Print all the wire types as a selection menu
-function wireTypes($id) {
+function wireMetal($id) {
 
+  $typeid = "wtype_$id";
+  echo '<input type=radio name=$typeid id=$typeid size=3 checked=yes value="copper" onchanged=updateWiring("$typeid")>Copper</input>';
+  echo '<input type=radio name=$typeid id=$typeid size=3 value="aluminum" onchanged=updateWiring("$typid")>Aluminum</input>';
+}
+
+function wireLength($id) {
+
+  $newid = "wlen_$id";
+  echo '</td><td><label>Length<input type=text size=3 value=0 id=$newid onChange=updateWiring("$newid")>';
+}
+
+  // Print all the wire types as a selection menu
+function wireNames($id) {
+
+  $newid = "wname_$id";
+  $typeid = "wtype_$id";
    print <<<_HTML_
-     <select id=$id onChange=updateWiring($id)>
+     <select id=$newid onChange=updateWiring("$newid")>
      <option>RHH</option>
      <option>RHH</option>
      <option>RHW</option>
@@ -50,20 +65,18 @@ function wireTypes($id) {
      <option>XHH</option>
      <option>ZW2</option>
    </select>
-   <input type=radio name=$id-wtype  size=3 value="coppe" checked=$wtype onChange=updateWiring($id)>Copper</input>
-   <input type=radio name=$id-wtype  size=3 value="aluminum" checked=$wtype onChange=updateWiring($id)>Aluminum</input>
 _HTML_;
 
 }
 
-
-  // Print all the wire sizes as a selection menu
+// Print all the wire sizes as a selection menu
 function awg($id)
 {
+  $newid = "awg_$id";
   print <<<_HTML_
     <label>AWG
-    <select name=$id id=$id onChange=updateWiring($id)>
-     <option>18</option>
+    <select id=$newid onChange=updateWiring("$newid")>
+     <option>18</op tion>
      <option>16</option>
      <option>14</option>
      <option>12</option>
@@ -93,21 +106,33 @@ _HTML_;
   // Print all the conduit sizes as a selection menu
 function conduitSize($id)
 {
+  $newid = "cdia_$id";
   print <<<_HTML_
-     <label>Diameter
-     <select id=$id onChange=updateWiring($id)>
-     <option>1/2"</option>
+    <label>Diameter
+    <select id=$newid onChange=updateWiring("$newid")>
+    <option>1/2"</option>
      <option>2/3"</option>
-     <option>1"</option>
+    <option>1"</option>
      <option>1 1/4"</option>
-     <option>1 1/2"</option>
+    <option>1 1/2"</option>
      <option>1 3/4"</option>
-     <option>2"</option>
+    <option>2"</option>
      <option>2 1/4"</option>
-     <option>2 1/2"</option>
+    <option>2 1/2"</option>
      <option>2 3/4"</option>
-     </select>
+    </select>
 _HTML_;
 }
+
+// Thus prints one line of the table of wire details
+function wireDetails($id) {
+   wireNames($id);
+   echo "</td><td>";
+   awg($id);
+   wireLength($id);
+   wireMetal($id);
+   echo "</td><td></tr><tr>";
+}
+
 
 ?>

@@ -69,9 +69,8 @@ function profedit($op) {
     $size = count($items);
     
     // <form method=post action=profiles.php?projid=$projid&projname=$projname&op=write&days=$days&hours=$hours&minutes=$minutes&id=$id>
-    //<form name="profform" onSubmit="return updateProfile('write','foobar')">
     print <<<_HTML_
-      <form method=post action=profiles.php?projid=$projid&projname=$projname&op=write&days=$days&hours=$hours&minutes=$minutes&id=$id>      
+      <form name="profform" onSubmit="return updateProfile('write','barfoo')">
       <caption>These are the selected loads you have chosen</caption>
       <table border=0>
       <tr><th>Name</th>
@@ -112,11 +111,12 @@ _HTML_;
         <td><input type=text size=6 value="$load[6]" readonly="readonly">
         </td></tr>
 _HTML_;
-  }
+  } // end of for loop
    
-    print <<<_HTML_
-      <tr><td></td><td><b>Totals</b></td><td></td><td></td><td>$size items</td><td></td><td>$totalwatts</td><td>$totalamps</td></tr>;
+  print <<<_HTML_
+    <tr><td></td><td><b>Totals</b></td><td></td><td></td><td>$size items</td><td></td><td>$totalwatts</td><td>$totalamps</td></tr>;
   </table>
+  <input type=submit id="up" value="Update Values" onSubmit="return updateProfile('write','foobar')">
 </form>
 _HTML_;
 }
@@ -157,6 +157,8 @@ if ($op != "write") {
 
 if ($op == 'new') {
   // Create a new profile entry
+  $projid = $_GET['projid'];
+  $projname = $_GET['projname'];
   $profinfo = "";
   $type     = "LOAD";
   $id       = 0;

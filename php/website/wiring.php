@@ -44,7 +44,101 @@
    //   gui_init_db("gnuaetest");
    include "support.php";
 
+   // Get the parameters
+
+// The voltage of the battey bank
+   if (isset($_GET['batteryvolts'])) {
+       $batteryvolts = $_GET['batteryvolts'];
+   } else {
+       $batteryvolts = 24;
+   }
+// the voltage of the PV array
+   if (isset($_GET['pvvolts'])) {
+       $pvvolts = $_GET['pvvolts'];
+   } else {
+       $pvvolts = 48;
+   }
+// the voltage of the wind generator
+   if (isset($_GET['windvolts'])) {
+       $windvolts = $_GET['windvolts'];
+   } else {
+       $windvolts = 24;
+   }
+// Temperature scale, celcius or farenheit
+   if (isset($_GET['tempscale'])) {
+       $tempscale = $_GET['tempscale'];
+   } else {
+       $tempscale = "farenheit";
+   }
+// The lowest temperature to expect
+   if (isset($_GET['lowtemp'])) {
+       $lowtemp = $_GET['lowtemp'];
+   } else {
+       $lowtemp = -15;
+   }
+// The highest temperature to expect
+   if (isset($_GET['hightemp'])) {
+       $hightemp = $_GET['hightemp'];
+   } else {
+       $hightemp = 80;
+   }
+
+// Get the array of data for the module to module wire run
+   if (isset($_GET['mod2mod'])) {
+     $mod2mod = explode(",", $_GET['mod2mod']);
+   } else {
+     $mod2mod = array(0, 'THHN', 2, 18, 'Copper');
+   }
+
+// Get the array of data for the module to charge controller wire run
+   if (isset($_GET['mod2charg'])) {
+     $mod2charg = explode(",", $_GET['mod2charg']);
+   } else {
+     $mod2charg = array(0, 'THHN', 2, 18, 'Copper');
+   }
+
+// Get the array of data for the generator to charger wire run
+   if (isset($_GET['gen2charg'])) {
+     $gen2charg = explode(",", $_GET['gen2charg']);
+   } else {
+     $gen2charg = array(0, 'THHN', 2, 18, 'Copper');
+   }
+
+// Get the array of data for the module to charge controller wire run
+   if (isset($_GET['batt2invert'])) {
+     $batt2invert = explode(",", $_GET['batt2invert']);
+   } else {
+     $batt2invert = array(0, 'THHN', 2, 18, 'Copper');
+   }
+   if (isset($_GET['invert2bld'])) {
+     $invert2bld = explode(",", $_GET['invert2bld']);
+   } else {
+     $invert2bld = array(0, 'THHN', 2, 18, 'Copper');
+   }
+   if (isset($_GET['charg2batt'])) {
+     $charg2batt = explode(",", $_GET['charg2batt']);
+   } else {
+     $charg2batt = array(0, 'THHN', 2, 18, 'Copper');
+   }
+
    print <<<_HTML_
+
+   This is a table of the wire runs between the major components of
+   your power system. You have to specify the length between these
+   components yourself. Then chose the type of wire you plan to use,
+   the default is fine. The system will calculate the AWG of the wire
+   you need, which you can change if you want to. Most systems only use
+   copper wire, but you can switch to using aluminum wire for all the
+   calculations.<p>
+
+   Normally, just two conductors are used for DC systems, but often
+   when dealing with voltagr loss and drop issues, the appropriate
+   wire gauge may be larger than you want to deal with. In this case
+   you can double the number of conductors to reduce the ohysical size
+   of the wire. For example, you could run two pairs of 2AWG instead
+   of one pair of 1AWG, which is hard to pull through conduit.<p>
+
+   <hr>
    <table>
    <tr><td>
    <form name=$id onChange="return updateWiring('fixme')">
@@ -69,6 +163,14 @@ _HTML_;
    echo "</td><td><label>Modules to Module</td><td>";
    wireDetails('mod2mod');
    echo "</form></table>";
+   
+   echo "<br><label>Battery Bank Voltage: $batteryvolts";
+   echo "<br><label>PV Aray Voltage: $pvvolts";
+   echo "<br><label>Lowest Temperature: $lowtemp";
+   echo " $tempscale";
+   echo "<br><label>Highest Temperature: $hightemp";
+   echo " $tempscale";
+   echo "<br><label>Wind Generator Voltage: $windvolts<p>";
 
 ?>
 

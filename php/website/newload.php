@@ -17,13 +17,18 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 -->
 
+<html>
+<head>
+<meta name="author" content="Rob Savoye">
+   <title>Solar Design - New Load</title>   
+
 <?php
 
   //phpinfo();
 
 $id = $_GET['loadid'];
 $name = $_GET['loadname'];
-$data = gui_get_load_data($name);
+/* $data = gui_get_load_data($name); */
 gui_add_item($name, $name, $id, 2, 3, 4);
 
 $item = gui_list_items();
@@ -51,3 +56,8 @@ echo "<h2>$id</h2>";
 echo "<h2>$name</h2>";
 
 ?>
+
+<!--#include virtual="footer.html" -->
+  
+</body>
+</html>

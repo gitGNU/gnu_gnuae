@@ -135,130 +135,29 @@ print <<<_HTML_
   <input type=text id=lossvolts  size=3 value=$lossvolts onchange=updateNEC('lossvolts')>
   <label>Distance
   <input type=text id=distance  size=3 value=$distance onchange=updateNEC('distance')>
-  <label>AWG
-   <select id=gauge onChange=updateNEC('gauge')>
-     <option>18</option>
-     <option>16</option>
-     <option>14</option>
-     <option>12</option>
-     <option>10</option>
-     <option>8</option>
-     <option>6</option>
-     <option>4</option>
-     <option>3</option>
-     <option>2</option>
-     <option>1</option>
-     <option>1/0</option>
-     <option>2/0</option>
-     <option>3/0</option>
-     <option>4/0</option>
-     <option>250</option>
-     <option>300</option>
-     <option>350</option>
-     <option>400</option>
-     <option>500</option>
-     <option>1000</option>
-     <option>1250</option>
-     <option>1750</option>
-     <option>2000</option>
-     </select>
-     <label>Wire Type
-     <select id=wiretype onChange=updateNEC('wiretype')>
-     <option>RHH</option>
-     <option>RHH</option>
-     <option>RHW</option>
-     <option>RHW2</option>
-     <option>THHN</option>
-     <option>THHW</option>
-     <option>THW</option>
-     <option>THW2</option>
-     <option>THWN</option>
-     <option>THWN2</option>
-     <option>XHHW</option>
-     <option>XHHW2</option>
-     <option>SE</option>
-     <option>USE</option>
-     <option>USE2</option>
-     <option>TW</option>
-     <option>UF</option>
-     <option>TBS</option>
-     <option>SA</option>
-     <option>SIS</option>
-     <option>FEP</option>
-     <option>FEPB</option>
-     <option>MI</option>
-     <option>XHH</option>
-     <option>ZW2</option>
-     </select>
-     <label>Conductors
-     <select id=conductors onChange=updateNEC('conductors')>
-     <option>2</option>
-     <option>3</option>
-     <option>4</option>
-     <option>5</option>
-     <option>6</option>
-     <option>7</option>
-     <option>8</option>
-     <option>9</option>
-     <option>10</option>
-     <option>12</option>
-     </select>
-     <p>
-     <label>Voltage Loss
-     <input type=text id=loss  size=3 value=$loss onchange=updateNEC('loss')>
-     <label>Voltage Drop
-     <input type=text id=drop  size=3 value=$drop onchange=updateNEC('drop')>
-     <label>Temperature
-     <input type=text id=temp  size=3 value=$temp onchange=updateNEC('temp')>
-     <input type=button name=button value="Reset Fields" onClick=updateNEC('reset2')>
-     <input type=button name=button value="Calculate" onClick=updateNEC('calc2')>
-     <p><hr>
-     <label>Diameter
-     <select id=conddia onChange=updateNEC('conddia')>
-     <option>1/2"</option>
-     <option>3/4"</option>
-     <option>1"</option>
-     <option>1 1/4"</option>
-     <option>1 1/2"</option>
-     <option>1 3/4"</option>
-     <option>2"</option>
-     <option>2 1/4"</option>
-     <option>2 1/2"</option>
-     <option>2 3/4"</option>
-     </select>
-   <input type=radio name=wtype  size=3 value="copper" checked=$wtype onchange=updateNEC('type')>Copper</input>
-   <input type=radio name=wtype  size=3 value="aluminum" checked=$wtype onchange=updateNEC('type')>Aluminum</input>
-   <p>
-     <label>Conduit Type
-   <select id=conduittype onChange=updateNEC('conduit')>
-     <option>EMT</option>
-     <option>ENT</option>
-     <option>FMC</option>
-     <option>IMC</option>
-     <option>LFNC_B</option>
-     <option>LFNC_A</option>
-     <option>LFMC</option>
-     <option>RMC</option>
-     <option>RNC</option>
-     <option>PVC_80</option>
-     <option>PVC_40</option>
-     <option>PVC_A</option>
-     <option>PVC_EB</option>
-   </select>
-     <p>
-     <label>Conductors
-     <select id=conductors onChange=updateNEC('conductors')>
-     <option>2</option>
-     <option>3</option>
-     <option>4</option>
-     <option>5</option>
-     <option>6</option>
-     <option>7</option>
-     <option>8</option>
-     <option>9</option>
-     <option>10</option>
-     <option>12</option>
-     </select>
+_HTML_;
+wireAWG('fooby', 'updateWiring');
+wireNames('fooby', 'updateWiring');
+conductors('fooby', 'updateWiring');
+print <<<_HTML_
+<p>
+<label>Voltage Loss
+<input type=text id=loss  size=3 value=$loss onchange=updateNEC('loss')>
+  <label>Voltage Drop
+  <input type=text id=drop  size=3 value=$drop onchange=updateNEC('drop')>
+  <label>Temperature
+  <input type=text id=temp  size=3 value=$temp onchange=updateNEC('temp')>
+  <input type=button name=button value="Reset Fields" onClick=updateNEC('reset2')>
+  <input type=button name=button value="Calculate" onClick=updateNEC('calc2')>
+  <p><hr>
+  <p>
+_HTML_;
+wireAWG('awg', 'updateNEC');
+conduitSize('cond', 'updateNEC');
+conduitNames('cond', 'updateNEC');
+wireNames('cond', 'updateNEC');
+conductors('cond', 'updateNEC');
+print <<<_HTML_
    </form>
 _HTML_;
 

@@ -19,21 +19,21 @@
 
 <?php
 
-function wireMetal($id) {
+function wireMetal($id, $func) {
 
   $typeid = "wtype_$id";
 //   echo '<input type=radio name=$typeid id=$typeid size=3 checked=yes value="copper" onchanged=updateWiring("$typeid")>Copper</input>';
 //   echo '<input type=radio name=$typeid id=$typeid size=3 value="aluminum" onchanged=updateWiring("$typid")>Aluminum</input>';
    print <<<_HTML_
     <label>Type
-    <select id=$typeid onChange=updateWiring("$typeid")>
+    <select id=$typeid onChange=$func("$typeid")>
     <option>Copper</option>
     <option>Aluminm</option>
     </select>
 _HTML_;
 }
 
-function wireLength($id) {
+function wireLength($id, $func) {
   global $mod2mod, $charg2batt, $batt2invert, $invert2bld, $gen2charg, $mod2charg;
 
   // id contains the name of the element that just changed, so we have to
@@ -42,11 +42,11 @@ function wireLength($id) {
   $newval = $$id;
 
   $newid = "wlen_$id";
-  echo "</td><td><label>Length<input type=text size=3 id=$newid onChange=updateWiring('$newid') value=$newval[0] >";
+  echo "</td><td><label>Length<input type=text size=3 id=$newid onChange=$func('$newid') value=$newval[0] >";
 }
 
   // Print all the wire types as a selection menu
-function wireNames($id) {
+function wireNames($id, $func) {
 
   global $mod2mod, $charg2batt, $batt2invert, $invert2bld, $gen2charg, $mod2charg;
 
@@ -60,8 +60,9 @@ function wireNames($id) {
   eval("$$foo = 'SELECTED';");
 
   $newid = "wname_$id";
+
   print <<<_HTML_
-     <select id=$newid onChange=updateWiring("$newid")>
+     <select id=$newid onChange=$func("$newid")>
      <option $on_RHH>RHH</option>
      <option $on_RHW>RHW</option>
      <option $on_RHW2>RHW2</option>
@@ -74,7 +75,7 @@ function wireNames($id) {
      <option $on_XHHW>XHHW</option>
      <option $on_XHHW2>XHHW2</option>
      <option $on_SE>SE</option>
-     <option Son_USE>USE</option>
+     <option $on_USE>USE</option>
      <option $on_USE2>USE2</option>
      <option $on_TW>TW</option>
      <option $on_UF>UF</option>
@@ -92,12 +93,12 @@ _HTML_;
 }
 
 // Print all the wire sizes as a selection menu
-function awg($id)
+function wireAWG($id, $func)
 {
   $newid = "awg_$id";
   print <<<_HTML_
     <label>AWG
-    <select id=$newid onChange=updateWiring("$newid")>
+    <select id=$newid onChange=$func("$newid")>
      <option>18</op tion>
      <option>16</option>
      <option>14</option>
@@ -126,26 +127,33 @@ _HTML_;
 }
 
   // Print all the conduit sizes as a selection menu
-function conductors($id)
+function conductors($id, $func)
 {
   $newid = "conduct_$id";
+  
   print <<<_HTML_
     <label>Conducters
-    <select id=$newid onChange=updateWiring("$newid")>
-    <option>2</option>
-    <option>4</option>
-    <option>6</option>
+    <select id=$newid onChange=$func("$newid")>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>12</option>
     </select>
 _HTML_;
 }
 
   // Print all the conduit sizes as a selection menu
-function conduitSize($id)
+function conduitSize($id, $func)
 {
   $newid = "cdia_$id";
   print <<<_HTML_
     <label>Diameter
-    <select id=$newid onChange=updateWiring("$newid")>
+    <select id=$newid onChange=$func("$newid")>
     <option>1/2"</option>
      <option>2/3"</option>
     <option>1"</option>
@@ -160,17 +168,43 @@ function conduitSize($id)
 _HTML_;
 }
 
+// Conduit names
+function conduitNames($id, $func) {
+  $newid = "conduit_$id";
+  
+print <<<_HTML_
+  <label>Conduit Type
+     <select id=conduittype onChange=$func("$newid")>
+        <option>EMT</option>
+        <option>ENT</option>
+        <option>FMC</option>
+        <option>IMC</option>
+        <option>LFNC_B</option>
+        <option>LFNC_A</option>
+        <option>LFMC</option>
+        <option>RMC</option>
+        <option>RNC</option>
+        <option>PVC_80</option>
+        <option>PVC_40</option>
+        <option>PVC_A</option>
+        <option>PVC_EB</option>
+     </select>
+_HTML_;
+  
+}
+
+
 // Thus prints one line of the table of wire details
-function wireDetails($id) {
-   wireLength($id);
+function wireDetails($id, $func) {
+  wireLength($id, $func);
    echo "</td><td>";
-   wireNames($id);
+   wireNames($id, $func);
    echo "</td><td>";
-   conductors($id);
+   conductors($id, $func);
    echo "</td><td>";
-   awg($id);
+   awg($id, $func);
    echo "</td><td>";
-   wireMetal($id);
+   wireMetal($id, $func);
    echo "</td><td></tr><tr>";
 }
 

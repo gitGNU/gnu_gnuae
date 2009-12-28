@@ -173,6 +173,7 @@ print <<<_HTML_
   <input type=text id=lossvolts  size=3 value=$lossvolts onchange=updateNEC('lossvolts')>
   <label>Distance
   <input type=text id=distance  size=3 value=$distance onchange=updateNEC('distance')>
+  <div id=neccalc3>
 _HTML_;
 wireAWG('second', 'updateWiring');
 wireNames('second', 'updateWiring');
@@ -188,6 +189,16 @@ print <<<_HTML_
   <input type=button name=button value="Reset Fields" onClick=updateNEC('reset2')>
   <input type=button name=button value="Calculate" onClick=updateNEC('calc2')>
   <p><hr>
+
+  You can only put so much conductors in a given piece of conduit, according to
+  NEC, this should be less than half the conduit should be full. This is to avoid
+  heat problems, and if you ever run additional wires later, you'll be glad
+  to not use too-small conduit.<p>
+
+  To use this calculator, just select type of conduit, the wire's AWG gauge,
+  and the wire type. Then specify the number of wires of this type you'll be
+  running in this conduit. As an example, any 120VAC circuit is going to have
+  a minimum of 3 conductors; ground, neutral, and hot.<p>
 _HTML_;
 conduitNames('third', 'updateNEC');
 echo "<p>";
@@ -202,6 +213,7 @@ for ($i=0; $i < $nec_wires3; $i++) {
   <input type=button name=calc3 value="More Wires" onClick=updateNEC('calc3')>
   <input type=button name=reset3 value="Reset Fields" onClick=updateNEC('reset3')>
   <input type=hidden name='nec_wires3' value="$nec_wires3">
+  </div>
   </form>
 _HTML_;
 

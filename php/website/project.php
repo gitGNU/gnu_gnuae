@@ -68,10 +68,24 @@ _HTML_;
 }
    
 //phpinfo();
-$projid = $_GET['projid'];
-$projname = $_GET['projname'];
+if (isset($_GET['projid'])) {       
+  $projid = $_GET['projid'];
+} else {
+  $projid = 0;
+}
+
+if (isset($_GET['projname'])) {       
+  $projname = $_GET['projname'];
 //$projinfo = $_GET['projinfo'];
-$op = $_GET['op'];
+} else {
+  $projname = 'none';
+}
+
+if (isset($_GET['op'])) {       
+  $op = $_GET['op'];
+} else {
+  $op ='new';
+}
 
 if ($projid == 0) {
   gui_init_db("gnuaetest");
@@ -128,12 +142,42 @@ if ($op == "new") {
   $tmpname=str_replace(' ', '_', $projname);
   $tmpinfo=str_replace(' ', '_', $projinfo);
 
-  $projlat = $_GET['latitude'];
-  $projlon = $_GET['longitude'];
-  $projsunhours = $_GET['sunhours'];
-  $projwindhours = $_GET['windhours'];
-  $projspeed =  $_GET['speed'];
-  $projlocation =  $_GET['location'];
+  if (isset($_GET['latitude'])) {
+    $projlat = $_GET['latitude'];
+  } else {
+    $projlat = 0;
+  }
+
+  if (isset($_GET['longitude'])) {
+    $projlon = $_GET['longitude'];
+  } else {
+    $projlon = 0;
+  }
+
+  if (isset($_GET['sunhours'])) {
+    $projsunhours = $_GET['sunhours'];
+  } else {
+    $projsunhours = 0;
+  }
+
+  if (isset($_GET['windhours'])) {
+    $projwindhours = $_GET['windhours'];
+  } else {
+    $projwindhours = 0;
+  }
+
+  if (isset($_GET['speed'])) {
+    $projspeed = $_GET['speed'];
+  } else {
+    $projspeed = 0;
+  }
+
+  if (isset($_GET['location'])) {
+    $projlocation = $_GET['location'];
+  } else {
+    $projlocation = 'none'; 
+  }
+
   gui_update_project($projid, $projname, $projinfo, $projsunhours, $projwindhours, $projspeed, $projlocation, $projlatitude, $projlongitude);
   echo "$projname updated..."; 
 }

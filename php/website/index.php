@@ -29,6 +29,8 @@
 
 <?php
 
+include "support.php";
+
 // These globals are for the initial project data
 $projname = "unamed project";
 $projid = 0;
@@ -58,30 +60,32 @@ $projlon = 0;
   
   <?php
   
-print <<<_HTML_
-
-Start by either creating a new project, or editing an existing one.<p>
-  <form name="projform" onSubmit="return newProject('write')">
-  <label>Project Name
+  print <<<_HTML_
+  
+  Start by either creating a new project, or editing an existing one.<p>
+  <form name="projform" action=neccalc.php>
+  <input type=button name=button value="New Project" onClick=loadPage('project.php')>
+  <input type=button name=button value="New Profile"    onClick=loadPage('profiles.php')>
+  <input type=button name=button value="NEC Calculator" onClick=loadPage('neccalc.php')>
+  <p>
+  <input type=button name=button value="Edit Project" onClick=updateProject('new')>
+  <label>Name
   <input type=text id=projname size=26 value="$projname" onchange=newProject('find') >
   <label>Project ID
   <input type=text id=projid size=12 value="$projid" onchange=newProject('find') >
-  
-  <input type=button name=button value="New Project" onClick=newProject('new')>
-  <input type=button name=button value="Update Project" onClick=newProject('update')>
-  <input type=button name=button value="New Profile" onClick=updateProfile('new')>
+  <p>
   </form>
 _HTML_;
-
+  //  <input type=button name=button value="NEC Calculator" onClick="javascript:window.location='neccalc.php';">
 ?>
   
   <br><br><hr>
-  <div id="result">
-  </div>
-  
-  <br><br><hr>
-  <div id="status">
-  </div>
+    <div id="result">
+    </div>
+    
+    <br><br>
+      <div id="status">
+      </div>
   
 <!--#include virtual="footer.html" -->
   

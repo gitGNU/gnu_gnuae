@@ -38,6 +38,35 @@ else if (window.ActiveXObject) {
   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 }
 
+// This executes a php script, and loads the output into a division
+function loadPage(url)
+{
+
+  document.getElementById('status').innerHTML = "Loading URL: " + url;
+  
+  // Open the URL above "asynchronously" (that's what the "true" is
+  // for) using the GET method 
+  xmlhttp.open('GET', url, true);
+  // Check that the PHP script has finished sending us the result
+  xmlhttp.onreadystatechange = function() {
+    if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      // Replace the content of the "result" DIV with the result
+      // returned by the PHP script
+      document.getElementById('result').innerHTML = xmlhttp.responseText + ' ';
+    } else {
+      if(xmlhttp.readyState == 3) {
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      } else {
+        // If the PHP script fails to send a response, or sends back an
+        // error, display a simple user-friendly notification 
+        document.getElementById('status').innerHTML = 'Error: newProject(' + op + ') Failed!'
+        + xmlhttp.readyState + " : " + xmlhttp.status;
+      }
+    }
+  };
+  xmlhttp.send(null);
+}
+
 // This updates the information for this project from the web page.
 function updateWiring(id)
 {

@@ -128,10 +128,65 @@ $totalwatts = 0;
 $totalamps = 0;
 
 // Get parameters from the command line
-$projid = $_GET['projid'];
-$projname = $_GET['projname'];
-$loadname = $_GET['loadname'];
-$op = $_GET['op'];
+if (isset($_GET['op'])) {
+  $op = $_GET['op'];
+} else {
+  $op = 'new';
+}
+
+if (isset($_GET['projid'])) {
+  $projid = $_GET['projid'];
+} else {
+  $projid = 0;
+}
+
+if (isset($_GET['projname'])) {
+  $projname = $_GET['projname'];
+} else {
+  $projname = 'none';
+}
+
+if (isset($_GET['loadname'])) {
+  $loadname = $_GET['loadname'];
+} else {
+  $loadname = 'none';
+}
+
+if (isset($_GET['type'])) {
+  $type = $_GET['type'];
+} else {
+  $type = 0;
+}
+
+if (isset($_GET['id'])) {
+  $id = $_GET['id'];
+} else {
+  $id = 0;
+}
+
+if (isset($_GET['quantity'])) {
+  $quantity = $_GET['quantity'];
+} else {
+  $quantity = 0;
+}
+
+if (isset($_GET['hours'])) {
+  $hours    = $_GET['hours'];
+} else {
+  $hours = 0;
+}
+
+if (isset($_GET['minutes'])) {
+  $minutes = $_GET['minutes'];
+} else {
+  $minutes = 0;
+}
+
+if (isset($_GET['days'])) {
+  $days = $_GET['days'];
+} else {
+  $days = 0;
+}
 
 gui_init_db("gnuaetest");
 
@@ -157,8 +212,6 @@ if ($op != "write") {
 
 if ($op == 'new') {
   // Create a new profile entry
-  $projid = $_GET['projid'];
-  $projname = $_GET['projname'];
   $profinfo = "";
   $type     = "LOAD";
   $id       = 0;
@@ -169,14 +222,6 @@ if ($op == 'new') {
   profhead($op);                // we have no entries, just print the header
 } else if ($op == 'update') {
   // Update an existing profiles
-  $projid = $_GET['projid'];
-  $projname = $_GET['projname'];
-  $type     = $_GET['type'];
-  $id       = $_GET['id'];
-  $quantity = $_GET['quantity'];
-  $hours    = $_GET['hours'];
-  $minutes  = $_GET['minutes'];
-  $days     = $_GET['days'];
   profhead($op);                // we have no entries, just print the header
   echo "<h3>Updating an existing profile</h3>";
   gui_add_item($projid, $loadname, "", $type, $id, $hours, $minutes, $days);
@@ -186,15 +231,6 @@ if ($op == 'new') {
   echo "<h3>Finding an existing profile</h3>";
 } else if ($op == "write") {
   // Update an existing project
-  $projid = $_GET['projid'];
-  $projname = $_GET['projname'];
-  $type     = $_GET['type'];
-  $id       = $_GET['id'];
-  $quantity = $_GET['quantity'];
-  $hours    = $_GET['hours'];
-  $minutes  = $_GET['minutes'];
-  $days     = $_GET['days'];
-
   profhead($op);                // we have no entries, just print the header
   echo "<h3>Writing project</h3>";
   // gui_update_item($projid, $loadname, "", $type, $id, $hours, $minutes, $days);
@@ -206,7 +242,7 @@ echo "<br>Query string is: $foo <br>";
 
 ?>
 
-  <br><br><hr>
+  <br><br>
   <div id="status">
   </div>
   

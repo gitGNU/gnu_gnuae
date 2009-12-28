@@ -26,8 +26,24 @@
 
   //phpinfo();
 
-$id = $_GET['loadid'];
-$name = $_GET['loadname'];
+if (isset($_GET['op'])) {       
+  $op = $_GET['op'];
+} else {
+  $op ='new';
+}
+
+if (isset($_GET['loadid'])) {
+  $id = $_GET['loadid'];
+} else {
+  $id = 0;
+}
+
+if (isset($_GET['loadname'])) {
+  $name = $_GET['loadname'];
+} else {
+  $name = 'none';
+}
+
 /* $data = gui_get_load_data($name); */
 gui_add_item($name, $name, $id, 2, 3, 4);
 

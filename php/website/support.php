@@ -40,7 +40,6 @@ function wireLength($id, $func) {
   // dereference it so we can get to the array value passed in as a
   // parameter.
   $newval = $$id;
-
   $newid = "wlen_$id";
   echo "</td><td><label>Length<input type=text size=3 id=$newid onChange=$func('$newid') value=$newval[0] >";
 }
@@ -58,12 +57,12 @@ function wireNames($id, $func) {
   $select = $newval[1];
   $foo = "on_$select";
   eval("$$foo = 'SELECTED';");
-
+  
   $newid = "wname_$id";
-
+  
   print <<<_HTML_
-    <label>Wire Type
-     <select id=$newid onChange=$func("$newid")>
+  <label>Wire Type
+  <select id=$newid onChange=$func("$newid")>
      <option $on_RHH>RHH</option>
      <option $on_RHW>RHW</option>
      <option $on_RHW2>RHW2</option>

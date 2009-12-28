@@ -31,7 +31,7 @@
    
 <?php
    
-   //gui_init_db("gnuaetest");
+   gui_init_db("gnuaetest");
    include "support.php";
 
    if (isset($_GET['volts'])) {
@@ -137,8 +137,8 @@
    $loss = nec_volt_loss($distance, $awg, $lossamps, $temp, $conductors);
    $drop = nec_volt_drop($awg, $distance, $lossvolts, $lossamps, $temp, $conductors);
 
-print <<<_HTML_
-
+   print <<<_HTML_
+	   
   This is a series of calculators that can be used when brain storming, that
   don't effect anything else in for this project. This is also useful for small
   projects, where you know the data for loads, etc... and don't mind entering
@@ -173,7 +173,6 @@ print <<<_HTML_
   <input type=text id=lossvolts  size=3 value=$lossvolts onchange=updateNEC('lossvolts')>
   <label>Distance
   <input type=text id=distance  size=3 value=$distance onchange=updateNEC('distance')>
-  <div id=neccalc3>
 _HTML_;
 wireAWG('second', 'updateWiring');
 wireNames('second', 'updateWiring');
@@ -213,7 +212,6 @@ for ($i=0; $i < $nec_wires3; $i++) {
   <input type=button name=calc3 value="More Wires" onClick=updateNEC('calc3')>
   <input type=button name=reset3 value="Reset Fields" onClick=updateNEC('reset3')>
   <input type=hidden name='nec_wires3' value="$nec_wires3">
-  </div>
   </form>
 _HTML_;
 

@@ -29,20 +29,20 @@
 -->
 
 <html>
-<head>
-<meta name="author" content="Rob Savoye">
-   <title>Solar Design - Wiring Details</title>
-   <script language="javascript" src="gnuae.js"></script>   
-</head>
-   
-   <body background="../images/seneca3-bg.jpg">
-   
-   <h2 align=center>Solar Design - Wiring Details</h2>
-   
-<?php
-   
-   //   gui_init_db("gnuaetest");
-   include "support.php";
+  <head>
+    <meta name="author" content="Rob Savoye">
+      <title>Solar Design - Wiring Details</title>
+      <script language="javascript" src="gnuae.js"></script>   
+    </head>
+    
+    <body background="../images/seneca3-bg.jpg">
+      
+      <h2 align=center>Solar Design - Wiring Details</h2>
+      
+      <?php
+	
+	//   gui_init_db("gnuaetest");
+	include "support.php";
 
    // Get the parameters
 
@@ -121,65 +121,65 @@
      $charg2batt = array(0, 'THHN', 2, 18, 'Copper');
    }
 
-   print <<<_HTML_
+print <<<_HTML_
 
-   This is a table of the wire runs between the major components of
-   your power system. You have to specify the length between these
-   components yourself. Then chose the type of wire you plan to use,
-   the default is fine. The system will calculate the AWG of the wire
-   you need, which you can change if you want to. Most systems only use
-   copper wire, but you can switch to using aluminum wire for all the
-   calculations.<p>
-
-   Normally, just two conductors are used for DC systems, but often
-   when dealing with voltagr loss and drop issues, the appropriate
-   wire gauge may be larger than you want to deal with. In this case
-   you can double the number of conductors to reduce the ohysical size
-   of the wire. For example, you could run two pairs of 2AWG instead
-   of one pair of 1AWG, which is hard to pull through conduit.<p>
-
-   <hr>
-   <table>
-   <tr><td>
-   <form name=$id onChange="return updateWiring('fixme')">
+     This is a table of the wire runs between the major components of
+     your power system. You have to specify the length between these
+     components yourself. Then chose the type of wire you plan to use,
+     the default is fine. The system will calculate the AWG of the wire
+     you need, which you can change if you want to. Most systems only use
+     copper wire, but you can switch to using aluminum wire for all the
+     calculations.<p>
+     
+     Normally, just two conductors are used for DC systems, but often
+     when dealing with voltagr loss and drop issues, the appropriate
+     wire gauge may be larger than you want to deal with. In this case
+     you can double the number of conductors to reduce the ohysical size
+     of the wire. For example, you could run two pairs of 2AWG instead
+     of one pair of 1AWG, which is hard to pull through conduit.<p>
+     
+     <hr>
+     <table>
+     <tr><td>
+     <form name=$id onChange="return updateWiring('fixme')">
 _HTML_;
 
-   echo "<label>Modules to charger</td><td>";
-   wireDetails('mod2charg');
-    
+echo "<label>Modules to charger</td><td>";
+wireDetails('mod2charg');
+
 // Charger to Batteries wire details
-   echo "</td><td><label>Charger to Batteries</td><td>";
-   wireDetails('charg2batt');
+echo "</td><td><label>Charger to Batteries</td><td>";
+wireDetails('charg2batt');
 
-   echo "</td><td><label>Batteries to Inverter</td><td>";
-   wireDetails('batt2invert');
+echo "</td><td><label>Batteries to Inverter</td><td>";
+wireDetails('batt2invert');
 
-   echo "</td><td><label>Inverter to Building</td><td>";
-   wireDetails('invert2bld');
+echo "</td><td><label>Inverter to Building</td><td>";
+wireDetails('invert2bld');
 
-   echo "</td><td><label>Wind Generator to charger</td><td>";
-   wireDetails('gen2charg');
+echo "</td><td><label>Wind Generator to charger</td><td>";
+wireDetails('gen2charg');
 
-   echo "</td><td><label>Modules to Module</td><td>";
-   wireDetails('mod2mod');
-   echo "</form></table>";
+echo "</td><td><label>Modules to Module</td><td>";
+wireDetails('mod2mod');
+echo "</form></table>";
    
-   echo "<br><label>Battery Bank Voltage: $batteryvolts";
-   echo "<br><label>PV Aray Voltage: $pvvolts";
-   echo "<br><label>Lowest Temperature: $lowtemp";
-   echo " $tempscale";
-   echo "<br><label>Highest Temperature: $hightemp";
-   echo " $tempscale";
-   echo "<br><label>Wind Generator Voltage: $windvolts<p>";
+echo "<br><label>Battery Bank Voltage: $batteryvolts";
+echo "<br><label>PV Aray Voltage: $pvvolts";
+echo "<br><label>Lowest Temperature: $lowtemp";
+echo " $tempscale";
+echo "<br><label>Highest Temperature: $hightemp";
+echo " $tempscale";
+echo "<br><label>Wind Generator Voltage: $windvolts<p>";
 
 ?>
 
-   <br><br><hr>
-   <div id="status">
-   </div>
+      <br><br><hr>
+	<div id="status">
+	</div>
    
-   <!--#include virtual="footer.html" -->
+	<!--#include virtual="footer.html" -->
    
-   </body>
+     </body>
 </html>
-  
+    

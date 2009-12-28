@@ -62,6 +62,7 @@ function wireNames($id, $func) {
   $newid = "wname_$id";
 
   print <<<_HTML_
+    <label>Wire Type
      <select id=$newid onChange=$func("$newid")>
      <option $on_RHH>RHH</option>
      <option $on_RHW>RHW</option>
@@ -97,7 +98,7 @@ function wireAWG($id, $func)
 {
   $newid = "awg_$id";
   print <<<_HTML_
-    <label>AWG
+  <label>AWG
     <select id=$newid onChange=$func("$newid")>
      <option>18</op tion>
      <option>16</option>
@@ -127,22 +128,25 @@ _HTML_;
 }
 
   // Print all the conduit sizes as a selection menu
-function conductors($id, $func)
+function conductors($id, $func, $default)
 {
   $newid = "conduct_$id";
-  
+
+  $foo = "on_$default";
+  eval("$$foo = 'SELECTED';");
+
   print <<<_HTML_
-    <label>Conducters
+    <label>Conductors
     <select id=$newid onChange=$func("$newid")>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>6</option>
-        <option>7</option>
-        <option>8</option>
-        <option>9</option>
-        <option>10</option>
-        <option>12</option>
+        <option $on_2>2</option>
+        <option $on_3>3</option>
+        <option $on_4>4</option>
+        <option $on_6>6</option>
+        <option $on_7>7</option>
+        <option $on_8>8</option>
+        <option $on_9>9</option>
+        <option $on_10>10</option>
+        <option $on_11>12</option>
     </select>
 _HTML_;
 }

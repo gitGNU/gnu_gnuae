@@ -86,6 +86,44 @@
      $lossvolts = 0;
    }
 
+   if (isset($_GET['conduct3'])) {
+     $conduct3 = $_GET['conduct3'];
+   } else {
+     $conduct3 = 2;
+   }
+
+   if (isset($_GET['conduct2'])) {
+     $conduct2 = $_GET['conduct2'];
+   } else {
+     $conduct2 = 2;
+   }
+
+// These are the possible paramters for the 3rd block of this page, the conduit
+// calculations.
+   if (isset($_GET['conduct3'])) {
+     $conduct3 = $_GET['conduct3'];
+   } else {
+     $conduct3 = 2;
+   }
+
+   if (isset($_GET['awg3'])) {
+     $awg3 = $_GET['awg3'];
+   } else {
+     $awg3 = '18';
+   }
+
+   if (isset($_GET['wire3'])) {
+     $wire3 = $_GET['wire3'];
+   } else {
+     $wire3 = 'THWN2';
+   }
+
+   if (isset($_GET['nec_wires3'])) {
+     $nec_wires3 = $_GET['nec_wires3'];
+   } else {
+     $nec_wires3 = 1;
+   }
+
 // Make the calculation for watts, volts, or amps using two of the three values
    if ($watts && $volts) {
      $amps = nec_amps($watts, $volts);
@@ -103,7 +141,7 @@ print <<<_HTML_
 
   This is a series of calculators that can be used when brain storming, that
   don't effect anything else in for this project. This is also useful for small
-   projects, where you know the data for loads, etc... and don't mind entering
+  projects, where you know the data for loads, etc... and don't mind entering
   it manually.<p>
   
   To use this calculator, set two of the three fields, the third field
@@ -136,9 +174,9 @@ print <<<_HTML_
   <label>Distance
   <input type=text id=distance  size=3 value=$distance onchange=updateNEC('distance')>
 _HTML_;
-wireAWG('fooby', 'updateWiring');
-wireNames('fooby', 'updateWiring');
-conductors('fooby', 'updateWiring');
+wireAWG('second', 'updateWiring');
+wireNames('second', 'updateWiring');
+conductors('second', 'updateWiring', $conduct2);
 print <<<_HTML_
 <p>
 <label>Voltage Loss
@@ -150,15 +188,21 @@ print <<<_HTML_
   <input type=button name=button value="Reset Fields" onClick=updateNEC('reset2')>
   <input type=button name=button value="Calculate" onClick=updateNEC('calc2')>
   <p><hr>
-  <p>
 _HTML_;
-wireAWG('awg', 'updateNEC');
-conduitSize('cond', 'updateNEC');
-conduitNames('cond', 'updateNEC');
-wireNames('cond', 'updateNEC');
-conductors('cond', 'updateNEC');
-print <<<_HTML_
-   </form>
+conduitNames('third', 'updateNEC');
+echo "<p>";
+for ($i=0; $i < $nec_wires3; $i++) {
+  wireAWG("third_$i", 'updateNEC');
+  wireNames("third_$i", 'updateNEC');
+  conductors("third_$i", 'updateNEC', $conduct3);
+  // conduitSize("third_$i", 'updateNEC');
+  echo "<p>";
+}
+  print <<<_HTML_
+  <input type=button name=calc3 value="More Wires" onClick=updateNEC('calc3')>
+  <input type=button name=reset3 value="Reset Fields" onClick=updateNEC('reset3')>
+  <input type=hidden name='nec_wires3' value="$nec_wires3">
+  </form>
 _HTML_;
 
 ?>

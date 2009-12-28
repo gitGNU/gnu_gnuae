@@ -23,10 +23,10 @@ one used by the test suite. Those files are:
 Then create the databases, which are initially empty. The data files will
 populate this database with the data from the file.
 
-mysql -uroot -p###### create gnuae
+mysqladmin -uroot -p###### create gnuae
 mysql -uroot -p###### gnuae < gnuae.sql 
 
-mysql -uroot -p###### create gnuaetest
+mysqladmin -uroot -p###### create gnuaetest
 mysql -uroot -p###### gnuaetest < gnuaetest.sql 
 
 Then once created, you have to grant access to a user for the table, and then

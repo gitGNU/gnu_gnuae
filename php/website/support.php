@@ -26,7 +26,7 @@ function wireMetal($id, $func) {
 //   echo '<input type=radio name=$typeid id=$typeid size=3 value="aluminum" onchanged=updateWiring("$typid")>Aluminum</input>';
    print <<<_HTML_
     <label>Type
-    <select id=$typeid onChange=$func("$typeid")>
+    <select id="$typeid" onChange=$func("$typeid")>
     <option>Copper</option>
     <option>Aluminm</option>
     </select>
@@ -62,7 +62,7 @@ function wireNames($id, $func) {
   
   print <<<_HTML_
   <label>Wire Type
-  <select id=$newid onChange=$func("$newid")>
+  <select id="$newid" onChange='$func("$newid")'>
      <option $on_RHH>RHH</option>
      <option $on_RHW>RHW</option>
      <option $on_RHW2>RHW2</option>
@@ -98,8 +98,8 @@ function wireAWG($id, $func)
   $newid = "awg_$id";
   print <<<_HTML_
   <label>AWG
-    <select id=$newid onChange=$func("$newid")>
-     <option>18</op tion>
+    <select id="$newid" onChange='$func("$newid")'>
+     <option>18</option>
      <option>16</option>
      <option>14</option>
      <option>12</option>
@@ -136,7 +136,7 @@ function conductors($id, $func, $default)
 
   print <<<_HTML_
     <label>Conductors
-    <select id=$newid onChange=$func("$newid")>
+    <select id="$newid" onChange='$func("$newid")'>
         <option $on_2>2</option>
         <option $on_3>3</option>
         <option $on_4>4</option>
@@ -156,7 +156,7 @@ function conduitSize($id, $func)
   $newid = "cdia_$id";
   print <<<_HTML_
     <label>Diameter
-    <select id=$newid onChange=$func("$newid")>
+    <select id="$newid" onChange='$func("$newid")'>
     <option>1/2"</option>
      <option>2/3"</option>
     <option>1"</option>
@@ -177,7 +177,7 @@ function conduitNames($id, $func) {
   
 print <<<_HTML_
   <label>Conduit Type
-     <select id=conduittype onChange=$func("$newid")>
+  <select id='conduittype' onChange='$func("$newid")'>
         <option>EMT</option>
         <option>ENT</option>
         <option>FMC</option>

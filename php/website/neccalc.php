@@ -22,12 +22,13 @@
 <meta name="author" content="Rob Savoye">
    <title>Solar Design - NEC Calculator</title>
    <script language="javascript" src="gnuae.js"></script>   
+</meta>
 </head>
    
    <div id="result">
    <body background="../images/seneca3-bg.jpg">   
 
-   <h2 align=center>Solar Design - NEC Calculator</h2>
+   <h2 align='center'>Solar Design - NEC Calculator</h2>
    
 <?php
    
@@ -150,13 +151,13 @@
   <!-- <form name="necform" action=neccalc.php?watts=$watts&amps=$amps&volts=$volts&loss=$loss&drop=$drop> -->
   <form name="necform" onSubmit="return updateNEC('calc')">
   <label>Watts
-  <input type=text id=watts size=4 value=$watts onchange=updateNEC('watts')>
+  <input type='text' id='watts' size='4' value="$watts" onchange="updateNEC('watts')">
   <label>Volts
-  <input type=text id=volts size=3 value=$volts onchange=updateNEC('volts')>
+  <input type='text' id='volts' size='3' value="$volts" onchange="updateNEC('volts')">
   <label>Amps
-  <input type=text id=amps  size=3 value=$amps onchange=updateNEC('amps')>
-  <input type=button name=button value="Reset Fields" onClick=updateNEC('reset1')>
-  <input type=button name=button value="Calculate" onClick=updateNEC('calc1')>
+  <input type='text' id='amps'  size='3' value="$amps" onchange="updateNEC('amps')">
+  <input type='button' name='button' value="Reset Fields" onClick="updateNEC('reset1')">
+  <input type='button' name='button' value="Calculate" onClick="updateNEC('calc1')">
   <p>
   <hr>
 
@@ -168,11 +169,11 @@
   48 volts used by some charge controllers.<p>
      
   <label>Amps
-  <input type=text id=lossamps  size=3 value=$lossamps onchange=updateNEC('lossamps')>
+  <input type='text' id='lossamps'  size='3' value="$lossamps" onchange="updateNEC('lossamps')">
   <label>Volts
-  <input type=text id=lossvolts  size=3 value=$lossvolts onchange=updateNEC('lossvolts')>
+  <input type='text' id='lossvolts'  size='3' value="$lossvolts" onchange="updateNEC('lossvolts')">
   <label>Distance
-  <input type=text id=distance  size=3 value=$distance onchange=updateNEC('distance')>
+  <input type='text' id='distance'  size='3' value="$distance" onchange="updateNEC('distance')">
 _HTML_;
 wireAWG('second', 'updateWiring');
 wireNames('second', 'updateWiring');
@@ -180,13 +181,13 @@ conductors('second', 'updateWiring', $conduct2);
 print <<<_HTML_
 <p>
 <label>Voltage Loss
-<input type=text id=loss  size=3 value=$loss onchange=updateNEC('loss')>
+<input type='text' id='loss'  size='3' value="$loss" onchange="updateNEC('loss')">
   <label>Voltage Drop
-  <input type=text id=drop  size=3 value=$drop onchange=updateNEC('drop')>
+  <input type='text' id='drop'  size='3' value="$drop" onchange="updateNEC('drop')">
   <label>Temperature
-  <input type=text id=temp  size=3 value=$temp onchange=updateNEC('temp')>
-  <input type=button name=button value="Reset Fields" onClick=updateNEC('reset2')>
-  <input type=button name=button value="Calculate" onClick=updateNEC('calc2')>
+  <input type='text' id='temp'  size='3' value="$temp" onchange="updateNEC('temp')">
+  <input type='button' name='button' value="Reset Fields" onClick=updateNEC('reset2')>
+  <input type='button' name='button' value="Calculate" onClick=updateNEC('calc2')>
   <p><hr>
 
   You can only put so much conductors in a given piece of conduit, according to
@@ -209,9 +210,9 @@ for ($i=0; $i < $nec_wires3; $i++) {
   echo "<p>";
 }
   print <<<_HTML_
-  <input type=button name=calc3 value="More Wires" onClick=updateNEC('calc3')>
-  <input type=button name=reset3 value="Reset Fields" onClick=updateNEC('reset3')>
-  <input type=hidden name='nec_wires3' value="$nec_wires3">
+  <input type='button' name='calc3' value="More Wires" onClick="updateNEC('calc3')">
+  <input type='button' name='reset3' value="Reset Fields" onClick="updateNEC('reset3')">
+  <input type='hidden' name='nec_wires3' value="$nec_wires3">
   </form>
 _HTML_;
 

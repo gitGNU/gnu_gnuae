@@ -8,3 +8,31 @@ idea. Now most of the internal functions are accessible through PHP,
 and I'm slowly creating a new UI in php. Other big changes were
 upgrading to the GPLv3, switching to Git, and adding SQL database
 support, instead of the csv files.
+
+
+Getting the database setup:
+
+Currently the use of MySQL is pretty much hardcoded, although I'd love
+to add sqlite support in the future. There are two files in the data
+directory that can be used to setup the initial database, and another
+one used by the test suite. Those files are:
+
+    data/gnuae.sql
+    data/gnuaetest.sql
+
+Then create the databases, which are initially empty. The data files will
+populate this database with the data from the file.
+
+mysql -uroot -p###### create gnuae
+mysql -uroot -p###### gnuae < gnuae.sql 
+
+mysql -uroot -p###### create gnuaetest
+mysql -uroot -p###### gnuaetest < gnuaetest.sql 
+
+Then once created, you have to grant access to a user for the table, and then
+flush the priviledges to make it take effect.
+
+GRANT ALL PRIVILEGES ON gnuae.* TO gnuae@localhost IDENTIFIED BY 'gnuae';
+GRANT ALL PRIVILEGES ON gnuaetest.* TO gnuae@localhost IDENTIFIED BY 'gnuae';
+flush privileges;
+

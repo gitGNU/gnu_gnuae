@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.40, for redhat-linux-gnu (i386)
+-- MySQL dump 10.13  Distrib 5.1.41, for redhat-linux-gnu (i386)
 --
 -- Host: localhost    Database: gnuae
 -- ------------------------------------------------------
--- Server version	5.1.40
+-- Server version	5.1.41
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -300,6 +300,7 @@ CREATE TABLE `profiles` (
   `itemID` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
+  `type` enum('Battery','Center','Charger','Combiner','Inverter','Load','PVPanel','Pump','Wire') NOT NULL,
   `quantity` int(11) NOT NULL,
   `hours` int(11) NOT NULL,
   `minutes` int(11) NOT NULL,
@@ -313,7 +314,6 @@ CREATE TABLE `profiles` (
 
 LOCK TABLES `profiles` WRITE;
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` VALUES (0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'Stereo','is great',0,0,0,0),(0,0,'TV','sucks',0,0,0,0),(0,0,'Stereo','is great',0,0,0,0),(0,0,'TV','sucks',0,0,0,0),(0,0,'Stereo','is great',0,0,0,0),(0,0,'TV','sucks',0,0,0,0),(0,0,'TV','sucks',0,0,0,0),(0,0,'Stereo','is great',0,0,0,0),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'TV','sucks',0,0,0,0),(0,0,'Stereo','is great',0,0,0,0),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'TV','sucks',0,0,0,0),(0,0,'Stereo','is great',0,0,0,0),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'TV','sucks',0,0,0,0),(0,0,'Stereo','is great',0,0,0,0),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1),(0,1,'TV','TV sucks',0,3,4,2),(0,5,'Stereo','is great',0,7,8,6),(0,1,'TV','TV sucks',0,3,4,2),(0,5,'Stereo','is great',0,7,8,6),(0,0,'16ft` Refridgerator','16ft` Refridgerator',0,3,4,2),(0,0,'21in CRT','21in CRT',0,3,4,2),(0,0,'19ft Refridgerator','19ft Refridgerator',0,3,4,2),(0,0,'21in CRT','21in CRT',0,3,4,2),(0,0,'ETA Pump','ETA Pump',0,3,4,2),(0,0,'Cordless Charger','Cordless Charger',0,3,4,2),(0,0,'Clothes Washer','Clothes Washer',0,3,4,2),(0,0,'12ft Refridgerator','12ft Refridgerator',0,3,4,2),(0,0,'AC Lights','AC Lights',0,3,4,2),(0,0,'16ft Refridgerator','16ft Refridgerator',0,3,4,2),(0,0,'Glue Gun','Glue Gun',0,3,4,2),(0,0,'Maxon Charger','Maxon Charger',0,3,4,2),(0,0,'SQ Flex Pump','SQ Flex Pump',0,3,4,2),(0,0,'Cordless Charger','Cordless Charger',0,3,4,2),(0,0,'Maxon Charger','Maxon Charger',0,3,4,2),(0,0,'133Mhz Pentium','133Mhz Pentium',0,3,4,2),(0,0,'Blender','Blender',0,3,4,2),(0,0,'ETA Pump','ETA Pump',0,3,4,2),(0,0,'133Mhz Pentium','133Mhz Pentium',0,3,4,2),(0,0,'','',0,3,4,2),(0,0,'','',0,3,4,2),(0,0,'all TV','sucks',0,2,3,1),(0,0,'My Stereo','is great',0,2,3,1);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -343,7 +343,7 @@ CREATE TABLE `projects` (
 
 LOCK TABLES `projects` WRITE;
 /*!40000 ALTER TABLE `projects` DISABLE KEYS */;
-INSERT INTO `projects` VALUES (2,'My Project','all mine',1.2,2.3,3.4,0,0),(1,'My Project','all mine',1.2,2.3,3.4,0,0);
+INSERT INTO `projects` VALUES (1,'unnamed proj','',0,0,0,0,0),(2,'unnamed proj','',0,0,0,0,0),(3,'unnamed proj','',0,0,0,0,0),(4,'unnamed proj','',0,0,0,0,0);
 /*!40000 ALTER TABLE `projects` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -414,4 +414,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2009-12-14 10:20:36
+-- Dump completed on 2009-12-28 15:05:48

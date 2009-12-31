@@ -598,11 +598,11 @@ PHP_FUNCTION(gui_get_project)
 	    add_next_index_double(result, proj->sunhours);
 	    add_next_index_double(result, proj->windhours);
 	    add_next_index_double(result, proj->windspeed);
-	    if (proj->location) {
-		add_next_index_string(result, proj->location, strlen(proj->location));
-	    } else {
+	    // if (proj->location) {
+	    // 	add_next_index_string(result, proj->location, strlen(proj->location));
+	    // } else {
 		add_next_index_string(result, "none", 4);
-	    }
+	    // }
 	    add_next_index_double(result, proj->latitude);
 	    add_next_index_double(result, proj->longitude);
 	} else {

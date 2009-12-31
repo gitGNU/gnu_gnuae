@@ -296,12 +296,12 @@ GnuAE::getProject(long id, const char *name)
     	proj->id =          strtol(row[0].c_str(), NULL, 0) + 1;
     	proj->name =        strdup(row[1].c_str());
     	proj->description = strdup(row[2].c_str());
-    	proj->sunhours  =   strtof(row[3].c_str(), NULL);
-    	proj->windhours =   strtof(row[4].c_str(), NULL);
-    	proj->windspeed =   strtof(row[5].c_str(), NULL);
-    	// proj->location  = strtof(row[6].c_str(), NULL);
-    	proj->latitude  =   strtof(row[6].c_str(), NULL);
-    	proj->longitude =   strtof(row[7].c_str(), NULL);
+    	proj->sunhours  =   strtold(row[3].c_str(), NULL);
+    	proj->windhours =   strtold(row[4].c_str(), NULL);
+    	proj->windspeed =   strtold(row[5].c_str(), NULL);
+    	// proj->location  = strtold(row[6].c_str(), NULL);
+    	proj->latitude  =   strtold(row[6].c_str(), NULL);
+    	proj->longitude =   strtold(row[7].c_str(), NULL);
     } else {
     	proj.reset();
     }

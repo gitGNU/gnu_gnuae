@@ -1,11 +1,11 @@
 GnuAE is a program, for designing alternate energy system.
 
-After restartin the GnuAE project after a few years, it now has a
-slightly different focus. Rather than go through the pain updating the
-old Gtk 1.2 based GUI, I decided that turning GnuAE into a PHP
-extension, so it could be used via any web browser was a good
-idea. Now most of the internal functions are accessible through PHP,
-and I'm slowly creating a new UI in php. Other big changes were
+I've restarted hacking on the GnuAE project after a few years absence,
+so it now has a slightly different focus. Rather than go through the
+pain updating the old Gtk 1.2 based GUI, I decided that turning GnuAE
+into a PHP extension, so it could be used via any web browser was a
+good idea. Now most of the internal functions are accessible through
+PHP, and I'm slowly creating a new UI in php. Other big changes were
 upgrading to the GPLv3, switching to Git, and adding SQL database
 support, instead of the csv files.
 
@@ -36,3 +36,27 @@ GRANT ALL PRIVILEGES ON gnuae.* TO gnuae@localhost IDENTIFIED BY 'gnuae';
 GRANT ALL PRIVILEGES ON gnuaetest.* TO gnuae@localhost IDENTIFIED BY 'gnuae';
 flush privileges;
 
+
+-----------------------------------
+Design Notes:
+
+The basic idea is there are multiple projects, eash referenced by it's
+ID field. The projects table keeps track of project specific data like
+the GPS coordinates, descriptions, etc....
+
+There is also a table of profiles. A profile is the list of load items
+chosen by the user. There are multiple projects in the profiles table,
+indexed by the project ID it belongs to.
+
+As items are added to the list, the total power requirements gets
+updated. These totals are then used to calculate the required amount
+of batteries, photovoltaic, or wind generators to met that demand.
+
+Once the required power system components are selected, then the
+prefered wire gauges of the various subsystems, based on the length of
+wire, is calculated.
+
+There is a utility page included called the NEC Code Calculator. This
+allows the user to do the lower level calculations for when you know
+the load data, and just want to check on wiring options. You can also
+do conduit fill calculations on this same page.

@@ -222,30 +222,30 @@ function newProject(op)
 function updateProject(op)
 {
   var theID = document.getElementById('projid').value;
-  var theName = document.getElementById('projname').value;
+  var theName = document.getElementById('editprojname').value;
   //  var theInfo = document.getElementById('projinfo').value;
   var theLat = document.getElementById('latitude').value;
   var theLon = document.getElementById('longitude').value;
-  alert("Operation is " + op);  // debugging crap
   var theSunHours = document.getElementById('sunhours').value;
   var theWindHours = document.getElementById('windhours').value;
   var theSpeed = document.getElementById('speed').value;
-  var theLocation = document.getElementById('location').value;
+  // var theLocation = document.getElementById('location').value;
 
-  document.getElementById('status').innerHTML = "Updating project " + theName
-    + ": " + theID + ": " + theInfo + ":" + theLat + ":" + theLon;
+   // document.getElementById('status').innerHTML = "Updating project " + theName
+   //  + ": " + theID + ": " + theInfo + ":" + theLat + ":" + theLon;
 
   //This sets a variable with the URL (and query strings) to our PHP script
   var url = 'project.php?projid=' + theID;
   url += '&projname=' + theName;
-  url += '&projinfo=' + theInfo;
+  //  url += '&projinfo=' + theInfo;
   url += '&latitude=' + theLat;
   url += '&longitude=' + theLon;
   url += '&sunhours=' + theSunHours;
   url += '&windhours=' + theWindHours;
   url += '&speed=' + theSpeed;
-  url += '&location=' + thelocation;
   url += '&op=write';
+
+  //  alert("URL is " + url);  // debugging crap
 
   loadPage(url);
 }

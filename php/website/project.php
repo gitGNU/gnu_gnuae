@@ -110,10 +110,7 @@ function projedit($op) {
     </textarea>
     <p>
    <form action=project.php?projid=$projid&projname=$projname&projinfo=$projinfo&latitude=$latitude&longitude=$longitude&sunhours=$sunhours&windhours=$windhours&speed=$speed&location=$location&op=write method=post>
-   <!--
-   <form onSubmit="return updateProject()">
-   -->
-   <input type='button' name='updateproject' value="Update Project" onClick=newProject('write')>
+   <input type='button' name='updateproject' value="Update Project" onClick="return updateProject('write')">
   </form>
 _HTML_;
    if (isset($_SERVER['QUERY_STRING'])) {
@@ -134,9 +131,9 @@ _HTML_;
 // a new record.
 if ($op == 'edit') {
   $proj = gui_get_project($projid, $projname);
-  //  var_dump($proj);
+  //var_dump($proj);
   if (count($proj)) {
-    // $projname = $proj[0];
+    $projname = $proj[0];
     $projinfo = $proj[1];
     $sunhours = $proj[2];
     $windhours = $proj[3];
@@ -144,6 +141,8 @@ if ($op == 'edit') {
     $location = $proj[5];
     $latitude = $proj[6];
     $longitude = $proj[7];
+    echo "<h3>Updating an existing project #$projid</h3>";
+    projedit($op);
   } else {
     $op = "new";
   }
@@ -161,23 +160,15 @@ if ($op == "new") {
   $latitude = 0.0;
   $longitude = 0.0;
   projedit($op);
-} else if ($op == "edit") {
-  // Update an existing project
-  echo "<h3>Updating an existing project #$projid</h3>";
-  projedit($op);
 } else if ($op == "write") {
   // phpinfo();
   
   // Update an existing project
-  echo "<h3>Writing project</h3>";
-  // // these two fields often have embedded spaces, which we can't pass
-  // // as arguments. So we convert these to underscrores to be safe as a
-  // // simple serialize/unserialize step.
-  // $tmpname=str_replace(' ', '_', $projname);
-  // $tmpinfo=str_replace(' ', '_', $projinfo);
+  echo "<h3>Writing project: $projname</h3>";
 
   gui_update_project($projid, $projname, $projinfo, $sunhours, $windhours, $speed, $location, $latitude, $longitude);
-  echo "$projname updated..."; 
+  //  echo "$projname updated..."; 
+  projedit($op);
 }
 
 ?>

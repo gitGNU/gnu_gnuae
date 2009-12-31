@@ -168,12 +168,12 @@ GnuAE::newProject(const char *name, const char *description,
     
     project_t *project = new project_t;
     
-    project->name = const_cast<char *>(name);
-    project->description = const_cast<char *>(description);
+    project->name = strdup(name);
+    project->description = strdup(description);
     project->sunhours = sunhours;
     project->windhours = windhours;
     project->windspeed = windspeed;
-    project->location = const_cast<char *>(location);
+    project->location = strdup(location);
     project->latitude = latitude;
     project->longitude = longitude;
 
@@ -264,9 +264,11 @@ GnuAE::getProject(long id, const char *name)
 #else
     ostrstream     query;
 #endif
+    auto_ptr<project_t> proj(new project_t);
     
     query.str("");
     query << "SELECT * FROM projects WHERE ";
+#if 0
     if (id != 0 && name != 0) {
 	query << "id = " << id;
 	query << " and name = \'" << name << "\'";
@@ -275,7 +277,10 @@ GnuAE::getProject(long id, const char *name)
     } else if (id != 0 && name == 0) {
 	query << " id = " << id;
     }
-    query << ends;
+#else
+    query << " id = " << id;
+#endif
+   query << ends;
 
 #ifdef __STDC_HOSTED__
     string str = query.str().c_str();
@@ -284,22 +289,21 @@ GnuAE::getProject(long id, const char *name)
 #endif
     vector<vector<string> > *result = Database::queryResults(str);
     vector<vector<string> >::iterator it = result->begin();
-    auto_ptr<project_t> proj(new project_t);
     if (result->size()) {
-	//proj = new project_t;
-	//proj = (project_t *)malloc(sizeof(project_t));
-	vector<string> &row = *it;
-	proj->id =          strtol(row[0].c_str(), NULL, 0) + 1;
-	proj->name =        strdup(row[1].c_str());
-	proj->description = strdup(row[2].c_str());
-	proj->sunhours  =   strtof(row[3].c_str(), NULL);
-	proj->windhours =   strtof(row[4].c_str(), NULL);
-	proj->windspeed =   strtof(row[5].c_str(), NULL);
-	// proj->location  = strtof(row[6].c_str(), NULL);
-	proj->latitude  =   strtof(row[6].c_str(), NULL);
-	proj->longitude =   strtof(row[7].c_str(), NULL);
+    	//proj = new project_t;
+    	//proj = (project_t *)malloc(sizeof(project_t));
+    	vector<string> &row = *it;
+    	proj->id =          strtol(row[0].c_str(), NULL, 0) + 1;
+    	proj->name =        strdup(row[1].c_str());
+    	proj->description = strdup(row[2].c_str());
+    	proj->sunhours  =   strtof(row[3].c_str(), NULL);
+    	proj->windhours =   strtof(row[4].c_str(), NULL);
+    	proj->windspeed =   strtof(row[5].c_str(), NULL);
+    	// proj->location  = strtof(row[6].c_str(), NULL);
+    	proj->latitude  =   strtof(row[6].c_str(), NULL);
+    	proj->longitude =   strtof(row[7].c_str(), NULL);
     } else {
-	proj.reset();
+    	proj.reset();
     }
 
     delete result;

@@ -159,7 +159,7 @@ gui_get_project(long id, const char *name)
 {
     // DEBUGLOG_REPORT_FUNCTION;
 
-    auto_ptr<project_t > tmp =  gdata.getProject(id, name);
+    auto_ptr<project_t > tmp = gdata.getProject(id, name);
     // As auto_ptr will delete the memory when it goes out of scope,
     // we then can't pass a pointer to the C API. Instead get the
     // address it points to, and release if from there.

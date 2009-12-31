@@ -609,7 +609,7 @@ PHP_FUNCTION(gui_get_project)
 	    php_printf("WARNING: didn't get anything back from gui_get_project!!<br>\n");
 	}
     } else {
-	php_printf("Invalid paramaters!");
+	php_printf("%s: Invalid paramaters!", __FUNCTION__);
     }
     
     // 2nd field, 0 is no copy, 3rd field is destruct before returning
@@ -655,7 +655,7 @@ PHP_FUNCTION(gui_list_names)
 	    php_printf("WARNING: didn't get anything back from gui_list_names!<br>\n");
 	}
     } else {
-	php_printf("Invalid paramater for name!");
+	php_printf("%s: Invalid paramater for name! %s", __FUNCTION__, str);
     }
     
     // 2nd field, 0 is no copy, 3rd field is destruct before returning
@@ -887,7 +887,7 @@ PHP_FUNCTION(gui_get_data)
 	    pvpanel_t *pv = (pvpanel_t *)gui_get_data(id, name, table);
 	    if (pv) {
 		add_next_index_string(result, pv->name, strlen(pv->name));
-		add_next_index_string(result, pv->Vintage, strlen(pv->Vintage));
+		add_next_index_long(result, pv->Vintage);
 		add_next_index_double(result, pv->Area);
 		add_next_index_string(result, pv->Material, strlen(pv->Material));
 		add_next_index_long(result,   pv->Series_Cells);
@@ -944,7 +944,7 @@ PHP_FUNCTION(gui_get_data)
 #endif
 	}
     } else {
-	php_printf("Invalid paramater for name!");
+	php_printf("%s: Invalid paramater for name! %s:%s", __FUNCTION__, name, table);
     }
 
     // 2nd field, 0 is no copy, 3rd field is destruct before returning

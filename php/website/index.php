@@ -60,25 +60,59 @@ $projlon = 0;
   
   <?php
   
-  print <<<_HTML_
+  // This parameter just turns on additional button to manually force pages
+  // to load when testing.
+  if (isset($_GET['godmode'])) {
+    $godmode = $_GET['godmode'];
+  } else {
+    $godmode = "off";
+  }
+
+// The numeric ID of this project
+  if (isset($_GET['projid'])) {       
+    $projid = $_GET['projid'];
+  } else {
+    $projid = 0;
+  }
+
+// The symbolic name for this project
+  if (isset($_GET['projname'])) {       
+    $projname = $_GET['projname'];
+    //$projinfo = $_GET['projinfo'];
+  } else {
+    $projname = 'none';
+  }
+
+print <<<_HTML_
   
-  Start by either creating a new project, or editing an existing one.<p>
-  <form name="projform" action=neccalc.php>
-  <input type=button name=button value="New Project" onClick=loadPage('project.php')>
-  <input type=button name=button value="New Profile"    onClick=loadPage('profiles.php')>
-  <input type=button name=button value="NEC Calculator" onClick=loadPage('neccalc.php')>
-  <p>
-  <input type=button name=button value="Edit Project" onClick=updateProject('new')>
+  Start by either creating a new project, or editing an existing
+  one. Once you have a unique project, then you need to creat a project
+  profile. The profile is the list of all the loads you'll select,
+  plus how much each item gets used. If you need it, there is also a
+  NEC calculator for doing the raw calculations manually. This is
+  useful for small projects where you already know the load data.<p> 
+
+  <form name="projform">
   <label>Name
-  <input type=text id=projname size=26 value="$projname" onchange=newProject('find') >
+  <input type='text' id='projname' size='26' value="$projname" onchange="newProject('edit')">
   <label>Project ID
-  <input type=text id=projid size=12 value="$projid" onchange=newProject('find') >
-  <p>
-  </form>
+  <input type='text' id='projid' size='12' value="$projid" onchange="newProject('edit')">
+  <input type='button' name='button' value="Edit Project"  onClick="newProject('edit')">
+  <input type='button' name='button' value="New Project"   onClick="newProject('new')">
+
+<p>
 _HTML_;
+  if ($godmode != 'off') {
+print <<<_HTML_
+  <input type='button' name='button' value="New Profile"    onClick="loadPage('profiles.php?op=new')">
+  <input type='button' name='button' value="Wiring Details" onClick="loadPage('wiring.php')">
+  <input type='button' name='button' value="NEC Calculator" onClick="loadPage('neccalc.php')">
+_HTML_;
+}
   //  <input type=button name=button value="NEC Calculator" onClick="javascript:window.location='neccalc.php';">
 ?>
   
+  </form>
   <br><br><hr>
     <div id="result">
     </div>

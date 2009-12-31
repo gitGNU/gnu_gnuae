@@ -134,7 +134,7 @@ print <<<_HTML_
      Normally, just two conductors are used for DC systems, but often
      when dealing with voltagr loss and drop issues, the appropriate
      wire gauge may be larger than you want to deal with. In this case
-     you can double the number of conductors to reduce the ohysical size
+     you can double the number of conductors to reduce the physical size
      of the wire. For example, you could run two pairs of 2AWG instead
      of one pair of 1AWG, which is hard to pull through conduit.<p>
      

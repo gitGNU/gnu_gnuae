@@ -1,6 +1,6 @@
 <!--
 // 
-//   Copyright (C) 2009 Free Software Foundation, Inc.
+//   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 // 
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -104,9 +104,10 @@ print <<<_HTML_
 _HTML_;
   if ($godmode != 'off') {
 print <<<_HTML_
-  <input type='button' name='button' value="New Profile"    onClick="loadPage('profiles.php?op=new')">
-  <input type='button' name='button' value="Wiring Details" onClick="loadPage('wiring.php')">
-  <input type='button' name='button' value="NEC Calculator" onClick="loadPage('neccalc.php')">
+  <input type='button' name='button' value="New Profile"    onClick="loadPage('profiles.php?op=new&projid=$projid&projname=$projname&godmode=$godmode')">
+  <input type='button' name='button' value="Wiring Details" onClick="loadPage('wiring.php?op=new&projid=$projid&projname=$projname&godmode=$godmode')">
+  <input type='button' name='button' value="NEC Calculator" onClick="loadPage('neccalc.php?op=new&projid=$projid&projname=$projname&godmode=$godmode')">
+    <input type='button' name='button' value="Edit Profile" onClick="loadPage('profiles.php?op=edit&projid=$projid&projname=$projname&godmode=$godmode')">
 _HTML_;
 }
   //  <input type=button name=button value="NEC Calculator" onClick="javascript:window.location='neccalc.php';">

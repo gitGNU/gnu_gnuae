@@ -1,6 +1,6 @@
 <!--
 // 
-//   Copyright (C) 2009 Free Software Foundation, Inc.
+//   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 // 
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@
 <head>
 <meta name="author" content="Rob Savoye">
    <title>Solar Design - Projects</title>
-   
+   <script language="javascript" src="gnuae.js"></script>
+</head>
+<body background="../images/seneca3-bg.jpg">   
 <?php
 
 //phpinfo();
@@ -110,15 +112,16 @@ function projedit($op) {
     </textarea>
     <p>
    <form action=project.php?projid=$projid&projname=$projname&projinfo=$projinfo&latitude=$latitude&longitude=$longitude&sunhours=$sunhours&windhours=$windhours&speed=$speed&location=$location&op=write method=post>
-   <input type='button' name='updateproject' value="Update Project" onClick="return updateProject('write')">
+   <input type='button' name='updateproject' value="Update Project" onClick="return updateProject('done')">
+   <input type='button' name='updateproject' value="Done, add loads" onClick="return updateProject('done')">     
   </form>
 _HTML_;
-   if (isset($_SERVER['QUERY_STRING'])) {
-     $foo = $_SERVER['QUERY_STRING'];
-     echo "<br>Query string is: $foo <br>";
-   } else {
-     echo "<br>No Query string <br>";
-   }
+   // if (isset($_SERVER['QUERY_STRING'])) {
+   //   $foo = $_SERVER['QUERY_STRING'];
+   //   echo "<br>Query string is: $foo <br>";
+   // } else {
+   //   echo "<br>No Query string <br>";
+   // }
 }
    
 
@@ -161,11 +164,8 @@ if ($op == "new") {
   $longitude = 0.0;
   projedit($op);
 } else if ($op == "write") {
-  // phpinfo();
-  
   // Update an existing project
   echo "<h3>Writing project: $projname</h3>";
-
   gui_update_project($projid, $projname, $projinfo, $sunhours, $windhours, $speed, $location, $latitude, $longitude);
   //  echo "$projname updated..."; 
   projedit($op);

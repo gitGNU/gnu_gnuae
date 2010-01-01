@@ -1,5 +1,5 @@
 // 
-//   Copyright (C) 2009 Free Software Foundation, Inc.
+//   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 // 
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,10 +17,21 @@
 
 //XMLhttp variable will hold the XMLHttpRequest object
 var xmlhttp = false;
-var rows=[];
+var rows = [];
 
 // This array hold the data for all the selected items
-var allloads=[];
+var allloads = [];
+
+// The default Project ID
+var projid = 0;
+
+// 
+var items = 0;
+
+var godmode = 'off';
+
+// The default Project Name
+var projname="unnamed";
 
 // Start with just one wire type for all conduit calcuations
 var nec_wires3 = 1;
@@ -53,6 +64,7 @@ function loadPage(url)
       // Replace the content of the "result" DIV with the result
       // returned by the PHP script
       document.getElementById('result').innerHTML = xmlhttp.responseText + ' ';
+      document.getElementById('status').innerHTML = "Loaded URL: " + url;
     } else {
       if(xmlhttp.readyState == 3) {
         + xmlhttp.readyState + " : " + xmlhttp.status;
@@ -174,27 +186,17 @@ function updateProfile(op, name)
   var theID = document.getElementById('projid').value;
   var theName = document.getElementById('projname').value;
   var theLoad = document.getElementById("load").options[document.getElementById("load").selectedIndex].text;
-  
+  //var theCount = document.getElementById('profitems').value;
   
   // This sets a variable with the URL (and query strings) to our PHP script
   var url = 'profiles.php?projid=' + theID;
   url += '&projname=' + theName;
   url += '&op=' + op;
-  if (op == 'update') {
-    url += '&loadname=' + theLoad;
-    // url += '&projinfo=' + document.getElementById('projinfo').value;
-    // url += '&days=' + document.getElementById('days').value;
-    //    url += '&location=' + document.getElementById('location').value;
-    document.getElementById('status').innerHTML = 'Adding to Profile: ' + url;
-  }
-  
-  if (op == 'write') {
+  url += '&godmode=' + godmode;
+  url += '&loadname=' + theLoad.replace(/ /g, '_');
+
+  if (op == 'fixme') {
     alert("Operation is " + op + ": " + theLoad + " or " + name);  // debugging crap
-    //url += '&hours=' + document.getElementById('item[0]_hours').value;
-    // url += '&days=' + document.getElementById('item[0]_days').value;
-    // url += '&minutes=' + document.getElementById('item[0]_minutes').value;
-    //    url += '&location=' + document.getElementById('item[0]_location').value;
-    document.getElementById('status').innerHTML = 'Writing Profile' + url;
   }
   
   loadPage(url);
@@ -212,6 +214,10 @@ function newProject(op)
   var url = 'project.php?projid=' + theID;
   url += '&projname=' + theName;
   url += '&op=' + op;  
+
+  // Set the two globals
+  projid=theID;
+  projname=theName;
   
   loadPage(url);
   //  alert("Operation is " + op);  // debugging crap
@@ -245,9 +251,15 @@ function updateProject(op)
   url += '&speed=' + theSpeed;
   url += '&op=write';
 
-  //  alert("URL is " + url);  // debugging crap
+  //alert("URL is " + url);  // debugging crap
 
   loadPage(url);
+
+  if (op == 'done') {
+    url = "profiles.php?projid=" + theID;
+    url += '&projname=' + theName;    
+    loadPage(url);
+  }
 }
 
 // This updates the information for this project from the web page.

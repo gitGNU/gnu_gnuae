@@ -1,3 +1,22 @@
+<!--
+// 
+//   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
+// 
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 3 of the License, or
+// (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+-->
+
 <?php
 
 // phpinfo();
@@ -410,7 +429,7 @@ if ($proj[0] == $projname && $proj[1] == $projdes) {
 
 $proj[0] = "New Name";
 $proj[1] = "New Description";
-gui_update_project($projid, $proj[0], $proj[1], $proj[2], $proj[3], $proj[4], $proj[5], "", $proj[7], $proj[8]);
+gui_update_project($projid, $proj[0], $proj[1], $proj[2], $proj[3], $proj[4], $proj[5], 0, $proj[7], $proj[8]);
 $proj2 = gui_get_project($projid, "New Name");
 if ($proj2[0] == $proj[0] && $proj2[1] == $proj[1]) {
   pass("gui_update_project(id, name)");
